@@ -1,3 +1,4 @@
+import ContactUs from "@/components/Home/ContectUs";
 import CoursesSection from "@/components/Home/CoursesSection";
 import FAQ from "@/components/Home/FAQ";
 import HeroBanner from "@/components/Home/HeroBanner";
@@ -11,6 +12,7 @@ export default function Home() {
       <CoursesSection/>
       <Testimonials/>
       <FAQ/>
+      <ContactUs/>
     </div>
   );
 }
