@@ -20,7 +20,7 @@ const CoursesSection = () => {
       title: "Python for Data Science",
       description: "Learn Python programming with NumPy, Pandas, and Matplotlib for data analysis and visualization.",
       price: 39.99,
-      thumbnail: "/images/python-course.jpg",
+      thumbnail: "/courses/app-development.png",
       icon: <FiDatabase className="text-blue-500" />,
       category: "Data Science"
     },
@@ -29,7 +29,7 @@ const CoursesSection = () => {
       title: "Mobile App Development with Flutter",
       description: "Build beautiful cross-platform mobile apps using Flutter and Dart programming language.",
       price: 34.99,
-      thumbnail: "/images/flutter-course.jpg",
+      thumbnail: "/courses/python.png",
       icon: <FiSmartphone className="text-green-500" />,
       category: "Mobile Development"
     },
@@ -38,7 +38,7 @@ const CoursesSection = () => {
       title: "Node.js Backend Mastery",
       description: "Create robust backend services with Node.js, Express, and MongoDB database.",
       price: 44.99,
-      thumbnail: "/images/nodejs-course.jpg",
+      thumbnail: "/courses/devops.png",
       icon: <FiServer className="text-red-500" />,
       category: "Backend Development"
     }

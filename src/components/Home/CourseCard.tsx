@@ -23,7 +23,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
   return (
     <div className=" rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-1">
       {/* Thumbnail */}
-      <div className="relative h-48 group overflow-hidden">
+      <div className="relative h-52 group overflow-hidden">
         <Image
 
           src={course.thumbnail}

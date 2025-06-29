@@ -18,7 +18,7 @@ const HeroBanner = () => {
   ];
 
   return (
-    <section className="relative bg-gradient-to-r from-primary-50 to-blue-50 py-16 md:py-24">
+    <section className="relative bg-gradient-to-r from-primary-100/30 to-primary-100 py-16 md:py-24">
       <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row items-center gap-12">
           {/* Content Section */}
@@ -71,7 +71,7 @@ const HeroBanner = () => {
               
               {/* Decorative elements */}
               <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-primary-200 rounded-full opacity-20 -z-10"></div>
-              <div className="absolute -top-6 -right-6 w-24 h-24 bg-blue-200 rounded-full opacity-20 -z-10"></div>
+              <div className="absolute -top-6 -right-6 w-24 h-24 bg-primary-200 rounded-full opacity-20 -z-10"></div>
             </div>
           </div>
         </div>
