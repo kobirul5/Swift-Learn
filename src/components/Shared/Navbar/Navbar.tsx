@@ -67,9 +67,9 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-primary flex items-center">
+        <Link href="/" className="text-2xl font-bold text-primary flex items-center gap-2">
           <Image src="/logo/logo.png" alt="logo" width={30} height={30} />
-          LearnHub
+          SwiftLearn
         </Link>
 
         {/* Desktop Nav */}

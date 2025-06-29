@@ -1,5 +1,6 @@
 import CoursesSection from "@/components/Home/CoursesSection";
 import HeroBanner from "@/components/Home/HeroBanner";
+import Testimonials from "@/components/Home/Testimonials";
 
 
 export default function Home() {
@@ -7,6 +8,7 @@ export default function Home() {
     <div>
       <HeroBanner/>
       <CoursesSection/>
+      <Testimonials/>
     </div>
   );
 }
