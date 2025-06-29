@@ -2,22 +2,29 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';;
-import { usePathname } from 'next/navigation';
-
+import { useRouter, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { FiHome, FiBook, FiUser, FiLogIn, FiLogOut, FiSettings, FiMenu, FiX, FiSearch,
+import {
+  FiHome,
+  FiBook,
+  FiUser,
+  FiLogIn,
+  FiLogOut,
+  FiSettings,
+  FiMenu,
+  FiX,
+  FiSearch,
 } from 'react-icons/fi';
-
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [mounted, setMounted] = useState(false);
+
   const router = useRouter();
   const pathname = usePathname();
-
 
   const navLinks = [
     { label: 'Home', href: '/', icon: <FiHome /> },
@@ -27,10 +34,14 @@ const Navbar = () => {
   ];
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
     const checkAuth = async () => {
-      //TODO: Replace with your real auth logic
-      setIsLoggedIn(true); 
-      setIsAdmin(true);    
+      // TODO: Replace with real auth logic
+      setIsLoggedIn(true);
+      setIsAdmin(true);
     };
     checkAuth();
   }, []);
@@ -56,34 +67,31 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
-        {/* Logo */}
-        <Link href="/" className="text-2xl font-bold text-primary flex items-center justify-center">
-        <Image
-            height={30}
-            width={30}
-            src={"/logo/logo.png"} alt={'logo'}        />
-        LearnHub</Link>
+        <Link href="/" className="text-2xl font-bold text-primary flex items-center">
+          <Image src="/logo/logo.png" alt="logo" width={30} height={30} />
+          LearnHub
+        </Link>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center space-x-6">
-          {navLinks.map(
-            ({ label, href, icon, adminOnly, authOnly }) =>
-              (!adminOnly || isAdmin) &&
-              (!authOnly || isLoggedIn) && (
-                <Link
-                  key={href}
-                  href={href}
-                  className={`flex items-center space-x-1 text-sm font-medium ${
-                    pathname === href ? 'text-primary font-semibold' : 'text-gray-700 hover:text-primary'
-                  }`}
-                >
-                  {icon}
-                  <span>{label}</span>
-                </Link>
-              )
-          )}
+          {mounted &&
+            navLinks.map(
+              ({ label, href, icon, adminOnly, authOnly }) =>
+                (!adminOnly || isAdmin) &&
+                (!authOnly || isLoggedIn) && (
+                  <Link
+                    key={href}
+                    href={href}
+                    className={`flex items-center space-x-1 text-sm font-medium ${
+                      pathname === href ? 'text-primary font-semibold' : 'text-gray-700 hover:text-primary'
+                    }`}
+                  >
+                    {icon}
+                    <span>{label}</span>
+                  </Link>
+                )
+            )}
 
-          {/* Search Box */}
           <div className="relative">
             <input
               type="text"
@@ -120,7 +128,7 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Mobile Menu Toggle */}
+        {/* Mobile Toggle */}
         <div className="md:hidden">
           <button onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
@@ -128,30 +136,29 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Nav */}
       {isOpen && (
         <div className="md:hidden px-4 pt-4 pb-6 space-y-3 bg-white shadow">
-          {navLinks.map(
-            ({ label, href, icon, adminOnly, authOnly }) =>
-              (!adminOnly || isAdmin) &&
-              (!authOnly || isLoggedIn) && (
-                <Link
-                  key={href}
-                  href={href}
-                  className={`flex items-center space-x-2 py-2 px-3 rounded-md ${
-                    pathname === href
-                      ? 'bg-indigo-100 text-primary font-semibold'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  {icon}
-                  <span>{label}</span>
-                </Link>
-              )
-          )}
+          {mounted &&
+            navLinks.map(
+              ({ label, href, icon, adminOnly, authOnly }) =>
+                (!adminOnly || isAdmin) &&
+                (!authOnly || isLoggedIn) && (
+                  <Link
+                    key={href}
+                    href={href}
+                    className={`flex items-center space-x-2 py-2 px-3 rounded-md ${
+                      pathname === href
+                        ? 'bg-indigo-100 text-primary font-semibold'
+                        : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {icon}
+                    <span>{label}</span>
+                  </Link>
+                )
+            )}
 
-          {/* Search box */}
           <div className="relative">
             <input
               type="text"
@@ -160,8 +167,6 @@ const Navbar = () => {
             />
             <FiSearch className="absolute left-3 top-2.5 text-gray-400" />
           </div>
-
-          {/* Auth buttons */}
           <div className="pt-4 border-t border-gray-200 space-y-2">
             {isLoggedIn ? (
               <button

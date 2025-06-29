@@ -3,6 +3,15 @@
 
 @theme {
     --color-primary: #058c80;
+    --color-primary-100: #ccf2ef;
+    --color-primary-200: #99e6df;
+    --color-primary-300: #66d9cf;
+    --color-primary-400: #33cdc0;
+    --color-primary-500: #058c80;
+    /* base */
+    --color-primary-600: #04796f;
+    --color-primary-700: #03675e;
+    --color-primary-800: #02544d;
     --color-second: #F88922;
     --color-dark: #000c0a;
     --color-background: #F9FAFB;
