@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import Heading from '../Heading';
 
 interface FAQItem {
   id: number;
@@ -48,14 +49,11 @@ const FAQ = () => {
     <section className="pb-20 ">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-dark-900 mb-4">
-            Frequently Asked <span className="text-primary-600">Questions</span>
-          </h2>
-          <p className="text-xl text-dark-600 max-w-2xl mx-auto">
-            Everything you need to know about our learning platform
-          </p>
-        </div>
+        <Heading
+        title='Frequently Asked '
+        title2 = 'Questions'
+        subtitle='Everything you need to know about our learning platform'
+        />
 
         {/* FAQ List */}
         <div className="space-y-4 max-w-[90%] mx-auto ">

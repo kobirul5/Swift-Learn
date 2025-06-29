@@ -48,7 +48,8 @@ const CoursesSection = () => {
     <section className="pt-12 ">
       <div className="container mx-auto px-4">
         <Heading
-        title='Our Courses'
+        title='Our'
+        title2='Courses'
         subtitle='Learn in-demand programming skills from industry experts with hands-on projects.'
         />
 
