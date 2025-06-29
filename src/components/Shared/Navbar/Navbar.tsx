@@ -120,7 +120,7 @@ const Navbar = () => {
               </Link>
               <Link
                 href="/register"
-                className="bg-primary text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors"
+                className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-700 transition-colors"
               >
                 Sign Up
               </Link>
@@ -148,7 +148,7 @@ const Navbar = () => {
                     href={href}
                     className={`flex items-center space-x-2 py-2 px-3 rounded-md ${
                       pathname === href
-                        ? 'bg-indigo-100 text-primary font-semibold'
+                        ? 'bg-primary-100 text-primary font-semibold'
                         : 'text-gray-700 hover:bg-gray-100'
                     }`}
                     onClick={() => setIsOpen(false)}
@@ -192,7 +192,7 @@ const Navbar = () => {
                 <Link
                   href="/register"
                   onClick={() => setIsOpen(false)}
-                  className="block text-center bg-primary text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+                  className="block text-center bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-700"
                 >
                   Sign Up
                 </Link>

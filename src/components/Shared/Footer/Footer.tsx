@@ -8,7 +8,7 @@ import {
   FiInstagram,
   FiYoutube,
 } from 'react-icons/fi';
-import { FaGraduationCap } from 'react-icons/fa';
+import Image from 'next/image';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -20,9 +20,9 @@ const Footer: React.FC = () => {
 
           {/* Brand Info */}
           <div className="space-y-4">
-            <div className="flex items-center">
-              <FaGraduationCap className="text-primary-500 text-3xl mr-2" />
-              <span className="text-2xl font-bold text-white">LearnHub</span>
+            <div className="flex items-center gap-2">
+              <Image src="/logo/logo.png" alt="logo" width={30} height={30} />
+              <span className="text-2xl font-bold text-white">SwiftLearn</span>
             </div>
             <p className="text-dark-400">
               Empowering learners worldwide with high-quality education and skill development.
@@ -80,7 +80,7 @@ const Footer: React.FC = () => {
               <input
                 type="email"
                 placeholder="Your email"
-                className="px-4 py-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-primary-500 w-full text-dark-900"
+                className="px-4 py-2 rounded-l-lg  focus:outline-none focus:ring-2 focus:ring-primary-500 w-full text-dark-200 bg-dark-700"
                 required
               />
               <button
