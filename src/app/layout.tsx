@@ -1,20 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "@/redux/SroteProvider";
-import Navbar from "@/components/Shared/Navbar/Navbar";
-import Footer from "@/components/Shared/Footer/Footer";
 import { Toaster } from "react-hot-toast";
+import ClientLayout from "@/components/Shared/ClientLayout";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Swift Learn",
@@ -30,14 +19,12 @@ export default function RootLayout({
     <html lang="en">
       <StoreProvider  >
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`antialiased`}
         >
-          <Navbar />
           <Toaster />
-          <main className="min-h-[calc(100vh-390px)]">
+          <ClientLayout>
             {children}
-          </main>
-          <Footer />
+          </ClientLayout>
         </body>
       </StoreProvider>
     </html>

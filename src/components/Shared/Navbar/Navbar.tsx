@@ -33,7 +33,7 @@ const Navbar = () => {
   const navLinks = [
     { label: 'Home', href: '/', icon: <FiHome /> },
     { label: 'Courses', href: '/courses', icon: <FiBook /> },
-    { label: 'Dashboard', href: '/admin/dashboard', icon: <FiSettings />, adminOnly: true },
+    { label: 'Dashboard', href: '/dashboard', icon: <FiSettings />, adminOnly: true },
     { label: 'Profile', href: '/profile', icon: <FiUser />, authOnly: true },
   ];
 
@@ -87,7 +87,7 @@ const Navbar = () => {
                     key={href}
                     href={href}
                     className={`flex items-center space-x-1 text-sm font-medium ${
-                      pathname === href ? 'text-primary font-semibold' : 'text-gray-700 hover:text-primary'
+                      pathname === href ? 'text-primary font-semibold' : 'text-dark-700 hover:text-primary'
                     }`}
                   >
                     {icon}
@@ -100,15 +100,15 @@ const Navbar = () => {
             <input
               type="text"
               placeholder="Search courses..."
-              className="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/80 text-sm w-64"
+              className="pl-10 pr-4 py-2 rounded-full border border-dark-300 focus:outline-none focus:ring-2 focus:ring-primary/80 text-sm w-64"
             />
-            <FiSearch className="absolute left-3 top-2.5 text-gray-400" />
+            <FiSearch className="absolute left-3 top-2.5 text-dark-400" />
           </div>
 
           {isLoggedIn ? (
             <button
               onClick={handleLogout}
-              className="flex items-center space-x-1 text-gray-700 hover:text-primary"
+              className="flex items-center space-x-1 text-dark-700 hover:text-primary"
             >
               <FiLogOut />
               <span>Logout</span>
@@ -117,7 +117,7 @@ const Navbar = () => {
             <>
               <Link
                 href="/auth/login"
-                className="flex items-center space-x-1 text-gray-700 hover:text-primary"
+                className="flex items-center space-x-1 text-dark-700 hover:text-primary"
               >
                 <FiLogIn />
                 <span>Login</span>
@@ -153,7 +153,7 @@ const Navbar = () => {
                     className={`flex items-center space-x-2 py-2 px-3 rounded-md ${
                       pathname === href
                         ? 'bg-primary-100 text-primary font-semibold'
-                        : 'text-gray-700 hover:bg-gray-100'
+                        : 'text-dark-700 hover:bg-dark-100'
                     }`}
                     onClick={() => setIsOpen(false)}
                   >
@@ -167,18 +167,18 @@ const Navbar = () => {
             <input
               type="text"
               placeholder="Search courses..."
-              className="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/80 text-sm w-full"
+              className="pl-10 pr-4 py-2 rounded-full border border-dark-300 focus:outline-none focus:ring-2 focus:ring-primary/80 text-sm w-full"
             />
-            <FiSearch className="absolute left-3 top-2.5 text-gray-400" />
+            <FiSearch className="absolute left-3 top-2.5 text-dark-400" />
           </div>
-          <div className="pt-4 border-t border-gray-200 space-y-2">
+          <div className="pt-4 border-t border-dark-200 space-y-2">
             {isLoggedIn ? (
               <button
                 onClick={() => {
                   handleLogout();
                   setIsOpen(false);
                 }}
-                className="flex items-center space-x-2 text-gray-700 hover:text-primary w-full text-left"
+                className="flex items-center space-x-2 text-dark-700 hover:text-primary w-full text-left"
               >
                 <FiLogOut />
                 <span>Logout</span>
@@ -188,7 +188,7 @@ const Navbar = () => {
                 <Link
                   href="/auth/login"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center space-x-2 text-gray-700 hover:text-primary"
+                  className="flex items-center space-x-2 text-dark-700 hover:text-primary"
                 >
                   <FiLogIn />
                   <span>Login</span>

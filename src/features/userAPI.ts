@@ -17,7 +17,7 @@ export const userAPI = createApi({
      baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000' }),
      endpoints: (builder) => ({
           getUser: builder.query({
-               query: () => `/api/users/${email}`,
+               query: (emailS) => `/api/users/${emailS || email}`,
           }),
           // crate user
           createUser: builder.mutation({
