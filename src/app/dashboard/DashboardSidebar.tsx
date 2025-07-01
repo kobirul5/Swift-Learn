@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { AiFillHome } from 'react-icons/ai';
 import { FiHome, FiBook, FiUsers, FiSettings, FiPieChart } from 'react-icons/fi';
 
 interface NavItem {
@@ -9,14 +10,16 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
+    { name: 'Home', href: '/', icon: <AiFillHome /> },
     { name: 'Dashboard', href: '/dashboard', icon: <FiHome /> },
     { name: 'Courses', href: '/dashboard/courses', icon: <FiBook /> },
     { name: 'Students', href: '/dashboard/students', icon: <FiUsers /> },
-    { name: 'Analytics', href: '/dashboard/analytics', icon: <FiPieChart /> },
+    { name: 'Add Course', href: '/dashboard/addCourses', icon: <FiPieChart /> },
     { name: 'Settings', href: '/dashboard/settings', icon: <FiSettings /> },
 ];
 
 export default function DashboardSidebar() {
+    
     return (
         <div className="hidden md:flex md:flex-shrink-0">
             <div className="flex flex-col w-64 border-r border-dark-200 bg-white">

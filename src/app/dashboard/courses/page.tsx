@@ -88,7 +88,7 @@ const Courses = () => {
       <div className="overflow-x-auto">
         <table className="min-w-full">
           <thead>
-            <tr className="border-b text-gray-500 text-left text-sm">
+            <tr className="border-b text-dark-500 text-left text-sm">
               <th className="pb-3">Course</th>
               <th className="pb-3">Modules</th>
               <th className="pb-3">Price</th>
@@ -98,10 +98,10 @@ const Courses = () => {
           </thead>
           <tbody>
             {courses.map((course) => (
-              <tr key={course._id} className="border-b hover:bg-gray-50">
+              <tr key={course._id} className="border-b hover:bg-dark-50">
                 <td className="py-4">
                   <div className="flex items-center">
-                    <div className="w-10 h-10 bg-gray-200 rounded-md mr-3 overflow-hidden">
+                    <div className="w-10 h-10 bg-dark-200 rounded-md mr-3 overflow-hidden">
                       {course.thumbnail && (
                         <Image
                           width={300}
@@ -114,7 +114,7 @@ const Courses = () => {
                     </div>
                     <div>
                       <p className="font-medium">{course.title}</p>
-                      <p className="text-xs text-gray-500 line-clamp-1">
+                      <p className="text-xs text-dark-500 line-clamp-1">
                         {course.description}
                       </p>
                     </div>
@@ -122,15 +122,15 @@ const Courses = () => {
                 </td>
                 <td>{course?.modules?.length}</td>
                 <td>${course.price}</td>
-                <td className="text-sm text-gray-500">
+                <td className="text-sm text-dark-500">
                   {course.updatedAt}
                 </td>
                 <td>
                   <div className="flex space-x-2">
-                    <button className="text-blue-600 hover:text-blue-800">
+                    <button className="text-green-600 hover:text-green-800">
                       <FiEdit size={18} />
                     </button>
-                    <button className="text-gray-600 hover:text-gray-800">
+                    <button className="text-dark-600 hover:text-dark-800">
                       <FiMoreVertical size={18} />
                     </button>
                   </div>
