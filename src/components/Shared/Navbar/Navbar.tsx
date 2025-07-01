@@ -24,8 +24,8 @@ const Navbar = () => {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [mounted, setMounted] = useState(false);
 
-  const {data, isLoading, isError} = useGetUserQuery(undefined)
-  console.log(data, isLoading, isError)
+  const {data, isLoading} = useGetUserQuery(undefined)
+  console.log(data, isLoading,)
 
   const router = useRouter();
   const pathname = usePathname();
