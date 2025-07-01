@@ -7,6 +7,8 @@ import { IUser } from '@/type/user.interface';
 import { useCreateUserMutation } from '@/features/userAPI';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '@/redux/hooks';
+import { setUser } from '@/features/authSlice';
 
 
 
@@ -14,12 +16,12 @@ export default function SignupPage() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [createUser, {data, isLoading}] = useCreateUserMutation()
   const router = useRouter()
-
   const [userData, setUserData] = useState<IUser>({
     name: '',
     email: '',
     password: '',
   });
+  const dispatch = useAppDispatch()
 
   const [confirmPassword, setConfirmPassword] = useState<string>('');
 
@@ -39,11 +41,20 @@ export default function SignupPage() {
     const res = await createUser(userData)
 
     if(res.data?.success){
+
+      const userSave = {
+      name: res?.data?.data?.name,
+      email: res?.data?.data?.email,
+      token: ""
+    }
+
+
+      dispatch(setUser(userSave))
       toast.success("create user successfully")
       router.push("/")
+      setUserData({ name: "", email: "", password: "" });
+      setConfirmPassword("");
     }
-    setUserData({ name: "", email: "", password: "" });
-    setConfirmPassword("");
     
   }
 
@@ -54,9 +65,9 @@ export default function SignupPage() {
         <div className="text-center">
           <h1 className="text-3xl font-extrabold text-dark-900">Create your account</h1>
           <p className="mt-2 text-sm text-dark-600">
-            Already have an account?{' '}
+            Already  have an account?{' '}
             <Link href="/auth/login" className="font-medium text-primary-600 hover:text-primary-500">
-              Sign in
+              Login
             </Link>
           </p>
         </div>

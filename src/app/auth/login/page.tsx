@@ -14,9 +14,9 @@ interface IUser {
   password: string
 }
 
-export default function SignupPage() {
+export default function LoginPage() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [createUser, {data, isLoading}] = useCreateUserMutation()
+  const [createUser, { data, isLoading }] = useCreateUserMutation()
   const router = useRouter()
 
   const [userData, setUserData] = useState<IUser>({
@@ -34,10 +34,10 @@ export default function SignupPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-   
+
     const res = await createUser(userData)
 
-    if(res.data?.success){
+    if (res.data?.success) {
       toast.success("create user successfully")
       router.push("/")
     }
@@ -51,8 +51,8 @@ export default function SignupPage() {
         <div className="text-center">
           <h1 className="text-3xl font-extrabold text-dark-900">Create your account</h1>
           <p className="mt-2 text-sm text-dark-600">
-            Already have an account?{' '}
-            <Link href="/auth/login" className="font-medium text-primary-600 hover:text-primary-500">
+            You don&apos;t have an account?{' '}
+            <Link href="/auth/register" className="font-medium text-primary-600 hover:text-primary-500">
               Sign in
             </Link>
           </p>

@@ -7,11 +7,12 @@ export const userAPI = createApi({
           getUser: builder.query({
                query: () => "/api/users"
           }),
+          // crate user
           createUser: builder.mutation({
                query: (userData) => ({
                     url: "/api/users",
                     method: "POST",
-                    body: userData
+                    body: userData,
                })
           }),
      })
