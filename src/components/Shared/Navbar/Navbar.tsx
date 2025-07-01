@@ -1,5 +1,6 @@
 'use client';
 
+import { useGetUserQuery } from '@/features/userAPI';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
@@ -22,6 +23,9 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [mounted, setMounted] = useState(false);
+
+  const {data, isLoading, isError} = useGetUserQuery(undefined)
+  console.log(data, isLoading, isError)
 
   const router = useRouter();
   const pathname = usePathname();
