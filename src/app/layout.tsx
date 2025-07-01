@@ -4,6 +4,7 @@ import "./globals.css";
 import StoreProvider from "@/redux/SroteProvider";
 import Navbar from "@/components/Shared/Navbar/Navbar";
 import Footer from "@/components/Shared/Footer/Footer";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <Navbar />
+          <Toaster />
           <main className="min-h-[calc(100vh-390px)]">
             {children}
           </main>

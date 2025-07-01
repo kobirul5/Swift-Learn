@@ -4,14 +4,21 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { FiUser, FiMail, FiLock } from 'react-icons/fi';
 import { IUser } from '@/type/user.interface';
+import { useCreateUserMutation } from '@/features/userAPI';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+
 
 
 export default function SignupPage() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [createUser, {data, isLoading}] = useCreateUserMutation()
+  const router = useRouter()
+
   const [userData, setUserData] = useState<IUser>({
     name: '',
     email: '',
     password: '',
-    role: 'user',
   });
 
   const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -24,10 +31,20 @@ export default function SignupPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log(userData)
+    if(userData.password !== confirmPassword ){
+      return toast.error("Password not matched")
+    }
+    const res = await createUser(userData)
 
+    if(res.data?.success){
+      toast.success("create user successfully")
+      router.push("/")
+    }
+    setUserData({ name: "", email: "", password: "" });
+    setConfirmPassword("");
+    
   }
 
 

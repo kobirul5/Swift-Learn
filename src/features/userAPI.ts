@@ -6,8 +6,15 @@ export const userAPI = createApi({
      endpoints: (builder) => ({
           getUser: builder.query({
                query: () => "/api/users"
-          })
+          }),
+          createUser: builder.mutation({
+               query: (userData) => ({
+                    url: "/api/users",
+                    method: "POST",
+                    body: userData
+               })
+          }),
      })
 })
 
-export const {useGetUserQuery} = userAPI;
+export const {useGetUserQuery, useCreateUserMutation} = userAPI;
