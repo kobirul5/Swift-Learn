@@ -4,10 +4,11 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useCreateUserMutation } from '@/features/userAPI';
+// import { useLoginUserMutation } from '@/features/userAPI';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { FiLock, FiMail } from 'react-icons/fi';
+import useAxiosPublic from '@/hooks/useAxiosPublic';
 
 interface IUser {
   email: string,
@@ -15,9 +16,10 @@ interface IUser {
 }
 
 export default function LoginPage() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [createUser, { data, isLoading }] = useCreateUserMutation()
+ 
+  // const [createUser, { data, isLoading }] = useLoginUserMutation()
   const router = useRouter()
+  const axiosPublic = useAxiosPublic()
 
   const [userData, setUserData] = useState<IUser>({
     email: '',
@@ -35,7 +37,9 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const res = await createUser(userData)
+    // const res = await createUser(userData)
+    const res = await axiosPublic.post('/api/users/login-user', userData, {withCredentials:true})
+    console.log(res)
 
     if (res.data?.success) {
       toast.success("create user successfully")

@@ -22,7 +22,14 @@ export const userAPI = createApi({
           // crate user
           createUser: builder.mutation({
                query: (userData) => ({
-                    url: "/api/users",
+                    url: "/api/users/register",
+                    method: "POST",
+                    body: userData,
+               })
+          }),
+          loginUser: builder.mutation({
+               query: (userData) => ({
+                    url: "/api/users/login-user",
                     method: "POST",
                     body: userData,
                })
@@ -30,4 +37,4 @@ export const userAPI = createApi({
      })
 })
 
-export const { useGetUserQuery, useCreateUserMutation } = userAPI;
+export const { useGetUserQuery, useLoginUserMutation, useCreateUserMutation } = userAPI;
