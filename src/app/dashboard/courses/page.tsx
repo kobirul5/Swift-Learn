@@ -1,5 +1,5 @@
 'use client';
-import { FiEdit, FiMoreVertical } from 'react-icons/fi';
+import { FiDelete, FiEdit } from 'react-icons/fi';
 import Image from 'next/image';
 import { ICourse } from '@/type/course.interface';
 
@@ -130,8 +130,8 @@ const Courses = () => {
                     <button className="text-green-600 hover:text-green-800">
                       <FiEdit size={18} />
                     </button>
-                    <button className="text-dark-600 hover:text-dark-800">
-                      <FiMoreVertical size={18} />
+                    <button className="text-red-600 hover:text-dark-800">
+                      <FiDelete size={18} />
                     </button>
                   </div>
                 </td>
