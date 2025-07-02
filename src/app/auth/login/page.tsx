@@ -1,14 +1,14 @@
 
-
 'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
-// import { useLoginUserMutation } from '@/features/userAPI';
+import { useLoginUserMutation } from '@/features/userAPI';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { FiLock, FiMail } from 'react-icons/fi';
-import useAxiosPublic from '@/hooks/useAxiosPublic';
+import { useDispatch } from 'react-redux';
+import { setUser } from '@/features/authSlice';
 
 interface IUser {
   email: string,
@@ -16,16 +16,17 @@ interface IUser {
 }
 
 export default function LoginPage() {
- 
-  // const [createUser, { data, isLoading }] = useLoginUserMutation()
+
+  const [loginUser] = useLoginUserMutation()
   const router = useRouter()
-  const axiosPublic = useAxiosPublic()
 
   const [userData, setUserData] = useState<IUser>({
     email: '',
     password: ''
   });
+  const dispatch = useDispatch()
 
+  // handle form data
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserData((prev) => ({
@@ -34,17 +35,29 @@ export default function LoginPage() {
     }));
   };
 
+  // handle user login
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    // const res = await createUser(userData)
-    const res = await axiosPublic.post('/api/users/login-user', userData, {withCredentials:true})
-    console.log(res)
+    const res = await loginUser(userData)
+    console.log("------------------data fr", res.data.data.email)
 
     if (res.data?.success) {
-      toast.success("create user successfully")
+      const data = {
+        name: res.data.data.name,
+        email: res.data.data.email,
+        role: res.data.data.role
+      }
+      dispatch(setUser(data))
+      toast.success("Login successfully")
       router.push("/")
     }
+
+    if (!res.data.success) {
+      toast.error("Invalid user")
+      return
+    }
+
     setUserData({ email: "", password: "" });
   }
 
