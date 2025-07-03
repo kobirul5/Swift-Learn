@@ -77,13 +77,19 @@ const Courses = () => {
                   {course.updatedAt && new Date(course.updatedAt).toLocaleDateString()}
                 </td>
                 <td>
-                  <div className="flex space-x-2">
+                  <div className="flex space-x-2 gap-2">
                     <button className="text-green-600 hover:text-green-800">
                       <FiEdit size={18} />
                     </button>
                     <button className="text-red-600 hover:text-dark-800">
                       <FiDelete size={18} />
                     </button>
+                    <Link 
+                    // href={`/dashboard/courses/details/4555`} 
+                    href={`/dashboard/courses/details/${course._id}`} 
+                    className="text-primary-600 border px-4 p-2 rounded-xl hover:text-white  hover:bg-primary-800">
+                      View Details
+                    </Link>
                   </div>
                 </td>
               </tr>
