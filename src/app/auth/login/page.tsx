@@ -40,7 +40,6 @@ export default function LoginPage() {
     e.preventDefault()
 
     const res = await loginUser(userData)
-    console.log("------------------data fr", res.data.data.email)
 
     if (res.data?.success) {
       const data = {
@@ -53,7 +52,7 @@ export default function LoginPage() {
       router.push("/")
     }
 
-    if (!res.data.success) {
+    if (!res?.data?.success) {
       toast.error("Invalid user")
       return
     }

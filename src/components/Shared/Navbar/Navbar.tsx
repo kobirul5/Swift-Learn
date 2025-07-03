@@ -1,6 +1,6 @@
 'use client';
 
-import { useGetUserQuery } from '@/features/userAPI';
+import { useGetUserQuery, useLogoutUserMutation, userAPI } from '@/features/userAPI';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
@@ -16,6 +16,7 @@ import {
   FiX,
   FiSearch,
 } from 'react-icons/fi';
+import { useDispatch } from 'react-redux';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,8 +25,10 @@ const Navbar = () => {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [mounted, setMounted] = useState(false);
 
-  const {data, isLoading} = useGetUserQuery(undefined)
-  console.log(data, isLoading,)
+  const {data,} = useGetUserQuery(undefined)
+  const [logoutUser]  = useLogoutUserMutation()
+  const dispatch = useDispatch()
+
 
   const router = useRouter();
   const pathname = usePathname();
@@ -42,13 +45,19 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      // TODO: Replace with real auth logic
-      setIsLoggedIn(true);
-      setIsAdmin(true);
-    };
-    checkAuth();
-  }, []);
+  if (!data) return;
+
+  if (data?.data?.role === 'admin') {
+    setIsAdmin(true);
+    setIsLoggedIn(true);
+  } else if (data?.data) {
+    setIsLoggedIn(true);
+  } else {
+    setIsAdmin(false);
+    setIsLoggedIn(false);
+  }
+}, [data]); 
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,12 +67,15 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async() => {
+    await logoutUser(undefined)
+    dispatch(userAPI.util.resetApiState());
     setIsLoggedIn(false);
     setIsAdmin(false);
     router.push('/');
   };
 
+  
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
@@ -105,7 +117,7 @@ const Navbar = () => {
             <FiSearch className="absolute left-3 top-2.5 text-dark-400" />
           </div>
 
-          {isLoggedIn ? (
+          {isAdmin ? (
             <button
               onClick={handleLogout}
               className="flex items-center space-x-1 text-dark-700 hover:text-primary"
