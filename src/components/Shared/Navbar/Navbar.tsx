@@ -37,7 +37,7 @@ const Navbar = () => {
     { label: 'Home', href: '/', icon: <FiHome /> },
     { label: 'Courses', href: '/courses', icon: <FiBook /> },
     { label: 'Dashboard', href: '/dashboard', icon: <FiSettings />, adminOnly: true },
-    { label: 'Profile', href: '/profile', icon: <FiUser />, authOnly: true },
+    { label: 'Profile', href: '/student-profile', icon: <FiUser />, authOnly: true },
   ];
 
   useEffect(() => {

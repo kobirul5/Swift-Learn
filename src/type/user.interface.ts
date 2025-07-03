@@ -1,7 +1,9 @@
 export interface IUser {
+  _id:string
   name: string;
   email: string;
   password: string;
   image?: string;
-  role?: 'admin' | 'user';
+  role?: 'admin' | 'student';
+  createdAt: Date
 }
