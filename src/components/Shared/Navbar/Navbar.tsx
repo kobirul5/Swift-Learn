@@ -50,7 +50,7 @@ const Navbar = () => {
   if (data?.data?.role === 'admin') {
     setIsAdmin(true);
     setIsLoggedIn(true);
-  } else if (data?.data) {
+  } else if (data?.data.role == 'student') {
     setIsLoggedIn(true);
   } else {
     setIsAdmin(false);
@@ -117,7 +117,7 @@ const Navbar = () => {
             <FiSearch className="absolute left-3 top-2.5 text-dark-400" />
           </div>
 
-          {isAdmin ? (
+          {isLoggedIn ? (
             <button
               onClick={handleLogout}
               className="flex items-center space-x-1 text-dark-700 hover:text-primary"

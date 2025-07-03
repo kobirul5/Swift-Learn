@@ -1,76 +1,23 @@
 'use client';
 import { FiDelete, FiEdit } from 'react-icons/fi';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useGetCourseQuery } from '@/features/courseAPI';
 import { ICourse } from '@/type/course.interface';
 
 const Courses = () => {
-  const courses: ICourse[] = [
-    {
-      _id: '1',
-      title: 'JavaScript Fundamentals',
-      description: 'Learn the basics of JavaScript programming language',
-      price: 29.99,
-      thumbnail: '/images/js-course.jpg',
-      modules: ['1', '2', '3'],
-      createdAt: '2023-01-15',
-      updatedAt: '2023-01-20',
-    },
-    {
-      _id: '2',
-      title: 'React Masterclass',
-      description: 'Master React with hooks, context, and advanced patterns',
-      price: 39.99,
-      thumbnail: '/images/react-course.jpg',
-      modules: ['4', '5', '6', '7'],
-      createdAt: '2023-02-10',
-      updatedAt: '2023-03-05',
-    },
-    {
-      _id: '3',
-      title: 'Node.js Backend Development',
-      description: 'Build scalable backend services with Node.js',
-      price: 34.99,
-      thumbnail: '/images/node-course.jpg',
-      modules: ['8', '9'],
-      createdAt: '2023-03-01',
-      updatedAt: '2023-03-15',
-    },
-    {
-      _id: '4',
-      title: 'TypeScript for Beginners',
-      description: 'Introduction to TypeScript and its core concepts',
-      price: 24.99,
-      thumbnail: '/images/ts-course.jpg',
-      modules: ['10', '11', '12'],
-      createdAt: '2023-04-05',
-      updatedAt: '2023-04-20',
-    },
-    {
-      _id: '5',
-      title: 'GraphQL API Design',
-      description: 'Learn to design efficient GraphQL APIs',
-      price: 44.99,
-      modules: ['13', '14', '15', '16'],
-      createdAt: '2023-05-12',
-      updatedAt: '2023-06-01',
-    },
-    {
-      _id: '6',
-      title: 'Python Crash Course',
-      description: 'Quick start to Python programming',
-      price: 19.99,
-      thumbnail: '/images/python-course.jpg',
-      modules: ['17', '18'],
-      createdAt: '2023-06-10',
-      updatedAt: '2023-06-25',
-    }
-  ];
+  const {data:courses, isLoading} = useGetCourseQuery(undefined)
+  console.log(courses,"----------")
+
+  if(isLoading){
+    return <h1>Loading...</h1>
+  }
 
   return (
     <div className="bg-white rounded-xl shadow p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold">All Courses</h2>
-        <div className="flex space-x-3">
+        <div className="flex items-center justify-center space-x-3">
           <input 
             type="text" 
             placeholder="Search courses..." 
@@ -82,6 +29,9 @@ const Courses = () => {
             <option>Draft</option>
             <option>Archived</option>
           </select>
+          <div>
+            <Link href='/dashboard/course/createCourse' className='btn' > Add Course</Link>
+          </div>
         </div>
       </div>
 
@@ -97,8 +47,8 @@ const Courses = () => {
             </tr>
           </thead>
           <tbody>
-            {courses.map((course) => (
-              <tr key={course._id} className="border-b hover:bg-dark-50">
+            {(courses?.data as ICourse[]).map((course, idx) => (
+              <tr key={idx} className="border-b hover:bg-dark-50">
                 <td className="py-4">
                   <div className="flex items-center">
                     <div className="w-10 h-10 bg-dark-200 rounded-md mr-3 overflow-hidden">
@@ -115,7 +65,7 @@ const Courses = () => {
                     <div>
                       <p className="font-medium">{course.title}</p>
                       <p className="text-xs text-dark-500 line-clamp-1">
-                        {course.description}
+                        {course.description?.slice(0,50)}
                       </p>
                     </div>
                   </div>
@@ -123,7 +73,7 @@ const Courses = () => {
                 <td>{course?.modules?.length}</td>
                 <td>${course.price}</td>
                 <td className="text-sm text-dark-500">
-                  {course.updatedAt}
+                  {course.updatedAt && new Date(course.updatedAt).toLocaleDateString()}
                 </td>
                 <td>
                   <div className="flex space-x-2">

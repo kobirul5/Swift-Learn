@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { AiFillHome } from 'react-icons/ai';
-import { FiHome, FiBook, FiUsers, FiSettings, FiPieChart } from 'react-icons/fi';
+import { FiHome, FiBook, FiUsers, FiSettings } from 'react-icons/fi';
 
 interface NavItem {
     name: string;
@@ -10,11 +9,9 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-    { name: 'Home', href: '/', icon: <AiFillHome /> },
     { name: 'Dashboard', href: '/dashboard', icon: <FiHome /> },
     { name: 'Courses', href: '/dashboard/courses', icon: <FiBook /> },
     { name: 'Students', href: '/dashboard/students', icon: <FiUsers /> },
-    { name: 'Add Course', href: '/dashboard/addCourses', icon: <FiPieChart /> },
     { name: 'Settings', href: '/dashboard/settings', icon: <FiSettings /> },
 ];
 
