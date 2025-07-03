@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useCreateCourseMutation } from '@/features/courseAPI';
+import toast from 'react-hot-toast';
 
 
 export default function AddCoursePage() {
@@ -14,6 +16,7 @@ export default function AddCoursePage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [createCourse, {data}] = useCreateCourseMutation()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,22 +24,15 @@ export default function AddCoursePage() {
     setError('');
 
     try {
-      // In a real app, you would call your API here
-      const response = await fetch('/api/courses', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(course),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to create course');
-      }
-
+      const res =await createCourse(course)
+      console.log(data,"-------------course")
+      if(res.data?.success){
+        toast.success("successfull")
+      } 
       router.push('/dashboard/courses');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
+      
     } finally {
       setIsSubmitting(false);
     }
@@ -53,10 +49,10 @@ export default function AddCoursePage() {
   return (
     <div className="p-6 bg-white  mx-auto rounded-2xl">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-gray-800">Add New Course</h1>
+        <h1 className="text-2xl font-bold text-dark-800">Add New Course</h1>
         <button 
           onClick={() => router.back()}
-          className="text-gray-600 hover:text-gray-800"
+          className="text-dark-600 hover:text-dark-800"
         >
           ← Back to Courses
         </button>
@@ -71,7 +67,7 @@ export default function AddCoursePage() {
 
         <div className="grid grid-cols-1 gap-6">
           <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="title" className="block text-sm font-medium text-dark-700 mb-1">
               Course Title *
             </label>
             <input
@@ -81,12 +77,12 @@ export default function AddCoursePage() {
               value={course.title}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border border-dark-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
             />
           </div>
 
           <div>
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="description" className="block text-sm font-medium text-dark-700 mb-1">
               Description
             </label>
             <textarea
@@ -95,13 +91,13 @@ export default function AddCoursePage() {
               value={course.description}
               onChange={handleChange}
               rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border border-dark-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="price" className="block text-sm font-medium text-dark-700 mb-1">
                 Price (USD)
               </label>
               <input
@@ -112,12 +108,12 @@ export default function AddCoursePage() {
                 onChange={handleChange}
                 min="0"
                 step="0.01"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-2 border border-dark-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
               />
             </div>
 
             <div>
-              <label htmlFor="thumbnail" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="thumbnail" className="block text-sm font-medium text-dark-700 mb-1">
                 Thumbnail URL
               </label>
               <input
@@ -126,7 +122,7 @@ export default function AddCoursePage() {
                 name="thumbnail"
                 value={course.thumbnail}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-2 border border-dark-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
               />
             </div>
           </div>
@@ -134,10 +130,10 @@ export default function AddCoursePage() {
           {/* Image preview */}
           {course.thumbnail && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-dark-700 mb-1">
                 Thumbnail Preview
               </label>
-              <div className="w-full  bg-gray-100 rounded-md overflow-hidden">
+              <div className="w-full h-48 bg-dark-100 rounded-md overflow-hidden">
                 <img
                   src={course.thumbnail}
                   alt="Course thumbnail preview"
@@ -154,15 +150,15 @@ export default function AddCoursePage() {
         <div className="mt-8 flex justify-end space-x-3">
           <button
             type="button"
-            onClick={() => router.back()}
-            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+            onClick={() => router.push("/dashboard/courses")}
+            className="px-4 py-2 border border-dark-300 rounded-md text-dark-700 hover:bg-dark-50"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`px-4 py-2 rounded-md text-white ${isSubmitting ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'}`}
+            className={`px-4 py-2 rounded-md text-white ${isSubmitting ? 'bg-primary-400' : 'bg-primary-600 hover:bg-primary-700'}`}
           >
             {isSubmitting ? 'Saving...' : 'Save Course'}
           </button>

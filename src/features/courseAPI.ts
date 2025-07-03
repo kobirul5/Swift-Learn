@@ -21,6 +21,7 @@ export const courseAPI = createApi({
         method: "POST",
         data: courseData,
       }),
+      invalidatesTags:["course"]
     }),
 
 

@@ -1,4 +1,5 @@
-import { IICourse } from "@/type/course.interface";
+
+import { IICourse } from "@/app/courses/page";
 import Image from "next/image";
 
 interface AllCoursesProps {

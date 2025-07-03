@@ -1,6 +1,6 @@
 'use client';
 import { FiDelete, FiEdit } from 'react-icons/fi';
-import Image from 'next/image';
+// import Image from 'next/image';
 import Link from 'next/link';
 import { useGetCourseQuery } from '@/features/courseAPI';
 import { ICourse } from '@/type/course.interface';
@@ -53,10 +53,11 @@ const Courses = () => {
                   <div className="flex items-center">
                     <div className="w-10 h-10 bg-dark-200 rounded-md mr-3 overflow-hidden">
                       {course.thumbnail && (
-                        <Image
-                          width={300}
-                          height={300}
-                          src={course.thumbnail}
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          // width={300}
+                          // height={300}
+                          src={course?.thumbnail}
                           alt={course.title}
                           className="w-full h-full object-cover"
                         />
