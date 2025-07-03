@@ -30,7 +30,7 @@ const Courses = () => {
             <option>Archived</option>
           </select>
           <div>
-            <Link href='/dashboard/course/createCourse' className='btn' > Add Course</Link>
+            <Link href='/dashboard/courses/create-course' className='btn' > Add Course</Link>
           </div>
         </div>
       </div>

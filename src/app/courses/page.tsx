@@ -1,10 +1,25 @@
 'use client'
 import { useState } from 'react';
-import type { IICourse } from '@/type/course.interface';
 import CoursesHero from '@/components/CoursesComponents/CoursesHero';
 import CoursesCategories from '@/components/CoursesComponents/CoursesCategories';
 import FeaturedCourse from '@/components/CoursesComponents/FeaturedCourse';
 import AllCourses from '@/components/CoursesComponents/AllCourses';
+
+
+export type IICourse = {
+  id: number;
+  title: string;
+  instructor: string;
+  category: string;
+  level: string
+  duration: string;
+  students: number;
+  rating: number;
+  price: number;
+  image: string;
+  featured?: boolean;
+};
+
 
 
 export default function CoursesPage() {
