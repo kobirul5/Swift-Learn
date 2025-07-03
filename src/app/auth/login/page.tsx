@@ -7,8 +7,7 @@ import { useLoginUserMutation } from '@/features/userAPI';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { FiLock, FiMail } from 'react-icons/fi';
-import { useDispatch } from 'react-redux';
-import { setUser } from '@/features/authSlice';
+
 
 interface IUser {
   email: string,
@@ -24,7 +23,6 @@ export default function LoginPage() {
     email: '',
     password: ''
   });
-  const dispatch = useDispatch()
 
   // handle form data
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,12 +40,6 @@ export default function LoginPage() {
     const res = await loginUser(userData)
 
     if (res.data?.success) {
-      const data = {
-        name: res.data.data.name,
-        email: res.data.data.email,
-        role: res.data.data.role
-      }
-      dispatch(setUser(data))
       toast.success("Login successfully")
       router.push("/")
     }
