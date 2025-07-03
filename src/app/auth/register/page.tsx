@@ -3,19 +3,22 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { FiUser, FiMail, FiLock } from 'react-icons/fi';
-import { IUser } from '@/type/user.interface';
 import { useCreateUserMutation } from '@/features/userAPI';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 
-
+interface UserData{
+   name: string,
+    email: string,
+    password: string,
+}
 
 
 
 export default function SignupPage() {
   const [createUser] = useCreateUserMutation()
   const router = useRouter()
-  const [userData, setUserData] = useState<IUser>({
+  const [userData, setUserData] = useState<UserData>({
     name: '',
     email: '',
     password: '',
