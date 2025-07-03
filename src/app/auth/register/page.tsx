@@ -7,21 +7,20 @@ import { IUser } from '@/type/user.interface';
 import { useCreateUserMutation } from '@/features/userAPI';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import { useAppDispatch } from '@/redux/hooks';
-import { setUser } from '@/features/authSlice';
+
+
 
 
 
 export default function SignupPage() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [createUser, {data, isLoading}] = useCreateUserMutation()
+  const [createUser] = useCreateUserMutation()
   const router = useRouter()
   const [userData, setUserData] = useState<IUser>({
     name: '',
     email: '',
     password: '',
   });
-  const dispatch = useAppDispatch()
+ 
 
   const [confirmPassword, setConfirmPassword] = useState<string>('');
 
@@ -41,15 +40,7 @@ export default function SignupPage() {
     const res = await createUser(userData)
 
     if(res.data?.success){
-
-      const userSave = {
-      name: res?.data?.data?.name,
-      email: res?.data?.data?.email,
-      token: ""
-    }
-
-
-      dispatch(setUser(userSave))
+      
       toast.success("create user successfully")
       router.push("/")
       setUserData({ name: "", email: "", password: "" });
