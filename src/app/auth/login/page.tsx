@@ -40,6 +40,8 @@ export default function LoginPage() {
     const res = await loginUser(userData)
 
     if (res.data?.success) {
+      // Assuming res.data.accessToken has the JWT token
+      localStorage.setItem('accessToken', res.data.accessToken);
       toast.success("Login successfully")
       router.push("/")
     }

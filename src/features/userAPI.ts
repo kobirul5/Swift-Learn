@@ -13,7 +13,7 @@ import { axiosBaseQuery } from "@/utils/axiosBaseQuery";
 
 export const userAPI = createApi({
   reducerPath: "baseAPI",
-  baseQuery: axiosBaseQuery({ baseUrl: "https://swiftlearn-server.vercel.app" }),
+  baseQuery: axiosBaseQuery({ baseUrl: "http://localhost:5000" }),
   tagTypes:['user'],
   endpoints: (builder) => ({
     getUser: builder.query({

@@ -28,14 +28,22 @@ export const courseAPI = createApi({
         method: "POST",
         data: courseData,
       }),
-      invalidatesTags:["course"]
+      invalidatesTags: ["course"]
     }),
     deleteCourse: builder.mutation({
       query: (id) => ({
-        url: `/api/courses/:${id}`,
+        url: `/api/courses/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags:["course"]
+      invalidatesTags: ["course"]
+    }),
+    updateCourse: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `/courses/${id}`,
+        method: 'PATCH',
+        body,
+      }),
+      invalidatesTags: ["course"]
     }),
 
   }),
@@ -46,4 +54,5 @@ export const {
   useGetCourseByIdQuery,
   useCreateCourseMutation,
   useDeleteCourseMutation,
+  useUpdateCourseMutation,
 } = courseAPI;

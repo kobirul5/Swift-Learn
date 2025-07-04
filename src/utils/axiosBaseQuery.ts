@@ -16,11 +16,17 @@ export const axiosBaseQuery =
   > =>
   async ({ url, method, data, params }) => {
     try {
+       const token = typeof window !== 'undefined' ? localStorage.getItem("accessToken") : null;
       const result: AxiosResponse = await axios({
         url: baseUrl + url,
         method,
         data,
         params,
+         headers: token
+            ? {
+                Authorization: `Bearer ${token}`,
+              }
+            : {},
         withCredentials: true, 
       });
       return { data: result.data };

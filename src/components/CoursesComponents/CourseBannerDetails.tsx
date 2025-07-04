@@ -4,6 +4,8 @@ import { useDeleteCourseMutation, useGetCourseByIdQuery } from "@/features/cours
 import { useEffect, useState } from "react";
 import { ICourse } from "@/type/course.interface";
 import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
+
 
 
 interface CourseDetailPageProps {
@@ -14,6 +16,7 @@ export default function CourseBannerDetails({ id }: CourseDetailPageProps) {
   const { data, isLoading } = useGetCourseByIdQuery(id);
   const [deleteCourse] = useDeleteCourseMutation()
   const [course, setCourse] = useState<ICourse>()
+  const router = useRouter()
 
 
 
@@ -27,7 +30,7 @@ export default function CourseBannerDetails({ id }: CourseDetailPageProps) {
   }, [data]);
 
   const handleEdit = () => {
-    alert(`Editing course: ${course?.title}`);
+    router.push(`/dashboard/courses/update/${id}`)
   };
 
   const handleDelete = async () => {
@@ -41,15 +44,16 @@ export default function CourseBannerDetails({ id }: CourseDetailPageProps) {
       confirmButtonText: "Yes, delete it!"
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await deleteCourse(id) as { success: boolean, massage: string, data: ICourse }
-        console.log(res)
-        if (res?.success) {
-
+        const res = await deleteCourse(id)
+        console.log(res.data,"-------------------resssssss")
+        if (res?.data?.success) {
+          router.push('/dashboard/courses')
           Swal.fire({
             title: "Deleted!",
             text: "Your Course has been deleted.",
             icon: "success"
           });
+          
         }
 
       }
