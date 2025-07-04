@@ -1,6 +1,6 @@
 'use client';
 
-import { useGetCourseByIdQuery } from "@/features/courseAPI";
+import { useDeleteCourseMutation, useGetCourseByIdQuery } from "@/features/courseAPI";
 import { useEffect, useState } from "react";
 import { ICourse } from "@/type/course.interface";
 import Swal from "sweetalert2";
@@ -12,6 +12,7 @@ interface CourseDetailPageProps {
 
 export default function CourseBannerDetails({ id }: CourseDetailPageProps) {
   const { data, isLoading } = useGetCourseByIdQuery(id);
+  const [deleteCourse] = useDeleteCourseMutation()
   const [course, setCourse] = useState<ICourse>()
 
 
@@ -29,7 +30,7 @@ export default function CourseBannerDetails({ id }: CourseDetailPageProps) {
     alert(`Editing course: ${course?.title}`);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -38,16 +39,19 @@ export default function CourseBannerDetails({ id }: CourseDetailPageProps) {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
+        const res = await deleteCourse(id) as { success: boolean, massage: string, data: ICourse }
+        console.log(res)
+        if (res?.success) {
 
-        
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your Course has been deleted.",
+            icon: "success"
+          });
+        }
 
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success"
-        });
       }
     });
   };
