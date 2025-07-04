@@ -7,7 +7,7 @@ import { useLoginUserMutation } from '@/features/userAPI';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { FiLock, FiMail } from 'react-icons/fi';
-
+import Cookies from 'js-cookie';
 
 interface IUser {
   email: string,
@@ -41,7 +41,8 @@ export default function LoginPage() {
 
     if (res.data?.success) {
       // Assuming res.data.accessToken has the JWT token
-      localStorage.setItem('accessToken', res.data.accessToken);
+      localStorage.setItem('accessToken', res.data.token);
+      Cookies.set("token", res.data.token)
       toast.success("Login successfully")
       router.push("/")
     }

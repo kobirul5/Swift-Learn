@@ -1,27 +1,51 @@
 'use client';
 import { useParams, useRouter } from 'next/navigation';
-import { useGetCourseByIdQuery, useUpdateCourseMutation } from '@/features/courseAPI';
+import { useUpdateCourseMutation } from '@/features/courseAPI';
 import toast from 'react-hot-toast';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import useAxiosPublic from '@/hooks/useAxiosPublic';
+import { ICourse } from '@/type/course.interface';
 
 export default function UpdateCoursePage() {
+  const [crs, setCrs] = useState<ICourse>()
   const router = useRouter();
   const params = useParams();
-  const { data: detailData, isLoading } = useGetCourseByIdQuery(params.id);
+  const axiosPublic = useAxiosPublic()
   console.log(params.id,)
   const [updateCourse] = useUpdateCourseMutation();
 
+  useEffect(() => {
+    const srcFunc = async () => {
+      const crs = await axiosPublic.get(`/api/courses/${params.id}`)
+      setCrs(crs.data.data)
+
+    }
+    srcFunc()
+  }, [])
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError('');
+    const form = e.target as HTMLFormElement;
+    const title = (form.elements.namedItem('title') as HTMLInputElement).value;
+    const description = (form.elements.namedItem('description') as HTMLInputElement).value;
+    const price = parseFloat((form.elements.namedItem('price') as HTMLInputElement).value);
+    const thumbnail = (form.elements.namedItem('thumbnail') as HTMLInputElement).value;
 
+    const updatedData = {
+      id: params.id,
+      title,
+      description,
+      price,
+      thumbnail,
+    }
     try {
-      const res = await updateCourse({ id: params.id });
+      const res = await updateCourse(updatedData);
       if (res?.data?.success) {
         toast.success("Course updated successfully!");
         router.push('/dashboard/courses');
@@ -35,8 +59,7 @@ export default function UpdateCoursePage() {
     }
   };
 
-  if (isLoading) return <h1>Loading...</h1>;
-
+  
   return (
     <div className="p-6 bg-white mx-auto rounded-2xl">
       <div className="flex justify-between items-center mb-8">
@@ -56,7 +79,7 @@ export default function UpdateCoursePage() {
               type="text"
               id="title"
               name="title"
-              defaultValue={detailData?.title}
+              defaultValue={crs?.title}
               className="w-full px-4 py-2 border border-dark-300 rounded-md"
             />
           </div>
@@ -68,7 +91,7 @@ export default function UpdateCoursePage() {
             <textarea
               id="description"
               name="description"
-              defaultValue={detailData?.description}
+              defaultValue={crs?.description}
               rows={4}
               className="w-full px-4 py-2 border border-dark-300 rounded-md"
             />
@@ -83,7 +106,7 @@ export default function UpdateCoursePage() {
                 type="number"
                 id="price"
                 name="price"
-                defaultValue={detailData?.price}
+                defaultValue={crs?.price}
                 min="0"
                 step="0.01"
                 className="w-full px-4 py-2 border border-dark-300 rounded-md"
@@ -98,18 +121,18 @@ export default function UpdateCoursePage() {
                 type="url"
                 id="thumbnail"
                 name="thumbnail"
-                value={detailData?.thumbnail}
+                defaultValue={crs?.thumbnail}
                 className="w-full px-4 py-2 border border-dark-300 rounded-md"
               />
             </div>
           </div>
 
-          { detailData?.thumbnail && (
+          {crs?.thumbnail && (
             <div>
               <label className="block text-sm font-medium text-dark-700 mb-1">Thumbnail Preview</label>
               <div className="w-full h-48 bg-dark-100 rounded-md overflow-hidden">
                 <img
-                  src=""
+                  src={crs?.thumbnail}
                   alt="Thumbnail Preview"
                   className="w-full h-full object-cover"
                   onError={(e) => ((e.target as HTMLImageElement).style.display = 'none')}

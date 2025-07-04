@@ -30,6 +30,7 @@ export const userAPI = createApi({
         method: "POST",
         data: userData, 
       }),
+      invalidatesTags:['user']
     }),
 
     loginUser: builder.mutation({

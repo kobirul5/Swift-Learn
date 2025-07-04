@@ -69,6 +69,7 @@ const Navbar = () => {
 
   const handleLogout = async() => {
     await logoutUser(undefined)
+    localStorage.removeItem('accessToken');
     dispatch(userAPI.util.resetApiState());
     setIsLoggedIn(false);
     setIsAdmin(false);
