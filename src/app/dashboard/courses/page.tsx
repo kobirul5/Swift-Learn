@@ -1,5 +1,4 @@
 'use client';
-import { FiDelete, FiEdit } from 'react-icons/fi';
 // import Image from 'next/image';
 import Link from 'next/link';
 import { useGetCourseQuery } from '@/features/courseAPI';
@@ -78,12 +77,7 @@ const Courses = () => {
                 </td>
                 <td>
                   <div className="flex space-x-2 gap-2">
-                    <button className="text-green-600 hover:text-green-800">
-                      <FiEdit size={18} />
-                    </button>
-                    <button className="text-red-600 hover:text-dark-800">
-                      <FiDelete size={18} />
-                    </button>
+
                     <Link 
                     // href={`/dashboard/courses/details/4555`} 
                     href={`/dashboard/courses/details/${course._id}`} 

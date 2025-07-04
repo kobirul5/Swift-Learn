@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { ICourse } from "@/type/course.interface";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import ModuleModal from "@/app/dashboard/courses/details/ModuleModal";
 
 
 
@@ -17,7 +18,7 @@ export default function CourseBannerDetails({ id }: CourseDetailPageProps) {
   const [deleteCourse] = useDeleteCourseMutation()
   const [course, setCourse] = useState<ICourse>()
   const router = useRouter()
-
+  const [show, setShow] = useState<boolean>(false);
 
 
 
@@ -45,7 +46,6 @@ export default function CourseBannerDetails({ id }: CourseDetailPageProps) {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const res = await deleteCourse(id)
-        console.log(res.data,"-------------------resssssss")
         if (res?.data?.success) {
           router.push('/dashboard/courses')
           Swal.fire({
@@ -53,16 +53,16 @@ export default function CourseBannerDetails({ id }: CourseDetailPageProps) {
             text: "Your Course has been deleted.",
             icon: "success"
           });
-          
+
         }
 
       }
     });
   };
 
-  const handleAddModule = () => {
-    alert('Add Module clicked!');
-  };
+  // const handleAddModule = () => {
+  //   alert('Add Module clicked!');
+  // };
 
 
   if (isLoading) {
@@ -77,7 +77,7 @@ export default function CourseBannerDetails({ id }: CourseDetailPageProps) {
           <div className="space-x-2">
             <button
               onClick={handleEdit}
-              className="bg-primary-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+              className="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded"
             >
               Edit Course
             </button>
@@ -114,7 +114,7 @@ export default function CourseBannerDetails({ id }: CourseDetailPageProps) {
           <div className="p-4 border-b border-dark-200 flex justify-between items-center">
             <h3 className="text-xl font-semibold">Modules</h3>
             <button
-              onClick={handleAddModule}
+              onClick={() => setShow(true)}
               className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
             >
               + Add Module
@@ -125,6 +125,8 @@ export default function CourseBannerDetails({ id }: CourseDetailPageProps) {
           <div className="p-8 text-center text-dark-500">
             No modules added yet.
           </div>
+
+          {show && (<ModuleModal setShow={setShow} courseId={id} />)}
 
         </div>
       </main>
