@@ -6,6 +6,7 @@ import { ICourse } from "@/type/course.interface";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import ModuleModal from "@/app/dashboard/courses/details/ModuleModal";
+import ModuleAccordion from "@/app/dashboard/courses/details/ModuleAccordion";
 
 
 
@@ -121,10 +122,9 @@ export default function CourseBannerDetails({ id }: CourseDetailPageProps) {
             </button>
           </div>
 
-
-          <div className="p-8 text-center text-dark-500">
-            No modules added yet.
-          </div>
+            <div>
+              <ModuleAccordion id={id} />
+            </div>
 
           {show && (<ModuleModal setShow={setShow} courseId={id} />)}
 

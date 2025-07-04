@@ -52,6 +52,12 @@ export const courseAPI = createApi({
         data: moduleData,
       }),
     }),
+    deleteLecture: builder.mutation({
+      query: (id) => ({
+        url: `/api/lecture/${id}`,
+        method: "DELETE",
+      }),
+    }),
 
 
   }),
@@ -64,4 +70,5 @@ export const {
   useDeleteCourseMutation,
   useUpdateCourseMutation,
   useCreateModuleMutation,
+  useDeleteLectureMutation,
 } = courseAPI;
