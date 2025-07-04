@@ -1,93 +1,127 @@
 'use client';
 
 import { useGetCourseByIdQuery } from "@/features/courseAPI";
-import { FaCheckCircle, FaStar, FaUsers, FaClock, FaPlus } from "react-icons/fa";
-import { MdOndemandVideo } from "react-icons/md";
-import Link from "next/link";
+import { useEffect, useState } from "react";
+import { ICourse } from "@/type/course.interface";
+import Swal from "sweetalert2";
+
 
 interface CourseDetailPageProps {
   id: string;
 }
 
 export default function CourseBannerDetails({ id }: CourseDetailPageProps) {
-  const { data: course, isLoading } = useGetCourseByIdQuery(id);
+  const { data, isLoading } = useGetCourseByIdQuery(id);
+  const [course, setCourse] = useState<ICourse>()
 
-  console.log(course,"--------------------")
+
+
+
+  useEffect(() => {
+    if (!data) return;
+
+    if (data) {
+      setCourse(data.data);
+    }
+  }, [data]);
+
+  const handleEdit = () => {
+    alert(`Editing course: ${course?.title}`);
+  };
+
+  const handleDelete = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        
+
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success"
+        });
+      }
+    });
+  };
+
+  const handleAddModule = () => {
+    alert('Add Module clicked!');
+  };
+
 
   if (isLoading) {
     return <div className="p-10 text-center text-lg">Loading course...</div>;
   }
 
   return (
-    <div className="bg-white min-h-screen">
-      {/* Banner */}
-      <div className=" py-14 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row justify-between items-start gap-10">
-          {/* Course Info */}
-          <div className="max-w-2xl">
-            <h1 className="text-4xl font-bold mb-4">{course?.title}</h1>
-            <p className="text-dark-100 text-lg mb-6">{course.description} </p>
-            <div className="flex flex-wrap items-center gap-4 text-sm">
-              <div className="flex items-center gap-1 text-yellow-400">
-                <FaStar /> <span>4.5 (1,200 students)</span>
-              </div>
-              <span className="hidden sm:inline">|</span>
-              <span>
-                Last updated:{" "}
-                {course?.updatedAt
-                  ? new Date(course.updatedAt).toLocaleDateString()
-                  : "N/A"}
-              </span>
-            </div>
-          </div>
-
-          {/* Course Actions + Pricing */}
-          <div className="bg-white text-dark-700 rounded-xl p-6 shadow-lg w-full max-w-sm">
-            <img
-              src={course?.thumbnail || "https://placehold.co/600x400?text=No+Image"}
-              alt="Course Thumbnail"
-              className="rounded-lg w-full h-48 object-cover mb-4"
-            />
-            <div className="text-2xl font-bold">${course?.price ?? "N/A"}</div>
-
-            {/* Admin Action: Add Module */}
-            <Link
-              href={`/dashboard/courses/${id}/add-module`}
-              className="mt-4 w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+    <div className="bg-white min-h-screen rounded-2xl">
+      <header className="bg-white shadow rounded-2xl">
+        <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-dark-900">Course Details</h1>
+          <div className="space-x-2">
+            <button
+              onClick={handleEdit}
+              className="bg-primary-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
             >
-              <FaPlus /> Add Module
-            </Link>
-
-            <div className="mt-4 text-sm text-gray-600 space-y-1">
-              <p>✔ 30-Day Money-Back Guarantee</p>
-              <p>✔ Full Lifetime Access</p>
-              <p>✔ {course?.modules?.length ?? 0} Modules Included</p>
-            </div>
+              Edit Course
+            </button>
+            <button
+              onClick={handleDelete}
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+            >
+              Delete Course
+            </button>
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* Features */}
-      <div className="max-w-6xl mx-auto px-6 py-10">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 text-sm">
-          <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-lg shadow">
-            <FaClock className="text-dark-600 text-xl" />
-            <span>Lifetime access</span>
-          </div>
-          <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-lg shadow">
-            <MdOndemandVideo className="text-dark-600 text-xl" />
-            <span>On-demand videos</span>
-          </div>
-          <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-lg shadow">
-            <FaUsers className="text-dark-600 text-xl" />
-            <span>1200+ students</span>
-          </div>
-          <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-lg shadow">
-            <FaCheckCircle className="text-dark-600 text-xl" />
-            <span>Certificate of completion</span>
+      {/* Main Content */}
+      <main className=" mx-auto py-6 sm:px-6 lg:px-8">
+        <div className="bg-white shadow rounded-lg overflow-hidden mb-6">
+          {/* Course Thumbnail */}
+          <img
+            src={course?.thumbnail}
+            alt={course?.title}
+            className="w-full h-64 object-cover"
+          />
+
+          {/* Course Info */}
+          <div className="p-6">
+            <h2 className="text-2xl font-bold mb-2">{course?.title}</h2>
+            <p className="text-dark-600 mb-4">{course?.description}</p>
+            <p className="text-lg font-semibold">${course?.price}</p>
           </div>
         </div>
-      </div>
+
+        {/* Modules Section */}
+        <div className="bg-white shadow rounded-lg overflow-hidden">
+          <div className="p-4 border-b border-dark-200 flex justify-between items-center">
+            <h3 className="text-xl font-semibold">Modules</h3>
+            <button
+              onClick={handleAddModule}
+              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+            >
+              + Add Module
+            </button>
+          </div>
+
+
+          <div className="p-8 text-center text-dark-500">
+            No modules added yet.
+          </div>
+
+        </div>
+      </main>
+
     </div>
-  );
+
+  )
 }
