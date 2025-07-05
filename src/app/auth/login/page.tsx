@@ -42,10 +42,10 @@ export default function LoginPage() {
     if (res.data?.success) {
       // Assuming res.data.accessToken has the JWT token
       localStorage.setItem('accessToken', res.data.token);
-      window.location.reload()
       Cookies.set("token", res.data.token)
       toast.success("Login successfully")
       router.push("/")
+      window.location.reload()
     }
 
     if (!res?.data?.success) {
