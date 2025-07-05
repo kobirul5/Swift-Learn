@@ -4,7 +4,7 @@ import { axiosBaseQuery } from "@/utils/axiosBaseQuery";
 
 export const courseAPI = createApi({
   reducerPath: "courseAPI",
-  baseQuery: axiosBaseQuery({ baseUrl: "http://localhost:5000" }),
+  baseQuery: axiosBaseQuery({ baseUrl: "https://swift-learn-server-fnu4.vercel.app" }),
   tagTypes: ['course'],
   endpoints: (builder) => ({
     getCourse: builder.query({
