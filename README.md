@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📚 SwiftLearn - Minimal LMS System (Frontend)
 
-## Getting Started
+A modern and responsive **Learning Management System (LMS)** frontend built with **Next.js (TypeScript)** and **Tailwind CSS**.  
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Live Demo
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Frontend**: [https://swift-learn-nu.vercel.app/](https://swift-learn-nu.vercel.app/)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🔐 Test Credentials
 
-## Learn More
+### 🔧 Admin Panel
 
-To learn more about Next.js, take a look at the following resources:
+- **Email**: `kobirul@gmail.com`  
+- **Password**: `12345678`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 👨‍🎓 User Panel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Email**: `kobirul2@gmailcom`  
+- **Password**: `12345678`
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🛠️ Tech Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Technology | Description            |
+|------------|------------------------|
+| Next.js    | React Framework (TS)   |
+| Tailwind CSS | Utility-first CSS framework |
+| Redux Toolkit | State management    |
+| RTK Query  | Data fetching & caching |
+
+---
+
+## 📂 Features Overview
+
+### 👨‍💼 Admin Panel
+
+- Upload new courses with:
+- Thumbnail, Title, Price, Description
+- Edit/Delete course content
+- Manage Modules & Lectures:
+- Add/Edit/Delete modules
+- Add lectures with YouTube video links and PDF notes
+- View lecture list with filter support
+
+### 👨‍🎓 User Panel
+
+- View all published courses with details
+- Course Detail Page:
+- Dynamic content rendering
+- Embedded video player
+- Module-wise lecture navigation
+- Lecture Page:
+- Expandable modules
+- Locked lectures (sequential access)
+- Video + PDF notes per lecture
+- Visual progress tracker
+
+---
+
+## 📱 Responsive UI
+
+- Fully optimized for mobile, tablet, and desktop
+- Mobile-friendly sidebar and layout
+- Smooth user experience with modern UI patterns
+
+---
+
+## 👨‍💻 Developer
+
+**Md. Kabirul Islam**  
+💼 Junior MERN Stack Developer  
