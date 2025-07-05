@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useLoginUserMutation } from '@/features/userAPI';
 import toast from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { FiLock, FiMail } from 'react-icons/fi';
 import Cookies from 'js-cookie';
 
@@ -17,7 +17,7 @@ interface IUser {
 export default function LoginPage() {
 
   const [loginUser] = useLoginUserMutation()
-  const router = useRouter()
+  // const router = useRouter()
 
   const [userData, setUserData] = useState<IUser>({
     email: '',
@@ -44,8 +44,10 @@ export default function LoginPage() {
       localStorage.setItem('accessToken', res.data.token);
       Cookies.set("token", res.data.token)
       toast.success("Login successfully")
-      router.push("/")
-      window.location.reload()
+      // router.push("/")
+      setTimeout(() => {
+        window.location.replace('/')
+      }, 200);
     }
 
     if (!res?.data?.success) {
