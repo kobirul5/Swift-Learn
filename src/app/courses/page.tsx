@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react';
 import CoursesHero from '@/components/CoursesComponents/CoursesHero';
-import CoursesCategories from '@/components/CoursesComponents/CoursesCategories';
+// import CoursesCategories from '@/components/CoursesComponents/CoursesCategories';
 import FeaturedCourse from '@/components/CoursesComponents/FeaturedCourse';
 import AllCourses from '@/components/CoursesComponents/AllCourses';
 
@@ -23,7 +23,7 @@ export type IICourse = {
 
 
 export default function CoursesPage() {
-  const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [activeCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
 
@@ -123,7 +123,7 @@ export default function CoursesPage() {
           {/* Featured Course */}
            <FeaturedCourse/>
           {/* Categories */}
-          <CoursesCategories activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
+          {/* <CoursesCategories activeCategory={activeCategory} setActiveCategory={setActiveCategory} /> */}
 
           {/* All Courses */}
           < AllCourses filteredCourses={filteredCourses} activeCategory={activeCategory} />
