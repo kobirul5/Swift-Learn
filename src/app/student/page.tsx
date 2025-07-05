@@ -1,36 +1,40 @@
 'use client';
 
-// import { useGetMyCoursesQuery } from '@/features/courseAPI';
+import { useGetEnrolmentCourseByStudentIdQuery } from '@/features/courseAPI';
+import { useGetUserQuery } from '@/features/userAPI';
+import { ICourse } from '@/type/course.interface';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
-const courses = [
-  {
-    _id: 'course1',
-    title: 'JavaScript for Beginners',
-    thumbnail: 'https://i.ibb.co/9n8Nn7b/js-course.jpg',
-    instructor: { name: 'John Doe' },
-    progress: 30,
-  },
-  {
-    _id: 'course2',
-    title: 'React Mastery',
-    thumbnail: 'https://i.ibb.co/kK4vRQr/react-course.jpg',
-    instructor: { name: 'Jane Smith' },
-    progress: 70,
-  },
-  {
-    _id: 'course3',
-    title: 'Node.js & Express Bootcamp',
-    thumbnail: 'https://i.ibb.co/LN1KgM5/node-course.jpg',
-    instructor: { name: 'Kabirul Islam' },
-    progress: 50,
-  },
-];
 
 export default function MyCourses() {
-//   const { data: courses, isLoading } = useGetMyCoursesQuery();
 
-//   if (isLoading) return <p>Loading...</p>;
+  const [courses, setCourses] = useState<ICourse[]>([]);
+  const { data: userData } = useGetUserQuery(undefined)
+
+  const userId = userData?.data?._id;
+  
+
+  const { data, isLoading } = useGetEnrolmentCourseByStudentIdQuery(userId, {
+    skip: !userId, 
+  });
+
+
+  useEffect(() => {
+    if (!data) {
+      return
+    }
+    if (data) {
+      setCourses(data.data);
+    }
+
+  }, [data, userData]);
+
+
+  if (isLoading) {
+    return <h1 className="text-center py-40 mx-auto">Loading....</h1>;
+  }
+
   if (!courses?.length) return <p className="text-center">You haven&apos;t purchased any courses yet.</p>;
 
   return (
@@ -50,19 +54,19 @@ export default function MyCourses() {
             />
             <div className="p-4">
               <h2 className="text-lg font-semibold">{course.title}</h2>
-              <p className="text-gray-600 text-sm mb-2">By {course.instructor?.name || 'Instructor'}</p>
+              <p className="text-gray-600 text-sm mb-2">By Jhankar Mahbub</p>
 
               {/* Optional: Progress bar */}
               <div className="w-full bg-gray-200 h-2 rounded mb-3">
                 <div
-                  className="bg-blue-500 h-2 rounded"
-                  style={{ width: `${course.progress || 0}%` }}
+                  className="bg-primary-500 h-2 rounded"
+                  style={{ width: `${80}%` }}
                 ></div>
               </div>
 
               <Link
                 href={`/courses/${course._id}`}
-                className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm"
+                className="inline-block bg-primary-600 text-white px-4 py-2 rounded hover:bg-primary-700 text-sm"
               >
                 Continue Learning
               </Link>
