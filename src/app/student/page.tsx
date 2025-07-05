@@ -65,7 +65,7 @@ export default function MyCourses() {
               </div>
 
               <Link
-                href={`/courses/${course._id}`}
+                href={`/student/${course._id}`}
                 className="inline-block bg-primary-600 text-white px-4 py-2 rounded hover:bg-primary-700 text-sm"
               >
                 Continue Learning
