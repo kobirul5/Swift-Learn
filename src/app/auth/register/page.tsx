@@ -6,6 +6,7 @@ import { FiUser, FiMail, FiLock } from 'react-icons/fi';
 import { useCreateUserMutation } from '@/features/userAPI';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 interface UserData{
    name: string,
@@ -45,6 +46,12 @@ export default function SignupPage() {
     if(res.data?.success){
       
       toast.success("create user successfully")
+       localStorage.setItem('accessToken', res.data.token);
+      Cookies.set("token", res.data.token)
+      // router.push("/")
+      setTimeout(() => {
+        window.location.replace('/')
+      }, 200)
       router.push("/")
       setUserData({ name: "", email: "", password: "" });
       setConfirmPassword("");

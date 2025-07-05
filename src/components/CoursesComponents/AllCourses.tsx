@@ -1,6 +1,10 @@
+'use client'
 
 import { IICourse } from "@/app/courses/page";
-import Image from "next/image";
+import { useGetCourseQuery } from "@/features/courseAPI";
+import { ICourse } from "@/type/course.interface";
+import { useEffect, useState } from "react";
+import CourseCard from "../Home/CourseCard";
 
 interface AllCoursesProps {
     filteredCourses: IICourse[];
@@ -8,6 +12,22 @@ interface AllCoursesProps {
 }
 
 export default function AllCourses({ filteredCourses, activeCategory }: AllCoursesProps) {
+    const [courses, setCourses] = useState<ICourse[]>([]);
+    const { data, isLoading } = useGetCourseQuery(undefined);
+    console.log(data)
+
+    useEffect(() => {
+        if (data) {
+            setCourses(data.data);
+        }
+    }, [data]);
+
+    if (isLoading) {
+        return <h1 className="text-center my-40 mx-auto">Loading....</h1>;
+    }
+
+
+
     return (
         <div>
             <h2 className="text-2xl font-bold mb-6 text-dark-800">
@@ -29,48 +49,8 @@ export default function AllCourses({ filteredCourses, activeCategory }: AllCours
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {filteredCourses
-                        .map((course) => (
-                            <div key={course.id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                                <div className="h-48 bg-dark-200 flex items-center justify-center">
-                                    <Image
-                                        width={600}
-                                        height={400}
-                                        alt={course.title}
-                                        src={course.image}
-                                        className="object-cover w-full h-full"
-                                        priority
-                                    />
-                                </div>
-                                <div className="p-6">
-                                    <div className="flex justify-between items-start mb-2">
-                                        <span className="px-2 py-1 bg-primary-100 text-primary-800 rounded-full text-xs font-medium">
-                                            {course.category}
-                                        </span>
-                                        <span className="px-2 py-1 bg-dark-100 text-dark-800 rounded-full text-xs font-medium">
-                                            {course.level}
-                                        </span>
-                                    </div>
-                                    <h3 className="text-xl font-bold text-dark-800 mb-2">{course.title}</h3>
-                                    <p className="text-dark-600 text-sm mb-4">By {course.instructor}</p>
-                                    <div className="flex items-center mb-4">
-                                        <div className="flex text-yellow-400 mr-2">
-                                            {[...Array(5)].map((_, i) => (
-                                                <span key={i}>{i < Math.floor(course.rating) ? '★' : '☆'}</span>
-                                            ))}
-                                        </div>
-                                        <span className="text-dark-600 text-sm">
-                                            {course.rating} ({course.students.toLocaleString()})
-                                        </span>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-lg font-bold text-dark-800">${course.price}</span>
-                                        <button className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium transition-colors">
-                                            View Course
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+                    {courses
+                        .map((course, idx) => (<CourseCard key={idx} course={course} />
                         ))}
                 </div>
             )}

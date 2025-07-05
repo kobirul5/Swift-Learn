@@ -1,177 +1,115 @@
-'use client';
+'use client'
+import { useGetUserQuery } from '@/features/userAPI';
+import { IUser } from '@/type/user.interface';
+import { NextPage } from 'next';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
-import { useState } from 'react';
+const ProfilePage: NextPage = () => {
+  // User data - in a real app, this would come from an API or context
+
+  const [user, setUser] = useState<IUser>({
+    _id: "",
+    name: "",
+    email: "",
+    image: "",
+  });
+  const { data, isLoading } = useGetUserQuery(undefined);
+  console.log(data)
+
+  useEffect(() => {
+    if (data) {
+      setUser(data.data);
+    }
+  }, [data]);
+
+  if (isLoading) {
+    return <h1 className="text-center py-40 mx-auto">Loading....</h1>;
+  }
 
 
 
-interface User{
-  name:string,
-  email:string,
-  image:string,
-}
-
-
-export default function ProfilePage() {
-  const [isEditing, setIsEditing] = useState(false);
-  const formData:User = {
-    name: 'Kobirul Islam',
-    email: 'kabi@gmail.com',
-    image: 'https://i.ibb.co/M5K6Jb8B/kobirul.jpg',
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    // no logic needed for now
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // no logic needed for now
-    setIsEditing(false);
-  };
+  // const user: IUser = {
+  //   _id: "asdfsdfadfasd",
+  //   name: "Md. Kobirul Islam",
+  //   email: "kobirul@gmail.com",
+  //   image: "https://i.ibb.co/G4yDhqLg/man-7.jpg",
+  //   role: "admin"
+  // };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto pt-32">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-dark-800">My Profile</h1>
-        {/* {!isEditing && (
-          <button
-            onClick={() => setIsEditing(true)}
-            className="btn px-4 py-2 rounded-lg  transition mx-w-[50px]"
-          >
-            Edit Profile
-          </button>
-        )} */}
-      </div>
+    <div className="min-h-screen  pt-20">
 
-      <div className="bg-white rounded-xl shadow-md p-6">
-        {isEditing ? (
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="flex flex-col items-center mb-6">
-              <div className="relative mb-4">
-                <img
-                  src={formData.image || '/default-avatar.jpg'}
-                  alt="Profile"
-                  className="w-32 h-32 rounded-full object-cover"
-                />
-                <input
-                  type="file"
-                  className="hidden"
-                  id="image-upload"
-                  accept="image/*"
-                />
-                <label
-                  htmlFor="image-upload"
-                  className="absolute bottom-0 right-0 bg-white p-2 rounded-full shadow cursor-pointer"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-dark-600"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
-                </label>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-dark-700 mb-1">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-dark-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
+      <div className="container mx-auto py-8">
+        <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+          {/* Profile Header */}
+          <div className="bg-gradient-to-r from-primary-500 to-primary-600 p-6 text-white">
+            <div className="flex items-center">
+              <div className="relative h-20 w-20 rounded-full overflow-hidden border-4 border-white">
+                <Image
+                  src={user.image || "/public/logo/logo.png"}
+                  alt={user.name || 'user name'}
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-full"
                 />
               </div>
+              <div className="ml-6">
+                <h1 className="text-2xl font-bold">{user?.name}</h1>
+                <p className="text-primary-100">{user?.role}</p>
+              </div>
+            </div>
+          </div>
 
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-dark-700 mb-1">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-dark-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
-                />
+          {/* Profile Content */}
+          <div className="p-6">
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-dark-800 mb-4">Personal Information</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-dark-600 mb-1">Full Name</label>
+                  <div className="p-3 bg-dark-50 rounded-md border border-dark-200">
+                    {user.name}
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-dark-600 mb-1">Email Address</label>
+                  <div className="p-3 bg-dark-50 rounded-md border border-dark-200">
+                    {user.email}
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-dark-600 mb-1">Role</label>
+                  <div className="p-3 bg-dark-50 rounded-md border border-dark-200">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+                      {user.role}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="flex justify-end space-x-3 mt-8">
-              <button
-                type="button"
-                onClick={() => setIsEditing(false)}
-                className="px-4 py-2 border border-dark-300 rounded-md text-dark-700 hover:bg-dark-50"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
-              >
-                Save Changes
-              </button>
-            </div>
-          </form>
-        ) : (
-          <div className="space-y-6">
-            <div className="flex flex-col items-center mb-6">
-              <img
-                src={formData.image || '/default-avatar.jpg'}
-                alt="Profile"
-                className="w-32 h-32 rounded-full object-cover mb-4"
-              />
-              <h2 className="text-xl font-semibold">{formData.name}</h2>
-              <p className="text-dark-600">{formData.email}</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h3 className="text-sm font-medium text-dark-500 mb-1">Role</h3>
-                <p className="text-dark-800 capitalize">student</p>
-              </div>
-
-              <div>
-                <h3 className="text-sm font-medium text-dark-500 mb-1">Member Since</h3>
-                <p className="text-dark-800">July 1, 2024</p>
-              </div>
-            </div>
-
-            <div className="mt-8">
-              <h3 className="text-lg font-medium text-dark-800 mb-4">My Courses</h3>
-              <div className="bg-dark-50 p-4 rounded-lg">
-                <p className="text-dark-600">You haven&apos;t enrolled in any courses yet.</p>
-                <button className="mt-2 text-primary-600 hover:text-primary-800">
-                  Browse Courses
+            <div className="border-t border-dark-200 pt-6">
+              <h2 className="text-xl font-semibold text-dark-800 mb-4">Account Settings</h2>
+              
+              <div className="space-y-4">
+                <button className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition-colors">
+                  Edit Profile
+                </button>
+                
+                <button className="ml-4 px-4 py-2 bg-dark-200 text-dark-800 rounded-md hover:bg-dark-300 transition-colors">
+                  Change Password
                 </button>
               </div>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default ProfilePage;

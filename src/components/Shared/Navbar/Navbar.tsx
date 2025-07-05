@@ -38,6 +38,7 @@ const Navbar = () => {
     { label: 'Courses', href: '/courses', icon: <FiBook /> },
     { label: 'Dashboard', href: '/dashboard', icon: <FiSettings />, adminOnly: true },
     { label: 'Profile', href: '/student-profile', icon: <FiUser />, authOnly: true },
+    { label: 'My Classes', href: '/student', icon: <FiUser />, authOnly: true },
   ];
 
   useEffect(() => {

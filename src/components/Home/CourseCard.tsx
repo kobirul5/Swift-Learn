@@ -1,87 +1,62 @@
+import { ICourse } from '@/type/course.interface';
 import Image from 'next/image'
 import Link from 'next/link'
-import { FiArrowRight, FiStar, FiClock, FiUsers } from 'react-icons/fi'
 
-interface Course {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  thumbnail: string;
-  icon: React.ReactNode;
-  category: string;
-  rating?: number;
-  duration?: string;
-  students?: number;
-}
 
 interface CourseCardProps {
-  course: Course;
+  course: ICourse;
 }
 
 const CourseCard = ({ course }: CourseCardProps) => {
+
+  if (!course) {
+    return <h1>Loading.....</h1>
+  }
+
   return (
-    <div className=" rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-1">
-      {/* Thumbnail */}
-      <div className="relative h-52 group overflow-hidden">
+    <div key={course._id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+      <div className="h-48 bg-dark-200 flex items-center justify-center">
         <Image
-
-          src={course.thumbnail}
+          width={600}
+          height={400}
           alt={course.title}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-          sizes="(max-width: 768px) 100vw, 33vw"
+          src={course.thumbnail || '/courses/react-dev.png'}
+          className="object-cover w-full h-full"
+          priority
         />
-
-        <div className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-lg">
-          {course.icon}
-        </div>
-
-        {course.rating && (
-          <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center shadow-sm">
-            <FiStar className="text-yellow-500 mr-1" />
-            <span className="text-sm font-medium">{course.rating}</span>
-          </div>
-        )}
       </div>
 
-      {/* Content */}
       <div className="p-6">
-        {/* Category and Duration */}
-        <div className="flex justify-between items-center mb-3">
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary-50 text-primary-600">
-            {course.category}
+        <div className="flex justify-between items-start mb-2">
+          <span className="px-2 py-1 bg-primary-100 text-primary-800 rounded-full text-xs font-medium">
+            {/* {course?.category} */}
+            Programming
           </span>
-          {course.duration && (
-            <div className="flex items-center text-sm text-gray-500">
-              <FiClock className="mr-1" />
-              <span>{course.duration}</span>
-            </div>
-          )}
+          <span className="px-2 py-1 bg-dark-100 text-dark-800 rounded-full text-xs font-medium">
+            High
+          </span>
         </div>
-
-        {/* Title & Description */}
-        <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">{course.title.slice(0,17)}...</h3>
-        <p className="text-gray-600 mb-4 line-clamp-2">{course.description}</p>
-
-        {/* Metadata & Price */}
-        <div className="flex items-center justify-between">
-          {course.students && (
-            <div className="flex items-center text-sm text-gray-500">
-              <FiUsers className="mr-1" />
-              <span>{course.students}+</span>
-            </div>
-          )}
-          <span className="text-lg font-bold text-gray-900">${course.price.toFixed(2)}</span>
-        </div>
-
-        {/* CTA Button */}
-        <Link href={`/courses/${course.id}`} passHref>
-          <div className="mt-6 w-full flex items-center justify-center space-x-2 bg-primary-600 hover:bg-primary-700 text-white py-2.5 px-4 rounded-lg transition-colors duration-300 cursor-pointer">
-            <span>Enroll Now</span>
-            <FiArrowRight />
+        <h3 className="text-xl font-bold text-dark-800 mb-2">{course.title}</h3>
+        <p className="text-dark-600 text-sm mb-4">By Jhonkar Mahbub</p>
+        <div className="flex items-center mb-4">
+          <div className="flex text-yellow-400 mr-2">
+            {[...Array(5)].map((_, i) => (
+              // <span key={i}>{i < Math.floor(course.rating) ? '★' : '☆'}</span>
+              <span key={i}>{i < Math.floor(course.rating) ? '' : '★'}</span>
+            ))}
           </div>
-        </Link>
+          <span className="text-dark-600 text-sm">
+            {course.rating}
+          </span>
+        </div>
+
+
+        <div className="flex items-center justify-between">
+          <span className="text-lg font-bold text-dark-800">${course.price}</span>
+          <Link href={"#"} className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium transition-colors">
+            View Course
+          </Link>
+        </div>
       </div>
     </div>
   )

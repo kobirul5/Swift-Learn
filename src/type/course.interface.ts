@@ -15,6 +15,7 @@ export interface ICourse {
   description?: string;
   price?: number;
   thumbnail?: string;
+  rating:number;
   modules: string[];
   createdAt?: string;
   updatedAt?: string;
