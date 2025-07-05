@@ -104,7 +104,7 @@ export default function StudentsPage() {
                     </span>
                   </td>
                   <td className="text-sm text-dark-500">
-                    {new Date(student.createdAt).toLocaleDateString()}
+                    {new Date(student?.createdAt || "N/A").toLocaleDateString()}
                   </td>
                   <td>
                     <div className="flex space-x-2">
