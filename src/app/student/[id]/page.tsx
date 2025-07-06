@@ -21,8 +21,6 @@ const LearningPlatform = () => {
     const [expandedModule, setExpandedModule] = useState<number | null>(24);
     const [currentLecture, setCurrentLecture] = useState<number>(1);
 
-    // TODO: I Will Make Progress in backend
-
     const modules: Module[] = [
         {
             id: 24,
@@ -66,15 +64,15 @@ const LearningPlatform = () => {
 
     const handleLectureClick = (lectureId: number) => {
         setCurrentLecture(lectureId);
-        // TODO: Here you would also load the corresponding video
     };
 
     return (
-        <div className='container px-4 mx-auto  py-20 '>
-            <div className="flex flex-col md:flex-row">
-                {/* Video Section */}
-                <div className="w-full p-6 bg-white overflow-y-auto">
-                    <h1 className="text-2xl font-bold text-primary-800 mb-4 border-b py-5">
+        <div className="container px-4 mx-auto py-20">
+            <div className="grid lg:grid-cols-12 gap-6">
+
+                {/* Video Section - 8/12 */}
+                <div className="lg:col-span-8 p-6 bg-primary-100 overflow-y-auto rounded-lg">
+                    <h1 className="text-2xl font-bold text-white-800 mb-4 border-b pb-5">
                         Vercel Deployment Guide (Frontend + Backend)
                     </h1>
 
@@ -91,21 +89,24 @@ const LearningPlatform = () => {
                     </div>
 
                     <div className="bg-primary-50 p-4 rounded-lg">
-                        <h2 className="text-xl font-semibold text-primary-700 mb-2">
-                            {modules.find(m => m.active)?.title}
+                        <h2 className="text-xl font-semibold text-white-700 mb-2">
+                            {modules.find((m) => m.active)?.title}
                         </h2>
-                        <p className="text-primary-600">
-                            Currently playing: {
-                                modules.find(m => m.active)?.lectures.find(l => l.id === currentLecture)?.title
+                        <p className="text-white-600">
+                            Currently playing:{" "}
+                            {
+                                modules
+                                    .find((m) => m.active)
+                                    ?.lectures.find((l) => l.id === currentLecture)?.title
                             }
                         </p>
                     </div>
                 </div>
 
-                {/* Modules Sidebar */}
-                <div className="flex-1/4 bg-primary-800 h-[900px] rounded text-white overflow-y-auto">
-                    <div className="p-4 border-b border-dark-700">
-                        <div className="text-sm text-primary-300">Search Lecture</div>
+                {/* Sidebar - 4/12 */}
+                <div className="lg:col-span-4 bg-primary-800 h-[700px] rounded-xl text-white overflow-y-auto">
+                    <div className="p-4 mx-4 border-b border-primary-400">
+                        <div className="text-sm text-white-300">Search Lecture</div>
                         <input
                             type="text"
                             placeholder="Search Lesson..."
@@ -114,7 +115,7 @@ const LearningPlatform = () => {
                     </div>
 
                     <div className="p-4">
-                        <div className="text-xs uppercase tracking-wider text-primary-400 mb-2">
+                        <div className="text-xs uppercase tracking-wider text-white-400 mb-2">
                             Course Modules
                         </div>
 
@@ -122,26 +123,33 @@ const LearningPlatform = () => {
                             <div key={module.id} className="mb-2">
                                 <div
                                     onClick={() => toggleModule(module.id)}
-                                    className={`p-3 rounded cursor-pointer transition-colors flex justify-between items-center ${module.active
-                                            ? 'bg-primary-500 hover:bg-primary-600'
-                                            : 'bg-primary-700 hover:bg-primary-600'
-                                        }`}
+                                    className={`p-3 rounded cursor-pointer transition-colors flex justify-between items-center ${
+                                        module.active
+                                            ? "bg-primary-500 hover:bg-primary-600"
+                                            : "bg-primary-700 hover:bg-primary-600"
+                                    }`}
                                 >
                                     <div>
                                         <div className="font-medium">{module.title}</div>
-                                        <div className="text-xs text-primary-300 mt-1">
+                                        <div className="text-xs text-white-300 mt-1">
                                             {module.duration} • {module.progress}
                                         </div>
                                     </div>
                                     <svg
-                                        className={`w-4 h-4 transition-transform ${expandedModule === module.id ? 'rotate-180' : ''
-                                            }`}
+                                        className={`w-4 h-4 transition-transform ${
+                                            expandedModule === module.id ? "rotate-180" : ""
+                                        }`}
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
                                         xmlns="http://www.w3.org/2000/svg"
                                     >
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M19 9l-7 7-7-7"
+                                        />
                                     </svg>
                                 </div>
 
@@ -151,12 +159,13 @@ const LearningPlatform = () => {
                                             <div
                                                 key={lecture.id}
                                                 onClick={() => handleLectureClick(lecture.id)}
-                                                className={`p-2 text-sm rounded cursor-pointer ${currentLecture === lecture.id && module.active
-                                                        ? 'bg-primary-400 text-white'
+                                                className={`p-2 text-sm rounded cursor-pointer ${
+                                                    currentLecture === lecture.id && module.active
+                                                        ? "bg-primary-600 text-white"
                                                         : lecture.completed
-                                                            ? 'text-primary-300 hover:bg-primary-600'
-                                                            : 'text-primary-400 hover:bg-primary-600'
-                                                    }`}
+                                                        ? "text-white-300 hover:bg-primary-600"
+                                                        : "text-white-400 hover:bg-primary-600"
+                                                }`}
                                             >
                                                 <div className="flex justify-between">
                                                     <span>{lecture.title}</span>

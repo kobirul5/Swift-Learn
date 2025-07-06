@@ -2,36 +2,47 @@
 
 
 @theme {
-    --color-primary: #058c80;
-    --color-primary-100: #ccf2ef;
-    --color-primary-200: #99e6df;
-    --color-primary-300: #66d9cf;
-    --color-primary-400: #33cdc0;
-    --color-primary-500: #058c80;
-    /* base */
-    --color-primary-600: #04796f;
-    --color-primary-700: #03675e;
-    --color-primary-800: #02544d;
-    --color-second: #F88922;
-    --color-dark: #000c0a;
-    --color-background: #F9FAFB;
 
-    /* Dark variants */
-    --color-dark-50: #f2f2f2;
-    --color-dark-100: #e6e6e6;
-    --color-dark-200: #cccccc;
-    --color-dark-300: #b3b3b3;
-    --color-dark-400: #999999;
-    --color-dark-500: #808080;
-    --color-dark-600: #666666;
-    --color-dark-700: #4d4d4d;
-    --color-dark-800: #333333;
-    --color-dark-900: #1a1a1a;
+  /* --color-primary: #371986;
+  --color-primary-100: #edeaf7;
+  --color-primary-200: #d5cdf0;
+  --color-primary-300: #b7a9e7;
+  --color-primary-400: #967ddc;
+  --color-primary-500: #7552d1; 
+  --color-primary-600: #5b3cb7;
+  --color-primary-700: #462f99;
+  --color-primary-800: #2e1471;
+  --color-primary-900: #210b53; */
+  --color-primary: #058c80;
+  --color-primary-100: #ccf2ef;
+  --color-primary-200: #99e6df;
+  --color-primary-300: #66d9cf;
+  --color-primary-400: #33cdc0;
+  --color-primary-500: #058c80;
+  /* base */
+  --color-primary-600: #04796f;
+  --color-primary-700: #03675e;
+  --color-primary-800: #02544d;
+  --color-second: #F88922;
+  --color-dark: #000c0a;
+  --color-background: #F9FAFB;
+
+  /* Dark variants */
+  --color-dark-50: #f2f2f2;
+  --color-dark-100: #e6e6e6;
+  --color-dark-200: #cccccc;
+  --color-dark-300: #b3b3b3;
+  --color-dark-400: #999999;
+  --color-dark-500: #808080;
+  --color-dark-600: #666666;
+  --color-dark-700: #4d4d4d;
+  --color-dark-800: #333333;
+  --color-dark-900: #1a1a1a;
 
 }
 
 @layer components {
   .btn {
-    @apply   flex items-center justify-center space-x-2 bg-primary-600 hover:bg-primary-700 text-white py-2.5 px-4 rounded-lg transition-colors duration-300 cursor-pointer;
+    @apply flex items-center justify-center space-x-2 bg-primary-600 hover:bg-primary-700 text-white py-2.5 px-4 rounded-lg transition-colors duration-300 cursor-pointer;
   }
 }
