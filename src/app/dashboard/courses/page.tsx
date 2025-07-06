@@ -6,7 +6,6 @@ import { ICourse } from '@/type/course.interface';
 
 const Courses = () => {
   const {data:courses, isLoading} = useGetCourseQuery(undefined)
-  console.log(courses,"----------")
 
   if(isLoading){
     return <h1>Loading...</h1>

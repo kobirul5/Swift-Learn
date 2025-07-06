@@ -14,7 +14,7 @@ interface AllCoursesProps {
 export default function AllCourses({ filteredCourses, activeCategory }: AllCoursesProps) {
     const [courses, setCourses] = useState<ICourse[]>([]);
     const { data, isLoading } = useGetCourseQuery(undefined);
-    console.log(data)
+  
 
     useEffect(() => {
         if (data) {

@@ -15,7 +15,6 @@ const ProfilePage: NextPage = () => {
     image: "",
   });
   const { data, isLoading } = useGetUserQuery(undefined);
-  console.log(data)
 
   useEffect(() => {
     if (data) {

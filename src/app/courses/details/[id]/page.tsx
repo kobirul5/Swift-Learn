@@ -6,14 +6,14 @@ import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { FiClock, FiStar, FiUsers } from 'react-icons/fi';
+import CourseBenefits from '../CourseBenefits';
 
 
 
 export default function CourseDetailPage() {
-    const {id} = useParams()
+  const { id } = useParams()
   const [course, setCourses] = useState<ICourse>();
   const { data, isLoading } = useGetCourseByIdQuery(id);
-  console.log(data)
 
   useEffect(() => {
     if (data) {
@@ -32,9 +32,9 @@ export default function CourseDetailPage() {
 
   return (
     <section className="container mx-auto px-4 py-12 pt-28">
-      <div className="grid md:grid-cols-2 gap-10">
+      <div className="grid lg:grid-cols-2 gap-10">
         {/* Thumbnail */}
-        <div className="relative w-full h-80 md:h-full rounded-xl overflow-hidden shadow-md">
+        <div className="relative w-full h-80 lg:h-full rounded-xl overflow-hidden shadow-md">
           <Image
             src={course.thumbnail || '/fallback.png'}
             alt={course.title}
@@ -65,13 +65,14 @@ export default function CourseDetailPage() {
             ${course?.price?.toFixed(2) || 'Free'}
           </div>
 
-          <button 
-          onClick={()=>toast.success("Enrollment Successful")}
-          className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+          <button
+            onClick={() => toast.success("Enrollment Successful")}
+            className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
             Enroll Now
           </button>
         </div>
       </div>
+      <CourseBenefits />
     </section>
   );
 }

@@ -11,7 +11,6 @@ export default function UpdateCoursePage() {
   const router = useRouter();
   const params = useParams();
   const axiosPublic = useAxiosPublic()
-  console.log(params.id,)
   const [updateCourse] = useUpdateCourseMutation();
 
   useEffect(() => {

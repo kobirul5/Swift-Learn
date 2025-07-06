@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <StoreProvider  >
         <body
-          className={`antialiased`}
+          className={`antialiased bg-primary-100/10`}
         >
           <Toaster />
           <ClientLayout>

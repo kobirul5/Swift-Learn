@@ -52,7 +52,7 @@ export default function ModuleAccordion({ id }: Props) {
                     setModules(res.data.data)
                 } else {
                     toast.error("Module creation failed!");
-                    console.log('Error:', res);
+                   
                 }
             } catch (error: unknown) {
                 console.error(error);
@@ -88,7 +88,7 @@ export default function ModuleAccordion({ id }: Props) {
                 window.location.reload()
             } else {
                 toast.error("Delete fail");
-                console.log('Error:', res);
+                
             }
 
 

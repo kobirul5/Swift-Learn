@@ -16,7 +16,7 @@ export default function AddCoursePage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const [createCourse, {data}] = useCreateCourseMutation()
+  const [createCourse] = useCreateCourseMutation()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,9 +25,8 @@ export default function AddCoursePage() {
 
     try {
       const res =await createCourse(course)
-      console.log(data,"-------------course")
       if(res.data?.success){
-        toast.success("successfull")
+        toast.success("successful")
       } 
       router.push('/dashboard/courses');
     } catch (err) {

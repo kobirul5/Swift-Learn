@@ -31,7 +31,6 @@ export default function ModuleModal({ setShow, courseId }: ModuleModalProps) {
                 setShow(false); 
             } else {
                 toast.error("Module creation failed!");
-                console.log('Error:', res);
             }
         } catch (error: unknown) {
             console.error(error);
