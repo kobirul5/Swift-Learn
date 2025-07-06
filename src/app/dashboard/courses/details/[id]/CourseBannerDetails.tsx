@@ -6,7 +6,7 @@ import { ICourse } from "@/type/course.interface";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import ModuleModal from "@/app/dashboard/courses/details/ModuleModal";
-import ModuleAccordion from "@/app/dashboard/courses/details/ModuleAccordion";
+import ModuleAccordion from "@/app/dashboard/courses/details/[id]/ModuleAccordion";
 
 
 
@@ -113,7 +113,7 @@ export default function CourseBannerDetails({ id }: CourseDetailPageProps) {
         {/* Modules Section */}
         <div className="bg-white shadow rounded-lg overflow-hidden">
           <div className="p-4 border-b border-dark-200 flex justify-between items-center">
-            <h3 className="text-xl font-semibold">Modules</h3>
+            <h2 className="text-2xl font-bold text-dark-800 mb-6">Course Modules</h2>
             <button
               onClick={() => setShow(true)}
               className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"

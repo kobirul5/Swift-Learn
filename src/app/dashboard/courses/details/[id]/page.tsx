@@ -1,7 +1,7 @@
 'use client';
 
-import CourseBannerDetails from '@/components/CoursesComponents/CourseBannerDetails';
 import {useParams } from 'next/navigation';
+import CourseBannerDetails from './CourseBannerDetails';
 
 export default function Page() {
   const params = useParams()
