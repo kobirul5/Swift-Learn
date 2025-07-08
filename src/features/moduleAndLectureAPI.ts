@@ -7,6 +7,12 @@ export const moduleAndLectureAPI = createApi({
   baseQuery: axiosBaseQuery({ baseUrl: "https://swift-learn-server-fnu4.vercel.app" }),
   tagTypes:['lecture'],
   endpoints: (builder) => ({
+    getModule: builder.query({
+      query: (courseId) => ({
+        url: `/api/modules/${courseId}`,
+        method: "GET",
+      }),
+    }),
     createLecture: builder.mutation({
       query: (data) => ({
         url: `/api/lecture`,
@@ -20,4 +26,5 @@ export const moduleAndLectureAPI = createApi({
 
 export const {
   useCreateLectureMutation,
+  useGetModuleQuery,
 } = moduleAndLectureAPI;

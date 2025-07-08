@@ -42,8 +42,8 @@ A modern and responsive **Learning Management System (LMS)** frontend built with
 - Thumbnail, Title, Price, Description
 - Edit/Delete course content
 - Manage Modules & Lectures:
-- Add/Edit/Delete modules
-- Add lectures with YouTube video links and PDF notes
+- Add modules
+- Add lectures with YouTube video links and notes
 - View lecture list with filter support
 
 ### 👨‍🎓 User Panel
@@ -56,7 +56,7 @@ A modern and responsive **Learning Management System (LMS)** frontend built with
 - Lecture Page:
 - Expandable modules
 - Locked lectures (sequential access)
-- Video + PDF notes per lecture
+- Video +  notes per lecture
 - Visual progress tracker
 
 ---

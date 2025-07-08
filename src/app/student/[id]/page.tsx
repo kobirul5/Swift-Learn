@@ -1,109 +1,82 @@
 'use client'
-import React, { useState } from 'react';
 
-interface Lecture {
-    id: number;
-    title: string;
-    duration: string;
-    completed: boolean;
-}
-
-interface Module {
-    id: number;
-    title: string;
-    duration: string;
-    progress: string;
-    lectures: Lecture[];
-    active?: boolean;
-}
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { ILecture, IModule } from '@/type/module';
+import { useGetModuleQuery } from '@/features/moduleAndLectureAPI';
 
 const LearningPlatform = () => {
-    const [expandedModule, setExpandedModule] = useState<number | null>(24);
-    const [currentLecture, setCurrentLecture] = useState<number>(1);
+    const params = useParams();
+    const { data, isLoading } = useGetModuleQuery(params.id);
 
-    const modules: Module[] = [
-        {
-            id: 24,
-            title: 'Assignment 4',
-            duration: '0h 21m',
-            progress: '3/5',
-            active: true,
-            lectures: [
-                { id: 1, title: 'Introduction to Vercel', duration: '5:30', completed: true },
-                { id: 2, title: 'Frontend Deployment', duration: '8:15', completed: true },
-                { id: 3, title: 'Backend Configuration', duration: '10:45', completed: true },
-                { id: 4, title: 'Environment Variables', duration: '7:20', completed: false },
-                { id: 5, title: 'Final Deployment', duration: '9:10', completed: false },
-            ]
-        },
-        {
-            id: 22,
-            title: 'Bootstrapping Redux Basic Project',
-            duration: '2h 21m',
-            progress: '0/13',
-            lectures: [
-                { id: 1, title: 'Redux Fundamentals', duration: '15:30', completed: false },
-                { id: 2, title: 'Setting Up Store', duration: '12:45', completed: false },
-            ]
-        },
-        {
-            id: 23,
-            title: 'Local State Management and RTK Query',
-            duration: '2h 28m',
-            progress: '0/14',
-            lectures: [
-                { id: 1, title: 'RTK Query Basics', duration: '18:20', completed: false },
-                { id: 2, title: 'Advanced Queries', duration: '22:10', completed: false },
-            ]
+    const [expandedModule, setExpandedModule] = useState<string | null>(null);
+    const [currentLectureId, setCurrentLectureId] = useState<string | null>(null);
+    const [modules, setModules] = useState<IModule[]>()
+
+    useEffect(() => {
+        if (!data) return;
+        if (data.data) {
+            setModules(data.data)
         }
-    ];
+    }, [data]);
 
-    const toggleModule = (moduleId: number) => {
-        setExpandedModule(expandedModule === moduleId ? null : moduleId);
+
+    const handleLectureClick = (lectureId: string) => {
+        setCurrentLectureId(lectureId);
     };
 
-    const handleLectureClick = (lectureId: number) => {
-        setCurrentLecture(lectureId);
+    const toggleModule = (moduleId: string) => {
+        setExpandedModule(prev => (prev === moduleId ? null : moduleId));
     };
+
+    if (isLoading) {
+        return <h1 className="py-40 text-center text-xl font-semibold">Loading...</h1>;
+    }
+
+    if (!modules) {
+        return <h1>data not found</h1>
+    }
+
+    const currentModule = modules.find((m: IModule) => m._id === expandedModule);
+    const currentLecture = currentModule?.lectures.find(l => l._id === currentLectureId);
 
     return (
         <div className="container px-4 mx-auto py-20">
             <div className="grid lg:grid-cols-12 gap-6">
 
-                {/* Video Section - 8/12 */}
+                {/* Video Section */}
                 <div className="lg:col-span-8 p-6 bg-primary-100 overflow-y-auto rounded-lg">
                     <h1 className="text-2xl font-bold text-white-800 mb-4 border-b pb-5">
-                        Vercel Deployment Guide (Frontend + Backend)
+                        {currentLecture?.title || "Select a Lecture"}
                     </h1>
 
-                    <div className="w-full rounded-lg shadow-md overflow-hidden mb-6">
-                        <video
-                            controls
-                            autoPlay
-                            className="w-full"
-                            poster="/video-poster.jpg"
-                        >
-                            <source src="/videos/hero-video.mp4" type="video/mp4" />
-                            Your browser does not support the video tag.
-                        </video>
+                    <div className="w-full h-full rounded-lg shadow-md overflow-hidden mb-6">
+                        {currentLecture?.videoUrl ? (
+                            <iframe
+                                width="100%"
+                                height="100%"
+                                src={currentLecture.videoUrl}
+                                title="YouTube video player"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                                className="w-full h-full"
+                            ></iframe>
+                        ) : (
+                            <div className="text-center py-20 text-white-600">No video selected</div>
+                        )}
                     </div>
 
-                    <div className="bg-primary-50 p-4 rounded-lg">
-                        <h2 className="text-xl font-semibold text-white-700 mb-2">
-                            {modules.find((m) => m.active)?.title}
-                        </h2>
-                        <p className="text-white-600">
-                            Currently playing:{" "}
-                            {
-                                modules
-                                    .find((m) => m.active)
-                                    ?.lectures.find((l) => l.id === currentLecture)?.title
-                            }
-                        </p>
-                    </div>
+                    {currentModule && (
+                        <div className="bg-primary-50 p-4 rounded-lg">
+                            <h2 className="text-xl font-semibold text-white-700 mb-2">{currentModule.title}</h2>
+                            <p className="text-white-600">
+                                Currently playing: {currentLecture?.title || "None"}
+                            </p>
+                        </div>
+                    )}
                 </div>
 
-                {/* Sidebar - 4/12 */}
+                {/* Sidebar */}
                 <div className="lg:col-span-4 bg-primary-800 h-[700px] rounded-xl text-white overflow-y-auto">
                     <div className="p-4 mx-4 border-b border-primary-400">
                         <div className="text-sm text-white-300">Search Lecture</div>
@@ -115,73 +88,69 @@ const LearningPlatform = () => {
                     </div>
 
                     <div className="p-4">
-                        <div className="text-xs uppercase tracking-wider text-white-400 mb-2">
-                            Course Modules
-                        </div>
+                        <div className="text-xs uppercase tracking-wider text-white-400 mb-2">Course Modules</div>
 
-                        {modules.map((module) => (
-                            <div key={module.id} className="mb-2">
+                        {modules.map((module: IModule) => (
+                            <div key={module._id} className="mb-2">
                                 <div
-                                    onClick={() => toggleModule(module.id)}
-                                    className={`p-3 rounded cursor-pointer transition-colors flex justify-between items-center ${
-                                        module.active
-                                            ? "bg-primary-500 hover:bg-primary-600"
-                                            : "bg-primary-700 hover:bg-primary-600"
-                                    }`}
+                                    onClick={() => toggleModule(module._id)}
+                                    className={`p-3 rounded cursor-pointer transition-colors flex justify-between items-center ${expandedModule === module._id
+                                            ? 'bg-primary-500 hover:bg-primary-600'
+                                            : 'bg-primary-700 hover:bg-primary-600'
+                                        }`}
                                 >
                                     <div>
                                         <div className="font-medium">{module.title}</div>
                                         <div className="text-xs text-white-300 mt-1">
-                                            {module.duration} • {module.progress}
+                                            {module.lectures?.length || 0} Lectures
                                         </div>
                                     </div>
                                     <svg
-                                        className={`w-4 h-4 transition-transform ${
-                                            expandedModule === module.id ? "rotate-180" : ""
-                                        }`}
+                                        className={`w-4 h-4 transition-transform ${expandedModule === module._id ? 'rotate-180' : ''
+                                            }`}
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
                                         xmlns="http://www.w3.org/2000/svg"
                                     >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M19 9l-7 7-7-7"
-                                        />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                     </svg>
                                 </div>
 
-                                {expandedModule === module.id && (
+                                {expandedModule === module._id && (
                                     <div className="mt-1 ml-4 pl-2 border-l-2 border-primary-600">
-                                        {module.lectures.map((lecture) => (
-                                            <div
-                                                key={lecture.id}
-                                                onClick={() => handleLectureClick(lecture.id)}
-                                                className={`p-2 text-sm rounded cursor-pointer ${
-                                                    currentLecture === lecture.id && module.active
-                                                        ? "bg-primary-600 text-white"
-                                                        : lecture.completed
-                                                        ? "text-white-300 hover:bg-primary-600"
-                                                        : "text-white-400 hover:bg-primary-600"
-                                                }`}
-                                            >
-                                                <div className="flex justify-between">
-                                                    <span>{lecture.title}</span>
-                                                    <span className="text-xs">{lecture.duration}</span>
+                                        {module.lectures.map((lecture: ILecture) => {
+                                            const duration = (lecture as any).duration || '5:00';
+                                            const completed = (lecture as any).completed || false;
+
+                                            return (
+                                                <div
+                                                    key={lecture._id}
+                                                    onClick={() => handleLectureClick(lecture._id)}
+                                                    className={`p-2 text-sm rounded cursor-pointer ${currentLectureId === lecture._id
+                                                            ? 'bg-primary-600 text-white'
+                                                            : completed
+                                                                ? 'text-white-300 hover:bg-primary-600'
+                                                                : 'text-white-400 hover:bg-primary-600'
+                                                        }`}
+                                                >
+                                                    <div className="flex justify-between items-center">
+                                                        <span>{lecture.title}</span>
+                                                        <span className="text-xs">{duration}</span>
+                                                    </div>
+                                                    {completed && (
+                                                        <span className="inline-block w-3 h-3 bg-green-500 rounded-full mt-1"></span>
+                                                    )}
                                                 </div>
-                                                {lecture.completed && (
-                                                    <span className="inline-block w-3 h-3 bg-green-500 rounded-full ml-1"></span>
-                                                )}
-                                            </div>
-                                        ))}
+                                            );
+                                        })}
                                     </div>
                                 )}
                             </div>
                         ))}
                     </div>
                 </div>
+
             </div>
         </div>
     );
