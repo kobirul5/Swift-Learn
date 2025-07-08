@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { ILecture, IModule } from '@/type/module';
 import { useGetModuleQuery } from '@/features/moduleAndLectureAPI';
+import VideoForLecture from './VideoForLecture';
 
 const LearningPlatform = () => {
     const params = useParams();
@@ -49,22 +50,12 @@ const LearningPlatform = () => {
                     <h1 className="text-2xl font-bold text-white-800 mb-4 border-b pb-5">
                         {currentLecture?.title || "Select a Lecture"}
                     </h1>
-
-                    <div className="w-full h-full rounded-lg shadow-md overflow-hidden mb-6">
-                        {currentLecture?.videoUrl ? (
-                            <iframe
-                                width="100%"
-                                height="100%"
-                                src={currentLecture.videoUrl}
-                                title="YouTube video player"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                                className="w-full h-full"
-                            ></iframe>
-                        ) : (
-                            <div className="text-center py-20 text-white-600">No video selected</div>
-                        )}
-                    </div>
+                    {/* video or notes */}
+                    {currentLecture &&
+                        <VideoForLecture
+                            currentLecture={currentLecture}
+                        />
+                    }
 
                     {currentModule && (
                         <div className="bg-primary-50 p-4 rounded-lg">
@@ -90,17 +81,17 @@ const LearningPlatform = () => {
                     <div className="p-4">
                         <div className="text-xs uppercase tracking-wider text-white-400 mb-2">Course Modules</div>
 
-                        {modules.map((module: IModule) => (
+                        {modules.map((module: IModule, idx) => (
                             <div key={module._id} className="mb-2">
                                 <div
                                     onClick={() => toggleModule(module._id)}
                                     className={`p-3 rounded cursor-pointer transition-colors flex justify-between items-center ${expandedModule === module._id
-                                            ? 'bg-primary-500 hover:bg-primary-600'
-                                            : 'bg-primary-700 hover:bg-primary-600'
+                                        ? 'bg-primary-500 hover:bg-primary-600'
+                                        : 'bg-primary-700 hover:bg-primary-600'
                                         }`}
                                 >
                                     <div>
-                                        <div className="font-medium">{module.title}</div>
+                                        <div className="font-medium">Module:{idx + 1} {module.title}</div>
                                         <div className="text-xs text-white-300 mt-1">
                                             {module.lectures?.length || 0} Lectures
                                         </div>
@@ -120,18 +111,18 @@ const LearningPlatform = () => {
                                 {expandedModule === module._id && (
                                     <div className="mt-1 ml-4 pl-2 border-l-2 border-primary-600">
                                         {module.lectures.map((lecture: ILecture) => {
-                                            const duration = (lecture as any).duration || '5:00';
-                                            const completed = (lecture as any).completed || false;
+                                            const duration = (lecture).duration || '5:00';
+                                            const completed = (lecture).isCompleted || false;
 
                                             return (
                                                 <div
                                                     key={lecture._id}
                                                     onClick={() => handleLectureClick(lecture._id)}
                                                     className={`p-2 text-sm rounded cursor-pointer ${currentLectureId === lecture._id
-                                                            ? 'bg-primary-600 text-white'
-                                                            : completed
-                                                                ? 'text-white-300 hover:bg-primary-600'
-                                                                : 'text-white-400 hover:bg-primary-600'
+                                                        ? 'bg-primary-600 text-white'
+                                                        : completed
+                                                            ? 'text-white-300 hover:bg-primary-600'
+                                                            : 'text-white-400 hover:bg-primary-600'
                                                         }`}
                                                 >
                                                     <div className="flex justify-between items-center">

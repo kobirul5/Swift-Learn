@@ -4,6 +4,8 @@ export interface ILecture {
   course: string;
   title: string;
   videoUrl?: string;
+  duration: string;
+  isCompleted: boolean;
   notes: string[];
 }
 
