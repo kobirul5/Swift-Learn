@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
 import { ILecture } from '@/type/module';
-import { useDeleteLectureMutation } from '@/features/courseAPI';
+import { useDeleteLectureMutation } from '@/features/moduleAndLectureAPI';
 
 
 interface Props {

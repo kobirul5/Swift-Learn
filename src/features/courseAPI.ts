@@ -52,14 +52,7 @@ export const courseAPI = createApi({
       }),
       invalidatesTags: ["course"]
     }),
-    deleteLecture: builder.mutation({
-      query: (id) => ({
-        url: `/api/lecture/${id}`,
-        method: "DELETE",
-      }),
-    }),
-
-
+    
   }),
 });
 
@@ -69,6 +62,5 @@ export const {
   useCreateCourseMutation,
   useDeleteCourseMutation,
   useUpdateCourseMutation,
-  useDeleteLectureMutation,
   useGetEnrolmentCourseByStudentIdQuery
 } = courseAPI;

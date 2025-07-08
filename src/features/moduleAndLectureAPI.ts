@@ -30,6 +30,13 @@ export const moduleAndLectureAPI = createApi({
       }),
       invalidatesTags: ['modules']
     }),
+    deleteLecture: builder.mutation({
+      query: (id) => ({
+        url: `/api/lecture/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ['modules']
+    }),
     
 
   }),
@@ -39,4 +46,5 @@ export const {
   useCreateLectureMutation,
   useGetModuleQuery,
   useCreateModuleMutation,
+  useDeleteLectureMutation,
 } = moduleAndLectureAPI;
