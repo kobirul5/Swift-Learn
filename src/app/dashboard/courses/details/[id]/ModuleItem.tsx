@@ -3,6 +3,8 @@
 import { FiChevronDown, FiChevronUp, FiFileText, FiPlus } from 'react-icons/fi';
 import LectureItem from './LectureItem';
 import { IModule } from '@/type/module';
+import { useState } from 'react';
+import LectureModal from '@/components/Modals/LectureModal';
 
 interface Props {
   module: IModule;
@@ -12,14 +14,19 @@ interface Props {
 }
 
 export default function ModuleItem({ module, isOpen, toggleAccordion }: Props) {
+
+  const [isOpenLecture, setIsOpenLecture] = useState<boolean>(false);
+
+  const toggleModalLecture = () => setIsOpenLecture(!isOpenLecture);
+
+
   return (
     <div className="border border-dark-50 rounded-xl shadow-sm hover:shadow-md transition">
       {/* Accordion Header */}
       <button
         onClick={toggleAccordion}
-        className={`w-full flex justify-between rounded-xl items-center p-6 ${
-          isOpen ? 'bg-primary-100' : 'bg-white hover:bg-dark-50'
-        }`}
+        className={`w-full flex justify-between rounded-xl items-center p-6 ${isOpen ? 'bg-primary-100' : 'bg-white hover:bg-dark-50'
+          }`}
       >
         <div className="flex items-center gap-4 text-left">
           <div className="h-10 w-10 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center font-bold">
@@ -55,11 +62,16 @@ export default function ModuleItem({ module, isOpen, toggleAccordion }: Props) {
           {/* Add Lecture Button */}
           <div className="mt-4 text-right px-4">
             <button
-              onClick={() => console.log(`Add lecture to module ${module._id}`)}
+              // onClick={() => console.log(`Add lecture to module ${module._id}`)}
+              onClick={() => toggleModalLecture()}
               className="inline-flex items-center gap-2 text-white bg-primary-600 hover:bg-primary-700 px-4 py-2 rounded-lg text-sm font-medium transition"
             >
               <FiPlus /> Add Lecture
             </button>
+            {isOpenLecture && (<LectureModal
+              moduleId={module._id}
+              toggleModalLecture={toggleModalLecture}
+            />)}
           </div>
         </div>
       )}

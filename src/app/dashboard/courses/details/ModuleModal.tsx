@@ -1,7 +1,7 @@
 import useAxiosPublic from "@/hooks/useAxiosPublic";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { FiX, FiCheck, FiBookOpen } from "react-icons/fi";
+import { FiX, FiCheck, FiBookOpen, FiLoader } from "react-icons/fi";
 
 interface ModuleModalProps {
     setShow: (value: boolean) => void;
@@ -31,6 +31,7 @@ export default function ModuleModal({ setShow, courseId }: ModuleModalProps) {
             if (res.data?.success) {
                 toast.success("Module created successfully!");
                 setShow(false);
+                window.location.reload()
             } else {
                 toast.error("Module creation failed!");
             }
@@ -123,7 +124,11 @@ export default function ModuleModal({ setShow, courseId }: ModuleModalProps) {
                             className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-primary-500 to-primary-600 text-white hover:from-primary-600 hover:to-primary-700 transition-all font-medium flex items-center space-x-2 disabled:opacity-70"
                         >
                             {isLoading ? (
-                                <span>Creating...</span>
+                                <span className="flex justify-center items-center"> 
+                                    <FiLoader className="animate-spin" />
+                                    Creating...
+                                </span>
+                                
                             ) : (
                                 <>
                                     <FiCheck />
