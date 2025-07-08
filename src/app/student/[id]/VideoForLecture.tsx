@@ -1,5 +1,6 @@
 'use client';
 
+import NoContentAvilable from '@/components/NoContentAvailable';
 import { ILecture } from '@/type/module';
 import { useState } from 'react';
 
@@ -35,7 +36,7 @@ const VideoForLecture = ({ currentLecture }: Props) => {
             <h3 className="text-xl font-semibold mb-2">{selectedNote}</h3>
           </div>
         ) : (
-          <div className="text-center py-20 text-white-600">No content available</div>
+          <NoContentAvilable/>
         )}
       </div>
 
