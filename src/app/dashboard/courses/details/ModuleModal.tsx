@@ -1,4 +1,6 @@
-import useAxiosPublic from "@/hooks/useAxiosPublic";
+
+import { useCreateModuleMutation, useGetModuleQuery } from "@/features/moduleAndLectureAPI";
+// import useAxiosPublic from "@/hooks/useAxiosPublic";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { FiX, FiCheck, FiBookOpen, FiLoader } from "react-icons/fi";
@@ -13,7 +15,9 @@ export default function ModuleModal({ setShow, courseId }: ModuleModalProps) {
     const [description, setDescription] = useState<string>('');
     const [isActive, setIsActive] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const axiosPublic = useAxiosPublic();
+    const [createModule] = useCreateModuleMutation()
+    const {} = useGetModuleQuery(courseId)
+    // const axiosPublic = useAxiosPublic();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -27,11 +31,10 @@ export default function ModuleModal({ setShow, courseId }: ModuleModalProps) {
         };
 
         try {
-            const res = await axiosPublic.post("/api/modules/create", newModule);
+            const res = await createModule(newModule);
             if (res.data?.success) {
                 toast.success("Module created successfully!");
                 setShow(false);
-                window.location.reload()
             } else {
                 toast.error("Module creation failed!");
             }

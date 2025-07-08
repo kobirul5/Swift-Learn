@@ -21,10 +21,20 @@ export default function CourseDetailPage() {
     }
   }, [data]);
 
+  const handleEnrollment = (courseId:string) => {
+    toast.success("Enrollment Successful")
+    console.log(courseId)
+    // ToDos
+    // get user id, 
+    // send user id, course id throw api
+    // save data in backend
+    // change api in backend
+  }
+
+
   if (isLoading) {
     return <h1 className="text-center py-40 mx-auto">Loading....</h1>;
   }
-
 
   if (!course) {
     return <div className="text-center py-32">Course not found</div>;
@@ -66,7 +76,7 @@ export default function CourseDetailPage() {
           </div>
 
           <button
-            onClick={() => toast.success("Enrollment Successful")}
+            onClick={() => handleEnrollment(course._id)}
             className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
             Enroll Now
           </button>

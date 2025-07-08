@@ -52,13 +52,6 @@ export const courseAPI = createApi({
       }),
       invalidatesTags: ["course"]
     }),
-    createModule: builder.mutation({
-      query: (moduleData) => ({
-        url: "/api/modules/create",
-        method: "POST",
-        data: moduleData,
-      }),
-    }),
     deleteLecture: builder.mutation({
       query: (id) => ({
         url: `/api/lecture/${id}`,
@@ -76,7 +69,6 @@ export const {
   useCreateCourseMutation,
   useDeleteCourseMutation,
   useUpdateCourseMutation,
-  useCreateModuleMutation,
   useDeleteLectureMutation,
   useGetEnrolmentCourseByStudentIdQuery
 } = courseAPI;

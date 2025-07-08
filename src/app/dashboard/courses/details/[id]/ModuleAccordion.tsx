@@ -1,10 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import useAxiosPublic from '@/hooks/useAxiosPublic';
 import { IModule } from '@/type/module';
 import ModuleItem from './ModuleItem';
+import { useGetModuleQuery } from '@/features/moduleAndLectureAPI';
 
 
 interface Props {
@@ -14,28 +13,19 @@ interface Props {
 export default function ModuleAccordion({ id }: Props) {
   const [modules, setModules] = useState<IModule[]>();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const axiosPublic = useAxiosPublic();
+  const {data} = useGetModuleQuery(id)
 
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
   useEffect(() => {
-    const fetchModules = async () => {
-      try {
-        const res = await axiosPublic.get(`/api/modules/${id}`);
-        if (res.data.success) {
-          setModules(res.data.data);
-        } else {
-          toast.error('Failed to load modules');
-        }
-      } catch (error) {
-        toast.error('Something went wrong');
-        console.log(error)
-      }
-    };
-    fetchModules();
-  }, [axiosPublic, id]);
+
+    if(!data){
+      return
+    }
+    setModules(data.data)
+  }, [data]);
 
   if (!modules) {
     return (
