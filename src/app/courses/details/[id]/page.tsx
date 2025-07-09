@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { FiClock, FiStar, FiUsers } from 'react-icons/fi';
 import CourseBenefits from '../CourseBenefits';
+import CourseInstructor from '../CourseInstructor';
 
 
 
@@ -83,6 +84,7 @@ export default function CourseDetailPage() {
         </div>
       </div>
       <CourseBenefits />
+      <CourseInstructor/>
     </section>
   );
 }
