@@ -39,6 +39,7 @@ const Navbar = () => {
     { label: 'Dashboard', href: '/dashboard', icon: <FiSettings />, adminOnly: true },
     { label: 'Profile', href: '/student-profile', icon: <FiUser />, authOnly: true },
     { label: 'My Classes', href: '/student', icon: <FiUser />, authOnly: true },
+    { label: 'About', href: '/about', icon: <FiUser />, authOnly: true },
   ];
 
   useEffect(() => {
@@ -185,6 +186,7 @@ const Navbar = () => {
             />
             <FiSearch className="absolute left-3 top-2.5 text-dark-400" />
           </div>
+          
           <div className="pt-4 border-t border-dark-200 space-y-2">
             {isLoggedIn ? (
               <button
