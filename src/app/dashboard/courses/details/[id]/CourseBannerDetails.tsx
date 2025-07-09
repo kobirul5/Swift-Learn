@@ -73,9 +73,9 @@ export default function CourseBannerDetails({ id }: CourseDetailPageProps) {
   return (
     <div className="bg-white min-h-screen rounded-2xl">
       <header className="bg-white shadow rounded-2xl">
-        <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        <div className="container mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center gap-4">
           <h1 className="text-2xl font-bold text-dark-900">Course Details</h1>
-          <div className="space-x-2">
+          <div className="space-x-2 space-y-2">
             <button
               onClick={handleEdit}
               className="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded"

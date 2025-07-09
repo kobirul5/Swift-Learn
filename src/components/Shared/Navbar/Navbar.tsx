@@ -39,6 +39,7 @@ const Navbar = () => {
     { label: 'Dashboard', href: '/dashboard', icon: <FiSettings />, adminOnly: true },
     { label: 'Profile', href: '/student-profile', icon: <FiUser />, authOnly: true },
     { label: 'My Classes', href: '/student', icon: <FiUser />, authOnly: true },
+    { label: 'About Us', href: '/about', icon: <FiUser />, visitorOnly: true },
   ];
 
   useEffect(() => {
@@ -91,7 +92,7 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center space-x-6">
+        <div className="hidden lg:flex items-center space-x-6">
           {mounted &&
             navLinks.map(
               ({ label, href, icon, adminOnly, authOnly }) =>
@@ -147,7 +148,7 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Toggle */}
-        <div className="md:hidden">
+        <div className="lg:hidden">
           <button onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
           </button>
@@ -155,7 +156,7 @@ const Navbar = () => {
       </div>
 
       {isOpen && (
-        <div className="md:hidden px-4 pt-4 pb-6 space-y-3 bg-white shadow">
+        <div className="lg:hidden px-4 pt-4 pb-6 space-y-3 bg-white shadow">
           {mounted &&
             navLinks.map(
               ({ label, href, icon, adminOnly, authOnly }) =>

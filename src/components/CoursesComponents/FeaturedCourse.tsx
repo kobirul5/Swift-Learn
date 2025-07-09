@@ -1,11 +1,12 @@
 import Image from "next/image"
+import Link from "next/link"
 
 export default function FeaturedCourse() {
 
 
     const course = {
         id: 1,
-        title: 'Complete React Developer in 2024',
+        title: 'Complete React Developer in 2025',
         instructor: 'Alex Johnson',
         category: 'Web Development',
         level: 'Intermediate',
@@ -64,9 +65,9 @@ export default function FeaturedCourse() {
                             </div>
                             <div className="flex items-center justify-between">
                                 <span className="text-2xl font-bold text-dark-800">${course.price}</span>
-                                <button className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors">
+                                <Link href={'/courses/details/686902dc991d9564f07ee844'} className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors">
                                     Enroll Now
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </div>
