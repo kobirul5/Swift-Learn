@@ -15,9 +15,8 @@ export default function MyCourses() {
   const userId = userData?.data?._id;
   
 
-  const { data, isLoading } = useGetEnrolmentCourseByStudentIdQuery(userId, {
-    skip: !userId, 
-  });
+  const { data, isLoading } = useGetEnrolmentCourseByStudentIdQuery(userId);
+  console.log(data,"--------------------")
 
 
   useEffect(() => {
@@ -57,12 +56,12 @@ export default function MyCourses() {
               <p className="text-gray-600 text-sm mb-2">By Jhankar Mahbub</p>
 
               {/* Optional: Progress bar */}
-              <div className="w-full bg-gray-200 h-2 rounded mb-3">
+              {/* <div className="w-full bg-gray-200 h-2 rounded mb-3">
                 <div
                   className="bg-primary-500 h-2 rounded"
                   style={{ width: `${80}%` }}
                 ></div>
-              </div>
+              </div> */}
 
               <Link
                 href={`/student/${course._id}`}

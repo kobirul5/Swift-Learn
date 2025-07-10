@@ -1,13 +1,14 @@
 'use client'
-import { useGetCourseByIdQuery } from '@/features/courseAPI';
+import { useCreateEnrollmentMutation, useGetCourseByIdQuery } from '@/features/courseAPI';
 import { ICourse } from '@/type/course.interface';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { FiClock, FiStar, FiUsers } from 'react-icons/fi';
 import CourseBenefits from '../CourseBenefits';
 import CourseInstructor from '../CourseInstructor';
+import { useGetUserQuery } from '@/features/userAPI';
 
 
 
@@ -15,21 +16,48 @@ export default function CourseDetailPage() {
   const { id } = useParams()
   const [course, setCourses] = useState<ICourse>();
   const { data, isLoading } = useGetCourseByIdQuery(id);
+  const { data: user } = useGetUserQuery(undefined)
+  const [createEnrollment] = useCreateEnrollmentMutation()
+
+  const router = useRouter()
+
 
   useEffect(() => {
+    if (!data || !user) {
+      return
+    }
     if (data) {
       setCourses(data.data);
     }
-  }, [data]);
+  }, [data, user]);
 
-  const handleEnrollment = (courseId:string) => {
-    toast.success("Enrollment Successful")
-    console.log(courseId)
-    // ToDos
-    // get user id, 
-    // send user id, course id throw api
-    // save data in backend
-    // change api in backend
+
+
+  const handleEnrollment = async (courseId: string) => {
+    if (!courseId) {
+      toast.error("Something is Wrong")
+      return
+    }
+    if (!user?.data?._id) {
+      toast.error("Please login first");
+      return
+    }
+
+    const enrolmentData = {
+      student: user.data._id,
+      progress: [
+        {
+          course: courseId ,
+          completedLectures: []
+        }
+      ]
+    }
+    const res = await createEnrollment(enrolmentData)
+    if (res?.data?.success) {
+      toast.success("Enrollment Successful")
+      router.push('/student')
+    }
+
   }
 
 
@@ -78,13 +106,13 @@ export default function CourseDetailPage() {
 
           <button
             onClick={() => handleEnrollment(course._id)}
-            className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-700 transition-colors">
             Enroll Now
           </button>
         </div>
       </div>
       <CourseBenefits />
-      <CourseInstructor/>
+      <CourseInstructor />
     </section>
   );
 }

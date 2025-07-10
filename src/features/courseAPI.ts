@@ -52,6 +52,14 @@ export const courseAPI = createApi({
       }),
       invalidatesTags: ["course"]
     }),
+    createEnrollment: builder.mutation({
+      query: (updateCourse ) => ({
+        url: `/api/enrollment`,
+        method: 'POST',
+        data: updateCourse
+      }),
+      invalidatesTags: ["course"]
+    }),
     
   }),
 });
@@ -62,5 +70,6 @@ export const {
   useCreateCourseMutation,
   useDeleteCourseMutation,
   useUpdateCourseMutation,
-  useGetEnrolmentCourseByStudentIdQuery
+  useGetEnrolmentCourseByStudentIdQuery,
+  useCreateEnrollmentMutation,
 } = courseAPI;
