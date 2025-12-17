@@ -1,10 +1,10 @@
+import axiosBaseQuery from "@/utils/axiosBaseQuery";
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { axiosBaseQuery } from "@/utils/axiosBaseQuery";
 
 
 export const moduleAndLectureAPI = createApi({
   reducerPath: "lectureAPI",
-  baseQuery: axiosBaseQuery({ baseUrl: "https://swift-learn-server-fnu4.vercel.app" }),
+  baseQuery: axiosBaseQuery(),
   tagTypes:['modules'],
   endpoints: (builder) => ({
     getModule: builder.query({

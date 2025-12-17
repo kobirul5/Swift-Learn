@@ -1,42 +1,39 @@
-import type { BaseQueryFn } from '@reduxjs/toolkit/query';
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
-type AxiosBaseQueryArgs = {
-  url: string;
-  method: AxiosRequestConfig['method'];
-  data?: AxiosRequestConfig['data'];
-  params?: AxiosRequestConfig['params'];
-};
+import { BaseQueryFn } from "@reduxjs/toolkit/query";
+import { AxiosError, AxiosRequestConfig } from "axios";
+import { axiosInstance } from "./axios";
 
-export const axiosBaseQuery =
-  ({ baseUrl }: { baseUrl: string } = { baseUrl: '' }): BaseQueryFn<
-    AxiosBaseQueryArgs,
+const axiosBaseQuery =
+  (): BaseQueryFn<
+    {
+      url: string;
+      method?: AxiosRequestConfig["method"];
+      data?: AxiosRequestConfig["data"];
+      params?: AxiosRequestConfig["params"];
+      headers?: AxiosRequestConfig["headers"];
+    },
     unknown,
     unknown
   > =>
-  async ({ url, method, data, params }) => {
+  async ({ url, method, data, params, headers }) => {
     try {
-       const token = typeof window !== 'undefined' ? localStorage.getItem("accessToken") : null;
-      const result: AxiosResponse = await axios({
-        url: baseUrl + url,
+      const result = await axiosInstance({
+        url: url,
         method,
         data,
         params,
-         headers: token
-            ? {
-                Authorization: `Bearer ${token}`,
-              }
-            : {},
-        withCredentials: true, 
+        headers,
       });
       return { data: result.data };
     } catch (axiosError) {
       const err = axiosError as AxiosError;
       return {
         error: {
-          status: err.response?.status || 500,
+          status: err.response?.status,
           data: err.response?.data || err.message,
         },
       };
     }
   };
+
+export default axiosBaseQuery;

@@ -1,5 +1,5 @@
+import axiosBaseQuery from "@/utils/axiosBaseQuery";
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { axiosBaseQuery } from "@/utils/axiosBaseQuery";
 
 // let email = "demo@gmail.com";
 
@@ -13,7 +13,7 @@ import { axiosBaseQuery } from "@/utils/axiosBaseQuery";
 
 export const userAPI = createApi({
   reducerPath: "baseAPI",
-  baseQuery: axiosBaseQuery({ baseUrl: "https://swift-learn-server-fnu4.vercel.app" }),
+  baseQuery: axiosBaseQuery(),
   tagTypes:['user'],
   endpoints: (builder) => ({
     getUser: builder.query({
