@@ -9,14 +9,14 @@ export const moduleAndLectureAPI = createApi({
   endpoints: (builder) => ({
     getModule: builder.query({
       query: (courseId) => ({
-        url: `/api/modules/${courseId}`,
+        url: `/modules/${courseId}`,
         method: "GET",
       }),
       providesTags:['modules']
     }),
     createModule: builder.mutation({
       query: (data) => ({
-        url: `/api/modules/create`,
+        url: `/modules/create`,
         method: "POST",
         data
       }),
@@ -24,7 +24,7 @@ export const moduleAndLectureAPI = createApi({
     }),
     createLecture: builder.mutation({
       query: (data) => ({
-        url: `/api/lecture`,
+        url: `/lecture`,
         method: "POST",
         data
       }),
@@ -32,7 +32,7 @@ export const moduleAndLectureAPI = createApi({
     }),
     deleteLecture: builder.mutation({
       query: (id) => ({
-        url: `/api/lecture/${id}`,
+        url: `/lecture/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ['modules']

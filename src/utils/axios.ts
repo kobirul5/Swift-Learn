@@ -2,9 +2,11 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
+  // baseURL: "https://swift-learn-server-fnu4.vercel.app/api",
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
 });
+console.log(process.env.NEXT_PUBLIC_API_URL, "---API URL");
 
 // Add a request interceptor
 axiosInstance.interceptors.request.use(

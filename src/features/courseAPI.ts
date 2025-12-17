@@ -9,21 +9,21 @@ export const courseAPI = createApi({
   endpoints: (builder) => ({
     getCourse: builder.query({
       query: () => ({
-        url: `/api/courses`,
+        url: `/courses`,
         method: "GET",
       }),
       providesTags: ['course']
     }),
     getCourseById: builder.query({
       query: (id) => ({
-        url: `/api/courses/${id}`,
+        url: `/courses/${id}`,
         method: "GET",
       }),
       providesTags: ['course']
     }),
     getEnrolmentCourseByStudentId: builder.query({
       query: (id) => ({
-        url: `/api/enrollment/${id}`,
+        url: `/enrollment/${id}`,
         method: "GET",
       }),
       providesTags: ['course']
@@ -31,7 +31,7 @@ export const courseAPI = createApi({
 
     createCourse: builder.mutation({
       query: (courseData) => ({
-        url: "/api/courses/create-course",
+        url: "/courses/create-course",
         method: "POST",
         data: courseData,
       }),
@@ -39,14 +39,14 @@ export const courseAPI = createApi({
     }),
     deleteCourse: builder.mutation({
       query: (id) => ({
-        url: `/api/courses/${id}`,
+        url: `/courses/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["course"]
     }),
     updateCourse: builder.mutation({
       query: (updateCourse ) => ({
-        url: `/api/courses/${updateCourse?.id}`,
+        url: `/courses/${updateCourse?.id}`,
         method: 'PATCH',
         data: updateCourse
       }),
@@ -54,7 +54,7 @@ export const courseAPI = createApi({
     }),
     createEnrollment: builder.mutation({
       query: (updateCourse ) => ({
-        url: `/api/enrollment`,
+        url: `/enrollment`,
         method: 'POST',
         data: updateCourse
       }),
