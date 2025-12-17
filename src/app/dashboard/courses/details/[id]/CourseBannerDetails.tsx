@@ -1,6 +1,6 @@
 'use client';
 
-import { useDeleteCourseMutation, useGetCourseByIdQuery } from "@/features/courseAPI";
+import { useDeleteCourseMutation, useGetCourseByIdQuery } from "@/redux/features/courseAPI";
 import { useEffect, useState } from "react";
 import { ICourse } from "@/type/course.interface";
 import Swal from "sweetalert2";

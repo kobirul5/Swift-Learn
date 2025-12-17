@@ -4,7 +4,7 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { FiX, FiPlus, FiTrash, FiLoader } from 'react-icons/fi';
 // import useAxiosPublic from '@/hooks/useAxiosPublic';
-import { useCreateLectureMutation } from '@/features/moduleAndLectureAPI';
+import { useCreateLectureMutation } from '@/redux/features/moduleAndLectureAPI';
 
 interface VideoModalProps {
   moduleId: string;

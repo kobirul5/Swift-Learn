@@ -1,5 +1,5 @@
 'use client'
-import { useGetUserQuery } from '@/features/userAPI';
+import { useGetUserQuery } from '@/redux/features/userAPI';
 import { IUser } from '@/type/user.interface';
 import { NextPage } from 'next';
 import Image from 'next/image';

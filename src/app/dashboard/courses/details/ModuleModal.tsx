@@ -1,5 +1,5 @@
 
-import { useCreateModuleMutation, useGetModuleQuery } from "@/features/moduleAndLectureAPI";
+import { useCreateModuleMutation, useGetModuleQuery } from "@/redux/features/moduleAndLectureAPI";
 // import useAxiosPublic from "@/hooks/useAxiosPublic";
 import { useState } from "react";
 import toast from "react-hot-toast";

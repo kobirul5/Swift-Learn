@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useCreateCourseMutation } from '@/features/courseAPI';
+import { useCreateCourseMutation } from '@/redux/features/courseAPI';
 import toast from 'react-hot-toast';
 
 

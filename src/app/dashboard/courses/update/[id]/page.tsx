@@ -1,6 +1,6 @@
 'use client';
 import { useParams, useRouter } from 'next/navigation';
-import { useUpdateCourseMutation } from '@/features/courseAPI';
+import { useUpdateCourseMutation } from '@/redux/features/courseAPI';
 import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import useAxiosPublic from '@/hooks/useAxiosPublic';

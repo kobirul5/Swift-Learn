@@ -2,7 +2,7 @@
 import Heading from '@/components/Heading';
 // import { FiCode, FiDatabase, FiSmartphone, FiServer } from 'react-icons/fi';
 import CourseCard from './CourseCard';
-import { useGetCourseQuery } from '@/features/courseAPI';
+import { useGetCourseQuery } from '@/redux/features/courseAPI';
 import { ICourse } from '@/type/course.interface';
 import { useEffect, useState } from 'react';
 

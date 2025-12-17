@@ -1,7 +1,7 @@
 'use client';
 
-import { useGetEnrolmentCourseByStudentIdQuery } from '@/features/courseAPI';
-import { useGetUserQuery } from '@/features/userAPI';
+import { useGetEnrolmentCourseByStudentIdQuery } from '@/redux/features/courseAPI';
+import { useGetUserQuery } from '@/redux/features/userAPI';
 import { ICourse } from '@/type/course.interface';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';

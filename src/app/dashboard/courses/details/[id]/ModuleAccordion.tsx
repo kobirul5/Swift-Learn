@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { IModule } from '@/type/module';
 import ModuleItem from './ModuleItem';
-import { useGetModuleQuery } from '@/features/moduleAndLectureAPI';
+import { useGetModuleQuery } from '@/redux/features/moduleAndLectureAPI';
 
 
 interface Props {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useGetUserQuery, useLogoutUserMutation, userAPI } from '@/features/userAPI';
+import { useGetUserQuery, useLogoutUserMutation, userAPI } from '@/redux/features/userAPI';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';

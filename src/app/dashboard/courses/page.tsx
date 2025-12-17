@@ -1,7 +1,7 @@
 'use client';
 // import Image from 'next/image';
 import Link from 'next/link';
-import { useGetCourseQuery } from '@/features/courseAPI';
+import { useGetCourseQuery } from '@/redux/features/courseAPI';
 import { ICourse } from '@/type/course.interface';
 
 const Courses = () => {

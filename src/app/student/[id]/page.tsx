@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { IModule } from '@/type/module';
-import { useGetModuleQuery } from '@/features/moduleAndLectureAPI';
+import { useGetModuleQuery } from '@/redux/features/moduleAndLectureAPI';
 import VideoForLecture from './VideoForLecture';
 
 import LectureSidebar from './LectureSidebar';

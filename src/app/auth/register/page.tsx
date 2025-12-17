@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { FiUser, FiMail, FiLock } from 'react-icons/fi';
-import { useCreateUserMutation } from '@/features/userAPI';
+import { useCreateUserMutation } from '@/redux/features/userAPI';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
