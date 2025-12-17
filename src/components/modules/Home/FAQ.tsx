@@ -1,8 +1,8 @@
 'use client';
 
+import Heading from '@/components/Heading';
 import { useState } from 'react';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
-import Heading from '../Heading';
 
 interface FAQItem {
   id: number;

@@ -1,9 +1,9 @@
 'use client'
+import AllCourses from '@/components/modules/CoursesComponents/AllCourses';
+import CoursesHero from '@/components/modules/CoursesComponents/CoursesHero';
+import FeaturedCourse from '@/components/modules/CoursesComponents/FeaturedCourse';
 import { useState } from 'react';
-import CoursesHero from '@/components/CoursesComponents/CoursesHero';
-// import CoursesCategories from '@/components/CoursesComponents/CoursesCategories';
-import FeaturedCourse from '@/components/CoursesComponents/FeaturedCourse';
-import AllCourses from '@/components/CoursesComponents/AllCourses';
+
 
 
 export type IICourse = {

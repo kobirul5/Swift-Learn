@@ -2,8 +2,8 @@
 
 import { FiTwitter, FiLinkedin, FiGithub, FiAward } from 'react-icons/fi';
 import Image from 'next/image';
-import Heading from '../Heading';
 import InstructorCarousel from './InstructorCarousel';
+import Heading from '@/components/Heading';
 
 const Instructor = () => {
   return (

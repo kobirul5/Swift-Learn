@@ -1,7 +1,7 @@
 
 import { FiPlay, FiSearch, FiAward, FiUsers } from 'react-icons/fi';
-import Button from '../Button';
 import HeroVideo from './HeroVideo';
+import Button from '@/components/Button';
 
 interface StatItem {
   icon: React.ReactNode;

@@ -1,7 +1,7 @@
 'use client'
+import Heading from '@/components/Heading';
 // import { FiCode, FiDatabase, FiSmartphone, FiServer } from 'react-icons/fi';
 import CourseCard from './CourseCard';
-import Heading from '../Heading';
 import { useGetCourseQuery } from '@/features/courseAPI';
 import { ICourse } from '@/type/course.interface';
 import { useEffect, useState } from 'react';
