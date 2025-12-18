@@ -85,11 +85,11 @@ export function LectureSidebar() {
     )
 
     if (!expandedModules.includes(moduleId)) {
-      const module = coursesData.find((m) => m.id === moduleId)
-      if (module) {
-        const firstLessons = module.lessons.slice(0, 3).map((l) => l.id)
+      const moduleData = coursesData.find((m) => m.id === moduleId)
+      if (moduleData) {
+        const firstLessons = moduleData.lessons.slice(0, 3).map((l) => l.id)
         setLoadedLessons((prev) => [...new Set([...prev, ...firstLessons])])
-        module.lessons.slice(3).forEach((lesson, index) => {
+        moduleData.lessons.slice(3).forEach((lesson, index) => {
           setTimeout(() => {
             setLoadedLessons((prev) => [...new Set([...prev, lesson.id])])
           }, (index + 1) * 500)

@@ -33,16 +33,6 @@ const LearningPlatform = () => {
         }
     }, [data]);
 
-
-    const handleLectureClick = (lectureId: string) => {
-        setCurrentLectureId(lectureId);
-    };
-    
-
-    const toggleModule = (moduleId: string) => {
-        setExpandedModule(prev => (prev === moduleId ? null : moduleId));
-    };
-
     if (isLoading) {
         return <h1 className="py-40 text-center text-xl font-semibold">Loading...</h1>;
     }

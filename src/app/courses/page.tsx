@@ -1,7 +1,7 @@
 'use client'
-import AllCourses from '@/components/modules/CoursesComponents/AllCourses';
-import CoursesHero from '@/components/modules/CoursesComponents/CoursesHero';
-import FeaturedCourse from '@/components/modules/CoursesComponents/FeaturedCourse';
+import AllCourses from '@/components/pages/courses/AllCourses';
+import CoursesHero from '@/components/pages/courses/CoursesHero';
+import FeaturedCourse from '@/components/pages/courses/FeaturedCourse';
 import { useState } from 'react';
 
 

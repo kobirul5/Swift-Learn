@@ -1,9 +1,9 @@
-import ContactUs from "@/components/modules/Home/ContectUs";
-import CoursesSection from "@/components/modules/Home/CoursesSection";
-import FAQ from "@/components/modules/Home/FAQ";
-import HeroBanner from "@/components/modules/Home/HeroBanner";
-import Instructor from "@/components/modules/Home/Instructors";
-import Testimonials from "@/components/modules/Home/Testimonials";
+import ContactUs from "@/components/pages/home/ContectUs";
+import CoursesSection from "@/components/pages/home/CoursesSection";
+import FAQ from "@/components/pages/home/FAQ";
+import HeroBanner from "@/components/pages/home/HeroBanner";
+import Instructor from "@/components/pages/home/Instructors";
+import Testimonials from "@/components/pages/home/Testimonials";
 
 
 
