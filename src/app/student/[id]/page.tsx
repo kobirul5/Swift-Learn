@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react';
 import { IModule } from '@/type/module';
 import { useGetModuleQuery } from '@/redux/features/moduleAndLectureAPI';
 import VideoForLecture from './VideoForLecture';
+import { LectureSidebar } from './LectureSidebar';
 
-import LectureSidebar from './LectureSidebar';
 
 const LearningPlatform = () => {
     const params = useParams();
@@ -37,6 +37,7 @@ const LearningPlatform = () => {
     const handleLectureClick = (lectureId: string) => {
         setCurrentLectureId(lectureId);
     };
+    
 
     const toggleModule = (moduleId: string) => {
         setExpandedModule(prev => (prev === moduleId ? null : moduleId));
@@ -81,11 +82,11 @@ const LearningPlatform = () => {
 
                 {/* Sidebar */}
                 <LectureSidebar
-                currentLectureId={currentLectureId}
-                expandedModule={expandedModule}
-                handleLectureClick={handleLectureClick}
-                modules={modules}
-                toggleModule={toggleModule}
+                // currentLectureId={currentLectureId}
+                // expandedModule={expandedModule}
+                // handleLectureClick={handleLectureClick}
+                // modules={modules}
+                // toggleModule={toggleModule}
                 />
 
 

@@ -1,5 +1,6 @@
 
 import axios from "axios";
+import Cookies from "js-cookie";
 
 export const axiosInstance = axios.create({
   // baseURL: "https://swift-learn-server-fnu4.vercel.app/api",
@@ -12,6 +13,12 @@ console.log(process.env.NEXT_PUBLIC_API_URL, "---API URL");
 axiosInstance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
+    const token = Cookies.get("token"); // 👈 cookie name
+    console.log(token,"from interceptor--------------------------------");
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
 
     return config;
   },

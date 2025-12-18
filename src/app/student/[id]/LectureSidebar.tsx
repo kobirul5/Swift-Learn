@@ -1,118 +1,219 @@
-import { FiCheckCircle, FiChevronDown, FiSearch } from "react-icons/fi";
+"use client"
 
-import React from 'react'
-import { ILecture, IModule } from "@/type/module";
+import { useState } from "react"
+import { Search, CheckCircle2, Lock, Play, ChevronDown } from "lucide-react"
+import { cn } from "@/utils/cd"
 
-export interface LectureSidebarProps {
-  modules: IModule[];
-  toggleModule: (moduleId: string) => void;
-  expandedModule: string | null;
-  currentLectureId: string | null;
-  handleLectureClick: (lectureId: string) => void;
+interface Lesson {
+  id: string
+  title: string
+  duration: string
+  status: "completed" | "active" | "locked"
+  type: "video" | "text"
 }
 
-export default function LectureSidebar(
-    {modules,
-    toggleModule,
-    expandedModule,
-    currentLectureId,
-    handleLectureClick }:LectureSidebarProps
-) {
-    return (
-        <div className="lg:col-span-4 bg-primary-100 h-[700px] rounded-xl text-white overflow-y-auto shadow-xl ">
-            {/* Search Section */}
-            <div className="sticky top-0 z-10 bg-primary-100 p-5 border-b border-dark-800 backdrop-blur-sm bg-opacity-90">
-                <div className="text-sm font-medium text-dark-900 mb-2">Search Lectures</div>
-                <div className="relative">
-                    <input
-                        type="text"
-                        placeholder="Type to search lessons..."
-                        className="w-full px-4 py-2.5 bg-primary-800 rounded-lg text-sm text-white placeholder-dark-500 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all border border-dark-700 hover:border-dark-600"
-                    />
-                    <FiSearch className="absolute right-3 top-3 h-4 w-4 text-dark-900" />
-                </div>
-            </div>
+interface Module {
+  id: string
+  title: string
+  totalDuration: string
+  progress: string
+  lessons: Lesson[]
+}
 
-            {/* Modules List */}
-            <div className="p-5 space-y-4">
-                <div className="text-xs uppercase tracking-wider text-dark-900 font-medium mb-2 flex items-center">
-                    <span>Course Curriculum</span>
-                    <span className="ml-auto text-xs text-dark-900">{modules.length} Modules</span>
-                </div>
+const coursesData: Module[] = [
+  {
+    id: "module-65",
+    title: "Module 65: AI Basics",
+    totalDuration: "18 min",
+    progress: "2/2",
+    lessons: [
+      {
+        id: "65-8",
+        title: "65-8 Setting up the AI emphasized Hero section",
+        duration: "9 min",
+        status: "completed",
+        type: "video",
+      },
+      {
+        id: "65-9",
+        title: "65-9 Hero section completion and tasks",
+        duration: "9 min",
+        status: "active",
+        type: "video",
+      },
+    ],
+  },
+  {
+    id: "module-66",
+    title: "Module 66: PH Healthcare Frontend New Part-2",
+    totalDuration: "2 h 9 m",
+    progress: "0/11",
+    lessons: [
+      {
+        id: "66-text",
+        title: "Text Instruction: Module 66",
+        duration: "",
+        status: "locked",
+        type: "text",
+      },
+      {
+        id: "66-1",
+        title: "66-1 Planning The Routing Architecture Of Ph Healthcare",
+        duration: "15 min",
+        status: "locked",
+        type: "video",
+      },
+      {
+        id: "66-2",
+        title: "66-2 Routing Setup In The Project",
+        duration: "12 min",
+        status: "locked",
+        type: "video",
+      },
+    ],
+  },
+]
 
-                {modules.map((module: IModule, idx:number) => (
-                    <div key={module._id} className="mb-2">
-                        {/* Module Header */}
-                        <div
-                            onClick={() => toggleModule(module._id)}
-                            className={`p-4 rounded-xl cursor-pointer transition-all flex justify-between items-center ${expandedModule === module._id
-                                ? 'bg-primary-800 shadow-sm border border-dark-700'
-                                : 'bg-primary-800 hover:bg-dark-750 border border-dark-800 hover:border-dark-700'
-                                }`}
-                        >
-                            <div className="flex items-center space-x-4">
-                                <div className={`flex items-center justify-center h-9 w-9 rounded-lg ${expandedModule === module._id
-                                    ? 'bg-primary-600 text-white'
-                                    : 'bg-dark-700 text-dark-900'
-                                    }`}>
-                                    <span className="font-medium text-sm">{idx + 1}</span>
-                                </div>
-                                <div>
-                                    <div className="font-medium text-dark-100">{module.title}</div>
-                                    <div className="text-xs text-dark-100 mt-1 flex items-center space-x-2">
-                                        <span>{module.lectures?.length || 0} Lessons</span>
-                                        <span>•</span>
-                                        {/* <span>{calculateTotalDuration(module.lectures)}</span> */}
-                                    </div>
-                                </div>
-                            </div>
-                            <FiChevronDown
-                                className={`w-5 h-5 text-dark-900 transition-transform duration-200 ${expandedModule === module._id ? 'rotate-180' : ''
-                                    }`}
-                            />
+export function LectureSidebar() {
+  const [searchQuery, setSearchQuery] = useState("")
+  const [expandedModules, setExpandedModules] = useState<string[]>(["module-65"])
+  const [loadedLessons, setLoadedLessons] = useState<string[]>(["65-8", "65-9"])
+
+  const toggleModule = (moduleId: string) => {
+    setExpandedModules((prev) =>
+      prev.includes(moduleId) ? prev.filter((id) => id !== moduleId) : [...prev, moduleId]
+    )
+
+    if (!expandedModules.includes(moduleId)) {
+      const module = coursesData.find((m) => m.id === moduleId)
+      if (module) {
+        const firstLessons = module.lessons.slice(0, 3).map((l) => l.id)
+        setLoadedLessons((prev) => [...new Set([...prev, ...firstLessons])])
+        module.lessons.slice(3).forEach((lesson, index) => {
+          setTimeout(() => {
+            setLoadedLessons((prev) => [...new Set([...prev, lesson.id])])
+          }, (index + 1) * 500)
+        })
+      }
+    }
+  }
+
+  const filteredModules = coursesData
+    .map((module) => ({
+      ...module,
+      lessons: module.lessons.filter((lesson) =>
+        lesson.title.toLowerCase().includes(searchQuery.toLowerCase())
+      ),
+    }))
+    .filter((module) => module.lessons.length > 0)
+
+  return (
+    <aside className="w-[430px] bg-[var(--color-primary-50)] border-r border-[var(--color-primary-100)] flex flex-col h-screen">
+      {/* Search */}
+      <div className="p-4 border-b border-[var(--color-primary-100)]">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--color-primary-400)]" />
+          <input
+            type="text"
+            placeholder="Search Lesson"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-3 py-2 rounded-md bg-[var(--color-primary-100)] border border-[var(--color-primary-200)] text-[var(--color-dark-900)] placeholder:text-[var(--color-primary-300)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-500)] focus:border-[var(--color-primary-500)]"
+          />
+        </div>
+      </div>
+
+      {/* Lessons List */}
+      <div className="flex-1 overflow-y-auto">
+        {filteredModules.map((module) => (
+          <div key={module.id} className="border-b border-[var(--color-primary-200)]">
+            {/* Module Header */}
+            <button
+              onClick={() => toggleModule(module.id)}
+              className="w-full px-4 py-4 flex items-start gap-3 hover:bg-[var(--color-primary-100)] transition-colors"
+            >
+              <ChevronDown
+                className={cn(
+                  "w-5 h-5 text-[var(--color-primary-400)] mt-1 transition-transform flex-shrink-0",
+                  expandedModules.includes(module.id) ? "rotate-0" : "-rotate-90"
+                )}
+              />
+              <div className="flex-1 text-left">
+                <h3 className="text-sm font-semibold text-[var(--color-dark-900)] leading-tight mb-1">{module.title}</h3>
+                <div className="flex items-center gap-2 text-xs text-[var(--color-primary-400)]">
+                  <span>{module.totalDuration}</span>
+                  <span>•</span>
+                  <span>{module.progress}</span>
+                </div>
+              </div>
+            </button>
+
+            {/* Lessons */}
+            {expandedModules.includes(module.id) && (
+              <div className="pb-2">
+                {module.lessons.map((lesson) => {
+                  const isLoaded = loadedLessons.includes(lesson.id)
+
+                  if (!isLoaded) {
+                    return (
+                      <div
+                        key={lesson.id}
+                        className="px-4 py-3 mx-4 mb-2 rounded-lg bg-[var(--color-primary-100)]/50 animate-pulse"
+                      >
+                        <div className="h-4 bg-[var(--color-primary-200)] rounded w-3/4 mb-2" />
+                        <div className="h-3 bg-[var(--color-primary-200)] rounded w-1/4" />
+                      </div>
+                    )
+                  }
+
+                  return (
+                    <button
+                      key={lesson.id}
+                      className={cn(
+                        "w-full px-4 py-3 mx-4 mb-2 rounded-lg text-left transition-all hover:bg-[var(--color-primary-200)]",
+                        lesson.status === "active" &&
+                          "bg-gradient-to-r from-[var(--color-primary-300)] to-[var(--color-primary-500)] hover:from-[var(--color-primary-400)] hover:to-[var(--color-primary-600)]",
+                        lesson.status === "completed" && "bg-[var(--color-primary-100)]",
+                        lesson.status === "locked" && "opacity-70"
+                      )}
+                      disabled={lesson.status === "locked"}
+                    >
+                      <div className="flex items-start gap-3">
+                        {/* Icon */}
+                        <div className="flex-shrink-0 mt-0.5">
+                          {lesson.status === "completed" && <CheckCircle2 className="w-5 h-5 text-[var(--color-primary-500)]" />}
+                          {lesson.status === "locked" && <Lock className="w-5 h-5 text-[var(--color-primary-300)]" />}
+                          {lesson.status === "active" && lesson.type === "video" && (
+                            <Play className="w-5 h-5 text-[var(--color-dark-900)]" />
+                          )}
                         </div>
 
-                        {/* Lectures List */}
-                        {expandedModule === module._id && (
-                            <div className="mt-3 ml-3 pl-5 border-l-2 border-dark-700 space-y-2 animate-fadeIn">
-                                {module.lectures.map((lecture: ILecture) => {
-                                    const duration = lecture.duration || '5:00';
-                                    const completed = lecture.isCompleted || false;
-
-                                    return (
-                                        <div
-                                            key={lecture._id}
-                                            onClick={() => handleLectureClick(lecture._id)}
-                                            className={`p-3 text-sm rounded-lg cursor-pointer transition-all flex justify-between items-center ${currentLectureId === lecture._id
-                                                ? 'bg-primary-800/70 text-white '
-                                                : completed
-                                                    ? 'text-dark-900 hover:bg-primary-800 '
-                                                    : 'text-dark-900 hover:bg-primary-800 '
-                                                }`}
-                                        >
-                                            <div className="flex items-center">
-                                                <div className={`h-2 w-2 rounded-full mr-3 ${currentLectureId === lecture._id
-                                                    ? 'bg-primary-400'
-                                                    : completed
-                                                        ? 'bg-green-500'
-                                                        : 'bg-dark-600'
-                                                    }`}></div>
-                                                <span className="truncate max-w-[180px]">{lecture.title}</span>
-                                                {completed && (
-                                                    <FiCheckCircle className="ml-2 h-4 w-4 text-green-500 flex-shrink-0" />
-                                                )}
-                                            </div>
-                                            <span className="text-xs text-dark-900 ml-2 whitespace-nowrap">
-                                                {duration}
-                                            </span>
-                                        </div>
-                                    );
-                                })}
+                        {/* Content */}
+                        <div className="flex-1 min-w-0">
+                          <h4
+                            className={cn(
+                              "text-sm font-medium mb-1 leading-snug",
+                              lesson.status === "locked" ? "text-[var(--color-primary-400)]" : "text-[var(--color-dark-900)]"
+                            )}
+                          >
+                            {lesson.title}
+                          </h4>
+                          {lesson.duration && (
+                            <div className="flex items-center gap-2 text-xs text-[var(--color-primary-400)]">
+                              <Play className="w-3 h-3" />
+                              <span>{lesson.duration}</span>
                             </div>
-                        )}
-                    </div>
-                ))}
-            </div>
-        </div>
-    )
+                          )}
+                        </div>
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </aside>
+  )
 }
