@@ -1,30 +1,33 @@
-
 'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useLoginUserMutation } from '@/redux/features/userAPI';
+import { FiUser, FiMail, FiLock } from 'react-icons/fi';
+import { useCreateUserMutation } from '@/redux/features/userAPI';
 import toast from 'react-hot-toast';
-// import { useRouter } from 'next/navigation';
-import { FiLock, FiMail } from 'react-icons/fi';
+import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 
-interface IUser {
-  email: string,
-  password: string
+interface UserData{
+   name: string,
+    email: string,
+    password: string,
 }
 
-export default function LoginPage() {
 
-  const [loginUser] = useLoginUserMutation()
-  // const router = useRouter()
 
-  const [userData, setUserData] = useState<IUser>({
+export default function SignupPage() {
+  const [createUser] = useCreateUserMutation()
+  const router = useRouter()
+  const [userData, setUserData] = useState<UserData>({
+    name: '',
     email: '',
-    password: ''
+    password: '',
   });
+ 
 
-  // handle form data
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserData((prev) => ({
@@ -33,29 +36,27 @@ export default function LoginPage() {
     }));
   };
 
-  // handle user login
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if(userData.password !== confirmPassword ){
+      return toast.error("Password not matched")
+    }
+    const res = await createUser(userData)
 
-    const res = await loginUser(userData)
-
-    if (res.data?.success) {
-      // Assuming res.data.accessToken has the JWT token
-      localStorage.setItem('accessToken', res.data.token);
+    if(res.data?.success){
+      
+      toast.success("create user successfully")
+       localStorage.setItem('accessToken', res.data.token);
       Cookies.set("token", res.data.token)
-      toast.success("Login successfully")
       // router.push("/")
       setTimeout(() => {
         window.location.replace('/')
-      }, 200);
+      }, 200)
+      router.push("/")
+      setUserData({ name: "", email: "", password: "" });
+      setConfirmPassword("");
     }
-
-    if (!res?.data?.success) {
-      toast.error("Invalid user")
-      return
-    }
-
-    setUserData({ email: "", password: "" });
+    
   }
 
 
@@ -65,14 +66,30 @@ export default function LoginPage() {
         <div className="text-center">
           <h1 className="text-3xl font-extrabold text-dark-900">Create your account</h1>
           <p className="mt-2 text-sm text-dark-600">
-            You don&apos;t have an account?{' '}
-            <Link href="/auth/register" className="font-medium text-primary-600 hover:text-primary-500">
-              Sign in
+            Already  have an account?{' '}
+            <Link href="/login" className="font-medium text-primary-600 hover:text-primary-500">
+              Login
             </Link>
           </p>
         </div>
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
           <div className="space-y-4">
+            {/* Name Field */}
+            <div className="relative">
+              <FiUser className="absolute left-3 top-3.5 text-dark-400" />
+              <input
+                id="name"
+                name="name"
+                type="text"
+                autoComplete="name"
+                required
+                value={userData.name}
+                onChange={handleChange}
+                placeholder="Full Name"
+                className="w-full pl-10 pr-4 py-3 border border-dark-300 rounded-md"
+              />
+            </div>
+
             {/* Email Field */}
             <div className="relative">
               <FiMail className="absolute left-3 top-3.5 text-dark-400" />
@@ -102,6 +119,23 @@ export default function LoginPage() {
                 value={userData.password}
                 onChange={handleChange}
                 placeholder="Password"
+                className="w-full pl-10 pr-4 py-3 border border-dark-300 rounded-md"
+              />
+            </div>
+
+            {/* Confirm Password Field */}
+            <div className="relative">
+              <FiLock className="absolute left-3 top-3.5 text-dark-400" />
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                autoComplete="new-password"
+                required
+                minLength={8}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm Password"
                 className="w-full pl-10 pr-4 py-3 border border-dark-300 rounded-md"
               />
             </div>

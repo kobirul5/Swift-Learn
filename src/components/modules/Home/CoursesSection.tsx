@@ -8,45 +8,7 @@ import { useEffect, useState } from 'react';
 
 
 const CoursesSection = () => {
-  // const programmingCourses = [
-  //   {
-  //     id: 1,
-  //     title: "JavaScript Fundamentals",
-  //     description: "Master the basics of JavaScript and modern ES6+ features to build interactive web applications.",
-  //     price: 29.99,
-  //     thumbnail: "https://i.ibb.co/cS00bL7Q/Java-Script-Fundamentals.jpg",
-  //     icon: <FiCode className="text-yellow-500" />,
-  //     category: "Web Development"
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Python for Data Science",
-  //     description: "Learn Python programming with NumPy, Pandas, and Matplotlib for data analysis and visualization.",
-  //     price: 39.99,
-  //     thumbnail: "/courses/app-development.png",
-  //     icon: <FiDatabase className="text-blue-500" />,
-  //     category: "Data Science"
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Mobile App Development with Flutter",
-  //     description: "Build beautiful cross-platform mobile apps using Flutter and Dart programming language.",
-  //     price: 34.99,
-  //     thumbnail: "/courses/python.png",
-  //     icon: <FiSmartphone className="text-green-500" />,
-  //     category: "Mobile Development"
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "Node.js Backend Mastery",
-  //     description: "Create robust backend services with Node.js, Express, and MongoDB database.",
-  //     price: 44.99,
-  //     thumbnail: "/courses/devops.png",
-  //     icon: <FiServer className="text-red-500" />,
-  //     category: "Backend Development"
-  //   }
-  // ];
-
+  
   const [courses, setCourses] = useState<ICourse[]>([]);
   const { data, isLoading } = useGetCourseQuery(undefined);
 

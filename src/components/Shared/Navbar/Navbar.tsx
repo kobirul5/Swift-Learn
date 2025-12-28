@@ -131,14 +131,14 @@ const Navbar = () => {
           ) : (
             <>
               <Link
-                href="/auth/login"
+                href="/login"
                 className="flex items-center space-x-1 text-dark-700 hover:text-primary"
               >
                 <FiLogIn />
                 <span>Login</span>
               </Link>
               <Link
-                href="/auth/register"
+                href="/register"
                 className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-700 transition-colors"
               >
                 Sign Up
@@ -202,7 +202,7 @@ const Navbar = () => {
             ) : (
               <>
                 <Link
-                  href="/auth/login"
+                  href="/login"
                   onClick={() => setIsOpen(false)}
                   className="flex items-center space-x-2 text-dark-700 hover:text-primary"
                 >
@@ -210,7 +210,7 @@ const Navbar = () => {
                   <span>Login</span>
                 </Link>
                 <Link
-                  href="/auth/register"
+                  href="/register"
                   onClick={() => setIsOpen(false)}
                   className="block text-center bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-700"
                 >
