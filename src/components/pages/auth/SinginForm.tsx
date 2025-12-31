@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { FiUser, FiMail, FiLock } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
+import { useCreateUserMutation } from '@/redux/api/auth';
+
 
 
 interface IUser {
@@ -14,7 +16,7 @@ interface IUser {
 }
 
 export default function SignupForm() {
-//   const [registerUser] = useRegisterUserMutation();
+ const [registerUser, { isLoading }] = useCreateUserMutation();
 
   const [userData, setUserData] = useState<IUser>({
     name: '',
@@ -38,18 +40,15 @@ export default function SignupForm() {
     }
 
     try {
-    //   const res: any = await registerUser(userData);
-
-    //   if (res?.data?.success) {
-    //     toast.success('Account created successfully');
-    //     setTimeout(() => {
-    //       window.location.replace('/login');
-    //     }, 300);
-    //   } else {
-    //     toast.error(res?.data?.message || 'Registration failed');
-    //   }
-    } catch {
-      toast.error('Something went wrong');
+     const res = await registerUser(userData).unwrap();
+      toast.success('Account created successfully');
+      
+      setUserData({ name: '', email: '', password: '' });
+      setConfirmPassword('');
+      
+   
+    } catch (error:any) {
+     toast.error(error?.data?.message || 'Registration failed');
     }
   };
 
@@ -149,14 +148,16 @@ export default function SignupForm() {
         </div>
 
         {/* Submit */}
+        
         <button
           type="submit"
+          disabled={isLoading}
           className="w-full py-4 rounded-xl text-white font-semibold
                      bg-primary-600 hover:bg-primary-700
                      focus:ring-4 focus:ring-primary-300
                      transition shadow-lg"
         >
-          Create Account
+          {isLoading ? 'Creating Account...' : 'Create Account'}
         </button>
 
         {/* Login Link */}
