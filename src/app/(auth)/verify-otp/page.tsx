@@ -5,8 +5,8 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { FiMail } from 'react-icons/fi';
 
-export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState('');
+export default function VerifyOtpPage() {
+  const [otp, setOtp] = useState(0);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -31,9 +31,9 @@ export default function ForgotPasswordPage() {
         <div className="max-w-md w-full">
           {/* Heading and description */}
           <div className="text-center mb-10">
-            <h1 className="text-4xl font-bold text-gray-900">Forgot Password?</h1>
+            <h1 className="text-4xl font-bold text-gray-900">Verify OTP</h1>
             <p className="mt-3 text-lg text-gray-600">
-              No worries! Enter your email and we will send you an OTP.
+              Enter the OTP sent to your email.
             </p>
           </div>
 
@@ -48,11 +48,11 @@ export default function ForgotPasswordPage() {
                 <div className="relative">
                   <FiMail className="absolute left-4 top-3.5 text-gray-400 w-5 h-5" />
                   <input
-                    id="email"
-                    type="email"
+                    id="otp"
+                    type="number"
                     required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={otp}
+                    onChange={(e) => setOtp(Number(e.target.value))}
                     placeholder="you@example.com"
                     className="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
                   />
@@ -74,7 +74,7 @@ export default function ForgotPasswordPage() {
               <Link
                 href="/login"
                 className="text-sm font-medium text-primary-600 hover:text-primary-700 hover:underline"
-              > 
+              >
                 ← Back to Login
               </Link>
             </div>

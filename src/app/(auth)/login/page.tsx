@@ -6,7 +6,8 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex">
       {/* Left Side - Education Theme Illustration */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary-600 to-primary-800 relative overflow-hidden">
+      <div className={`hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary-600 to-primary-800 relative overflow-hidden`}>
+
         <div className="absolute inset-0 bg-black/10" />
         
         <div className="relative z-10 flex flex-col justify-center items-start text-white px-16 py-12">

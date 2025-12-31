@@ -15,6 +15,14 @@ export const authApi = createApi({
       }),
       invalidatesTags: ["auth"]
     }),
+    verifyOtp: builder.mutation({
+      query: (courseData) => ({
+        url: "/auth/verify-otp",
+        method: "POST",
+        data: courseData,
+      }),
+      invalidatesTags: ["auth"]
+    }),
    
   }),
 });
