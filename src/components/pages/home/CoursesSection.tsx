@@ -1,6 +1,6 @@
 'use client'
 import Heading from '@/components/Heading';
-import CourseCard from '@/components/modules/Home/CourseCard';
+import CourseCard from '@/components/pages/home/CourseCard';
 import { useGetCourseQuery } from '@/redux/features/courseAPI';
 import { ICourse } from '@/type/course.interface';
 import { useEffect, useState } from 'react';

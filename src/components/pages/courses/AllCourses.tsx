@@ -1,6 +1,6 @@
 'use client'
 
-import { IICourse } from "@/app/courses/page";
+import { IICourse } from "@/app/(commonLayout)/courses/page";
 import { useGetCourseQuery } from "@/redux/features/courseAPI";
 import { ICourse } from "@/type/course.interface";
 import { useEffect, useState } from "react";

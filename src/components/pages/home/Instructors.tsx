@@ -3,7 +3,7 @@
 import { FiTwitter, FiLinkedin, FiGithub, FiAward } from 'react-icons/fi';
 import Image from 'next/image';
 import Heading from '@/components/Heading';
-import InstructorCarousel from '@/components/modules/Home/InstructorCarousel';
+import InstructorCarousel from '@/components/pages/home/InstructorCarousel';
 
 const Instructor = () => {
   return (

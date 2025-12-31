@@ -2,7 +2,7 @@ import Heading from '@/components/Heading';
 import OurStory from '@/components/pages/about/OurStory';
 import OurMission from '@/components/pages/about/OurMission';
 import StatsSection from '@/components/pages/about/StatsSection';
-import Instructor from '@/components/modules/Home/Instructors';
+import Instructor from '@/components/pages/home/Instructors';
 
 export default function AboutPage() {
 
