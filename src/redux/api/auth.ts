@@ -16,10 +16,10 @@ export const authApi = createApi({
       invalidatesTags: ["auth"]
     }),
     verifyOtp: builder.mutation({
-      query: (courseData) => ({
+      query: (otp) => ({
         url: "/auth/verify-otp",
         method: "POST",
-        data: courseData,
+        data: { otp },
       }),
       invalidatesTags: ["auth"]
     }),
@@ -29,4 +29,5 @@ export const authApi = createApi({
 
 export const {
 useCreateUserMutation,
+useVerifyOtpMutation,
 } = authApi;

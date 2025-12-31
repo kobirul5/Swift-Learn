@@ -1,5 +1,6 @@
 'use client';
 
+import { useVerifyOtpMutation } from '@/redux/api/auth';
 import Link from 'next/link';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -7,20 +8,22 @@ import { FiMail } from 'react-icons/fi';
 
 export default function VerifyOtpPage() {
   const [otp, setOtp] = useState(0);
-  const [loading, setLoading] = useState(false);
+const [verifyOtp, { isLoading }] =useVerifyOtpMutation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
 
-    // TODO: Add your forgot password API mutation here
-    // Example: await forgotPasswordMutation({ email });
+    try {
 
-    // Simulation for demo
-    setTimeout(() => {
-      setLoading(false);
-      toast.success('Successfully sent OTP!');
-    }, 1500);
+     const res:any = await verifyOtp({ otp });
+     if(res.success){
+
+       toast.success('OTP verified successfully!');
+     }
+    } catch (error:any) {
+      toast.error(error.message || 'Failed to verify OTP. Please try again.');
+    }
+
   };
 
   return (
@@ -62,10 +65,10 @@ export default function VerifyOtpPage() {
               {/* Submit button */}
               <button
                 type="submit"
-                disabled={loading}
+                disabled={isLoading}
                 className="w-full py-4 rounded-xl text-white font-semibold bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 transition shadow-lg disabled:opacity-70"
               >
-                {loading ? 'Sending...' : 'Send  OTP'}
+                {isLoading ? 'Sending...' : 'Send  OTP'}
               </button>
             </form>
 
@@ -75,7 +78,7 @@ export default function VerifyOtpPage() {
                 href="/login"
                 className="text-sm font-medium text-primary-600 hover:text-primary-700 hover:underline"
               >
-                ← Back to Login
+                Resend OTP
               </Link>
             </div>
           </div>
