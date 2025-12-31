@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import StoreProvider from "@/redux/SroteProvider";
 import { Toaster } from "react-hot-toast";
-import ClientLayout from "@/components/Shared/ClientLayout";
 
 
 export const metadata: Metadata = {
@@ -22,9 +21,9 @@ export default function RootLayout({
           className={`antialiased bg-primary-100/10`}
         >
           <Toaster />
-          <ClientLayout>
+
             {children}
-          </ClientLayout>
+
         </body>
       </StoreProvider>
     </html>
