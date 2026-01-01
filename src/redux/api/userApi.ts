@@ -9,7 +9,7 @@ export const userAPI = createApi({
   endpoints: (builder) => ({
     getUser: builder.query({
       query: () => ({
-        url: `/users/login-user`,
+        url: `/users/get-me`,
         method: "GET",
       }),
       providesTags:['user']

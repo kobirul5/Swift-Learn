@@ -1,8 +1,11 @@
 'use client'
-// import AllCourses from '@/components/pages/courses/AllCourses';
-// import CoursesHero from '@/components/pages/courses/CoursesHero';
-// import FeaturedCourse from '@/components/pages/courses/FeaturedCourse';
-// import { useState } from 'react';
+
+import AllCourses from "@/components/pages/courses/AllCourses";
+import CoursesHero from "@/components/pages/courses/CoursesHero";
+import FeaturedCourse from "@/components/pages/courses/FeaturedCourse";
+import { useGetCourseQuery } from "@/redux/features/courseAPI";
+import { useState } from "react";
+
 
 
 
@@ -23,9 +26,15 @@ export type IICourse = {
 
 
 export default function CoursesPage() {
-  // const [activeCategory] = useState<string>('All');
-  // const [searchQuery, setSearchQuery] = useState<string>('');
+  const [activeCategory] = useState<string>('All');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const { data, isLoading } = useGetCourseQuery(undefined);
+  console.log("Courses Data:", data);
 
+
+  if (isLoading) {
+    return <h1 className="text-center my-40 mx-auto">Loading....</h1>;
+  }
 
 
   // const courses: IICourse[] = [
@@ -104,39 +113,33 @@ export default function CoursesPage() {
   //   }
   // ];
 
-  // const filteredCourses = courses.filter(course => {
-  //   const matchesCategory = activeCategory === 'All' || course.category === activeCategory;
-  //   const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-  //                        course.instructor.toLowerCase().includes(searchQuery.toLowerCase());
-  //   return matchesCategory && matchesSearch;
-  // });
+  const filteredCourses = data?.data.filter((course: IICourse) => {
+    const matchesCategory = activeCategory === 'All' || course.category === activeCategory;
+    const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                         course.instructor.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
   
 
 
-  return(
+  Todo:
+  return (
     <>
-    courses
+      <div className="bg-dark-50 min-h-screen">
+        {/* Hero Section */}
+        <CoursesHero  searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        {/* Main Content */}
+        <div className="container mx-auto px-6 py-12">
+          {/* Featured Course */}
+           <FeaturedCourse/>
+          {/* Categories */}
+          {/* <CoursesCategories activeCategory={activeCategory} setActiveCategory={setActiveCategory} /> */}
+
+          {/* All Courses */}
+          < AllCourses filteredCourses={filteredCourses} activeCategory={activeCategory} />
+        </div>
+      </div>
     </>
-  )
-
-  //Todo:
-  // return (
-  //   <>
-  //     <div className="bg-dark-50 min-h-screen">
-  //       {/* Hero Section */}
-  //       <CoursesHero  searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-  //       {/* Main Content */}
-  //       <div className="container mx-auto px-6 py-12">
-  //         {/* Featured Course */}
-  //          <FeaturedCourse/>
-  //         {/* Categories */}
-  //         {/* <CoursesCategories activeCategory={activeCategory} setActiveCategory={setActiveCategory} /> */}
-
-  //         {/* All Courses */}
-  //         < AllCourses filteredCourses={filteredCourses} activeCategory={activeCategory} />
-  //       </div>
-  //     </div>
-  //   </>
-  // );
+  );
 };
 

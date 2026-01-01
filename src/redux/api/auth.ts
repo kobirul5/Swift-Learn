@@ -47,6 +47,13 @@ export const authApi = createApi({
       }),
       invalidatesTags: ["auth"]
     }),
+    logoutUser: builder.mutation({
+      query: () => ({
+        url: "/auth/logout",
+        method: "POST",
+      }),
+      invalidatesTags: ["auth"]
+    }),
    
   }),
 });
@@ -56,6 +63,7 @@ useCreateUserMutation,
 useLoginUserMutation,
 useVerifyOtpMutation,
 useForgotPasswordMutation,
-useResetPasswordMutation
+useResetPasswordMutation,
+useLogoutUserMutation
 
 } = authApi;

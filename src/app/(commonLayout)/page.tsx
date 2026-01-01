@@ -1,6 +1,6 @@
 
-// import CoursesSection from "@/components/modules/Home/CoursesSection";
 import ContactUs from "@/components/pages/home/ContectUs";
+import CoursesSection from "@/components/pages/home/CoursesSection";
 import FAQ from "@/components/pages/home/FAQ";
 import HeroBanner from "@/components/pages/home/HeroBanner";
 import Instructor from "@/components/pages/home/Instructors";
@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <div>
       <HeroBanner/>
-      {/* <CoursesSection/> */}
+      <CoursesSection/>
       <Instructor/>
       <Testimonials/>
       <FAQ/>
