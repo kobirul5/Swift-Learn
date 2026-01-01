@@ -1,26 +1,34 @@
 'use client';
 
+import { useForgotPasswordMutation } from '@/redux/api/auth';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { FiMail } from 'react-icons/fi';
 
+
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
+  const router = useRouter();
+  
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
 
-    // TODO: Add your forgot password API mutation here
-    // Example: await forgotPasswordMutation({ email });
+    try {
+      const res: any = await forgotPassword({ email }).unwrap();
 
-    // Simulation for demo
-    setTimeout(() => {
-      setLoading(false);
-      toast.success('Successfully sent OTP!');
-    }, 1500);
+      if (res.success) {
+        toast.success('OTP sent successfully');
+        router.push(`/verify-otp?email=${encodeURIComponent(email)}&pageName=${encodeURIComponent(`forgot-password`)}`);
+      } else {
+        toast.error('Failed to send OTP. Please try again.');
+      }
+    } catch(error: any) {
+      toast.error( error.message || 'Something went wrong');
+    }
   };
 
   return (
@@ -62,10 +70,10 @@ export default function ForgotPasswordPage() {
               {/* Submit button */}
               <button
                 type="submit"
-                disabled={loading}
+                disabled={isLoading}
                 className="w-full py-4 rounded-xl text-white font-semibold bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 transition shadow-lg disabled:opacity-70"
               >
-                {loading ? 'Sending...' : 'Send  OTP'}
+                {isLoading ? 'Sending...' : 'Send  OTP'}
               </button>
             </form>
 

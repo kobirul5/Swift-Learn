@@ -14,9 +14,10 @@ export default function VerifyOtpPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
-  console.log(email, "email---");
+  const pageName = searchParams.get("pageName");
 
-  
+
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -25,6 +26,10 @@ export default function VerifyOtpPage() {
       console.log(res, "res---");
       if (res.success) {
         toast.success("OTP verified successfully!");
+        if (pageName === "forgot-password") {
+          router.push(`/reset-password?email=${encodeURIComponent(email || '')}`);
+          return;
+        }
         router.push("/");
       }
     } catch (error: any) {
