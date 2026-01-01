@@ -13,7 +13,7 @@ console.log(process.env.NEXT_PUBLIC_API_URL, "---API URL");
 axiosInstance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
-    const token = Cookies.get("token"); // 👈 cookie name
+    const token = Cookies.get("accessToken"); // 👈 cookie name
     console.log(token,"from interceptor--------------------------------");
 
     if (token) {

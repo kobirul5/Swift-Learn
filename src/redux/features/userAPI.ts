@@ -23,15 +23,6 @@ export const userAPI = createApi({
       }),
       providesTags:['user']
     }),
-
-    loginUser: builder.mutation({
-      query: (userData) => ({
-        url: "/users/login",
-        method: "POST",
-        data: userData, 
-      }),
-      invalidatesTags:['user']
-    }),
     logoutUser: builder.mutation({
       query: () => ({
         url: "/users/logout",
@@ -45,6 +36,5 @@ export const userAPI = createApi({
 
 export const {
   useGetUserQuery,
-  useLoginUserMutation,
   useLogoutUserMutation
 } = userAPI;

@@ -6,6 +6,7 @@ import { FiUser, FiMail, FiLock } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
 import { useCreateUserMutation } from '@/redux/api/auth';
+import { useRouter } from 'next/navigation';
 
 
 
@@ -17,6 +18,7 @@ interface IUser {
 
 export default function SignupForm() {
  const [registerUser, { isLoading }] = useCreateUserMutation();
+ const router = useRouter();
 
   const [userData, setUserData] = useState<IUser>({
     name: '',
@@ -45,6 +47,7 @@ export default function SignupForm() {
       
       setUserData({ name: '', email: '', password: '' });
       setConfirmPassword('');
+       router.push(`/verify-otp?email=${encodeURIComponent(userData.email)}`);
       
    
     } catch (error:any) {

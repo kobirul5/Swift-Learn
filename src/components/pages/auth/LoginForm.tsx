@@ -2,11 +2,12 @@
 'use client';
 
 import { useState } from 'react';
-import { useLoginUserMutation } from '@/redux/features/userAPI';
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import { FiMail, FiLock } from 'react-icons/fi';
 import Link from 'next/link';
+import { useLoginUserMutation } from '@/redux/api/auth';
+import { useRouter } from 'next/navigation';
 
 interface IUser {
   email: string;
@@ -15,6 +16,7 @@ interface IUser {
 
 export default function LoginForm() {
   const [loginUser] = useLoginUserMutation();
+  const router = useRouter();
   const [userData, setUserData] = useState<IUser>({
     email: '',
     password: '',
@@ -33,12 +35,11 @@ export default function LoginForm() {
 
       if (res?.data?.success) {
         localStorage.setItem('accessToken', res.data.token);
-        Cookies.set('token', res.data.token);
+        Cookies.set('accessToken', res.data.token);
         toast.success('Login successful');
-
-        setTimeout(() => {
-          window.location.replace('/');
-        }, 300);
+        setUserData({ email: '', password: '' });
+        router.push('/');
+       
       } else {
         toast.error('Invalid credentials');
       }

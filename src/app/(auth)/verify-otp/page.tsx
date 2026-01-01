@@ -1,34 +1,39 @@
-'use client';
+"use client";
 
-import { useVerifyOtpMutation } from '@/redux/api/auth';
-import Link from 'next/link';
-import { useState } from 'react';
-import toast from 'react-hot-toast';
-import { FiMail } from 'react-icons/fi';
+import { useVerifyOtpMutation } from "@/redux/api/auth";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { FiMail } from "react-icons/fi";
+import { useSearchParams } from "next/navigation";
 
 export default function VerifyOtpPage() {
   const [otp, setOtp] = useState(0);
-const [verifyOtp, { isLoading }] =useVerifyOtpMutation();
+  const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const email = searchParams.get("email");
+  console.log(email, "email---");
 
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-
-     const res:any = await verifyOtp({ otp });
-     if(res.success){
-
-       toast.success('OTP verified successfully!');
-     }
-    } catch (error:any) {
-      toast.error(error.message || 'Failed to verify OTP. Please try again.');
+      const res: any = await verifyOtp({ otp, email: email}).unwrap();
+      console.log(res, "res---");
+      if (res.success) {
+        toast.success("OTP verified successfully!");
+        router.push("/");
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Failed to verify OTP. Please try again.");
     }
-
   };
 
   return (
     <div className="min-h-screen flex mx-auto justify-center items-center">
-
       {/* Right Side - Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-50 px-6 py-12">
         <div className="max-w-md w-full">
@@ -45,7 +50,10 @@ const [verifyOtp, { isLoading }] =useVerifyOtpMutation();
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email input */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Email Address
                 </label>
                 <div className="relative">
@@ -68,7 +76,7 @@ const [verifyOtp, { isLoading }] =useVerifyOtpMutation();
                 disabled={isLoading}
                 className="w-full py-4 rounded-xl text-white font-semibold bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 transition shadow-lg disabled:opacity-70"
               >
-                {isLoading ? 'Sending...' : 'Send  OTP'}
+                {isLoading ? "Sending..." : "Send  OTP"}
               </button>
             </form>
 
