@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { courseAPI } from '@/redux/features/courseAPI'
 import authReducer from "@/redux/features/authSlice"
 import { moduleAndLectureAPI } from '@/redux/features/moduleAndLectureAPI'
 import { authApi } from '@/redux/api/auth' 
 import { userAPI } from './api/userApi'
+import { courseAPI } from './api/courseApi'
 
 export const store = () => {
   return configureStore({

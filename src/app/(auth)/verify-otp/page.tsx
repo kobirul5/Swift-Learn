@@ -23,7 +23,7 @@ export default function VerifyOtpPage() {
 
     try {
       const res: any = await verifyOtp({ otp, email: email}).unwrap();
-      console.log(res, "res---");
+
       if (res.success) {
         toast.success("OTP verified successfully!");
         if (pageName === "forgot-password") {
