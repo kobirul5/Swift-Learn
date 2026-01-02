@@ -16,6 +16,8 @@ const CoursesSection = () => {
     return <h1 className="text-center my-40 mx-auto">Loading....</h1>;
   }
 
+  const courses = data?.data ?? [];
+
   return (
     <section className="pt-12 ">
       <div className="container mx-auto px-4">
@@ -26,7 +28,7 @@ const CoursesSection = () => {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {data?.data.slice(0,4).map((course:ICourse, idx: number) => (
+          {courses.slice(0, 4).map((course: ICourse, idx: number) => (
             <CourseCard key={idx} course={course} />
           ))}
         </div>
