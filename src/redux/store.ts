@@ -1,6 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authReducer from "@/redux/features/authSlice"
-import { moduleAndLectureAPI } from '@/redux/features/moduleAndLectureAPI'
 import { authApi } from '@/redux/api/auth' 
 import { userAPI } from './api/userApi'
 import { courseAPI } from './api/courseApi'
@@ -10,7 +9,6 @@ export const store = () => {
     reducer: {
         [userAPI.reducerPath]: userAPI.reducer,
         [courseAPI.reducerPath]: courseAPI.reducer,
-        [moduleAndLectureAPI.reducerPath]: moduleAndLectureAPI.reducer,
         [authApi.reducerPath]: authApi.reducer, 
         auth: authReducer
     },
@@ -18,7 +16,6 @@ export const store = () => {
       getDefaultMiddleware().concat(
         userAPI.middleware,
         courseAPI.middleware,
-        moduleAndLectureAPI.middleware,
         authApi.middleware // 👈 MUST
       ),
   })

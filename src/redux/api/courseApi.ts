@@ -60,6 +60,36 @@ export const courseAPI = createApi({
       }),
       invalidatesTags: ["course"]
     }),
+    getModule: builder.query({
+      query: (courseId) => ({
+        url: `/modules/${courseId}`,
+        method: "GET",
+      }),
+      providesTags:['course']
+    }),
+    createModule: builder.mutation({
+      query: (data) => ({
+        url: `/modules/create`,
+        method: "POST",
+        data
+      }),
+      invalidatesTags: ['course']
+    }),
+    createLecture: builder.mutation({
+      query: (data) => ({
+        url: `/lecture`,
+        method: "POST",
+        data
+      }),
+      invalidatesTags: ['course']
+    }),
+    deleteLecture: builder.mutation({
+      query: (id) => ({
+        url: `/lecture/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ['course']
+    }),
     
   }),
 });
@@ -72,4 +102,9 @@ export const {
   useUpdateCourseMutation,
   useGetEnrolmentCourseByStudentIdQuery,
   useCreateEnrollmentMutation,
+  useGetModuleQuery,
+  useCreateModuleMutation,
+  useCreateLectureMutation,
+  useDeleteLectureMutation,
+
 } = courseAPI;
