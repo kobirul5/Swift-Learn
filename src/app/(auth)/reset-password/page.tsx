@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { FiMail, FiLock } from "react-icons/fi";
+import { FiLock } from "react-icons/fi";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -18,7 +18,7 @@ interface IResetPassword {
 export default function ResetPasswordForm() {
   // If you need a token from URL (e.g., ?token=abc123)
   const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+  // const token = searchParams.get("token");
   const email = searchParams.get("email"); // optional, for pre-filling
   const [resetPassword, { isLoading }] = useResetPasswordMutation();
 
@@ -53,6 +53,10 @@ export default function ResetPasswordForm() {
       
         const res : any = await resetPassword({ password: formData.password, email }).unwrap();
       // Mock success for demo
+      if (!res.success) {
+        toast.error("Failed to reset password. Please try again.");
+        return;
+      }
       toast.success("Password reset successfully!");
 
       setFormData({ password: "", confirmPassword: "" });

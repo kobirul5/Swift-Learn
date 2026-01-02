@@ -43,6 +43,11 @@ export default function SignupForm() {
 
     try {
      const res = await registerUser(userData).unwrap();
+      
+     if (!res.success) {
+       toast.error('Registration failed. Please try again.');
+       return;
+     }
       toast.success('Account created successfully');
       
       setUserData({ name: '', email: '', password: '' });

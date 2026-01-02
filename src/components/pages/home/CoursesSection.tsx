@@ -3,11 +3,11 @@ import Heading from '@/components/Heading';
 import CourseCard from '@/components/pages/home/CourseCard';
 import { useGetCourseQuery } from '@/redux/api/courseApi';
 import { ICourse } from '@/type/course.interface';
-import { useEffect, useState } from 'react';
+
 
 
 const CoursesSection = () => {
-  const [courses, setCourses] = useState<ICourse[]>([]);
+
   const { data, isLoading } = useGetCourseQuery(undefined);
 
 

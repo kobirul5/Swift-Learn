@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import useAxiosPublic from '@/hooks/useAxiosPublic';
 import { IUser } from '@/type/user.interface';
+import Image from 'next/image';
 
 
 
@@ -80,9 +81,10 @@ export default function StudentsPage() {
                     <div className="flex items-center">
                       <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
                         {student.image ? (
-                          <img
+                          <Image
                             src={student.image}
                             alt={student.name}
+                            fill
                             className="w-full h-full object-cover"
                           />
                         ) : (

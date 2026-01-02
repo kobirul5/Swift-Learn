@@ -31,7 +31,7 @@ export default function CourseDetailPage() {
     if (data) {
       setCourses(data.data);
     }
-  }, [data, user]);
+  }, [data, user, router]);
 
 
 

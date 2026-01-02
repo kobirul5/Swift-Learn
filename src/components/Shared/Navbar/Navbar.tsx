@@ -26,7 +26,7 @@ const Navbar = () => {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [mounted, setMounted] = useState(false);
 
-  const { data, isLoading } = useGetUserQuery(undefined);
+  const { data } = useGetUserQuery(undefined);
   const [logoutUser] = useLogoutUserMutation();
   const dispatch = useDispatch();
 

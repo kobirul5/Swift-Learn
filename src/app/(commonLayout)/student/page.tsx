@@ -3,6 +3,7 @@
 import { useGetEnrolmentCourseByStudentIdQuery } from '@/redux/api/courseApi';
 import { useGetUserQuery } from '@/redux/api/userApi';
 import { ICourse } from '@/type/course.interface';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
@@ -46,9 +47,11 @@ export default function MyCourses() {
             key={course._id}
             className="bg-white rounded-2xl shadow hover:shadow-lg transition-all duration-300"
           >
-            <img
-              src={course.thumbnail}
+            <Image
+              src={course?.thumbnail || '/fallback.png'}
               alt={course.title}
+              width={192}
+              height={128}
               className="rounded-t-2xl h-48 w-full object-cover"
             />
             <div className="p-4">

@@ -40,6 +40,7 @@ export default function CourseDetailsContent({ courseId }: Props) {
 
       <div className="space-y-8">
         {course.modules?.length > 0 ? (
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           course.modules.map((module: any) => (
             <ModuleCard key={module._id} module={module} />
           ))

@@ -22,6 +22,7 @@ export default function VerifyOtpPage() {
     e.preventDefault();
 
     try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const res: any = await verifyOtp({ otp, email: email}).unwrap();
 
       if (res.success) {
@@ -32,6 +33,7 @@ export default function VerifyOtpPage() {
         }
         router.push("/");
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.message || "Failed to verify OTP. Please try again.");
     }

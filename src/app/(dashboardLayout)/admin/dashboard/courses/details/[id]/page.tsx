@@ -1,12 +1,12 @@
 import CourseDetailsContent from "@/components/admin/courses/CourseDetailsContent";
 import Link from "next/link";
 
-export default function CourseDetailsPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = params;
+interface PageProps {
+  params: Promise<{ id: string }>
+}
+
+export default async function CourseDetailsPage({ params }: PageProps) {
+  const { id } = await params
 
   return (
     <div className="min-h-screen  py-8">

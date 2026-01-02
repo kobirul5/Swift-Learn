@@ -1,5 +1,6 @@
 
 import { NextPage } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 
 
@@ -53,9 +54,11 @@ const AdminDashboard: NextPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {courses.map((course) => (
                 <div key={course.id} className="bg-white rounded-lg shadow overflow-hidden">
-                  <img 
+                  <Image 
                     src={course.thumbnail} 
                     alt={course.title}
+                    height={192}
+                    width={192}
                     className="w-full h-48 object-cover"
                   />
                   <div className="p-4">

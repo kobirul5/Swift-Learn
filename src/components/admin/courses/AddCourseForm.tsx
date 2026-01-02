@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -6,6 +7,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { FaFile } from "react-icons/fa";
 import { useCreateCourseMutation } from "@/redux/api/courseApi";
+import Image from "next/image";
 
 export default function AddCourseForm() {
   const router = useRouter();
@@ -251,9 +253,11 @@ export default function AddCourseForm() {
                 Preview
               </label>
               <div className="relative rounded-xl overflow-hidden shadow-lg border border-gray-200">
-                <img
+                <Image
                   src={thumbnailPreview}
                   alt="Thumbnail preview"
+                  width={400}
+                  height={300}
                   className="w-full h-80 object-cover"
                 />
                 <button
