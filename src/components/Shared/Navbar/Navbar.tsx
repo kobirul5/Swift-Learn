@@ -40,7 +40,7 @@ const Navbar = () => {
     { label: "Courses", href: "/courses", icon: <FiBook /> },
     {
       label: "Dashboard",
-      href: "/dashboard",
+      href: "/admin/dashboard",
       icon: <FiSettings />,
       adminOnly: true,
     },

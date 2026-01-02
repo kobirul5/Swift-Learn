@@ -1,7 +1,7 @@
 
 import { ReactNode } from 'react';
-import DashboardSidebar from './DashboardSidebar';
-import DashboardHeader from './DashboardHeader';
+import DashboardSidebar from './admin/dashboard/DashboardSidebar';
+import DashboardHeader from './admin/dashboard/DashboardHeader';
 import StoreProvider from '@/redux/SroteProvider';
 
 

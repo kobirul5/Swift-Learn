@@ -8,7 +8,8 @@ import toast from 'react-hot-toast';
 import { FiClock, FiStar, FiUsers } from 'react-icons/fi';
 import CourseBenefits from '../CourseBenefits';
 import CourseInstructor from '../CourseInstructor';
-import { useGetUserQuery } from '@/redux/features/userAPI';
+import { useGetUserQuery } from '@/redux/api/userApi';
+
 
 
 

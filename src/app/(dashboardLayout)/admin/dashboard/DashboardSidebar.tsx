@@ -9,10 +9,10 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-    { name: 'Dashboard', href: '/dashboard', icon: <FiHome /> },
-    { name: 'Courses', href: '/dashboard/courses', icon: <FiBook /> },
-    { name: 'Students', href: '/dashboard/students', icon: <FiUsers /> },
-    { name: 'Settings', href: '/dashboard/settings', icon: <FiSettings /> },
+    { name: 'Dashboard', href: '/admin/dashboard', icon: <FiHome /> },
+    { name: 'Courses', href: '/admin/dashboard/courses', icon: <FiBook /> },
+    { name: 'Students', href: '/admin/dashboard/students', icon: <FiUsers /> },
+    { name: 'Settings', href: '/admin/dashboard/settings', icon: <FiSettings /> },
 ];
 
 export default function DashboardSidebar() {

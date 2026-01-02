@@ -28,7 +28,7 @@ const Courses = () => {
             <option>Archived</option>
           </select>
           <div>
-            <Link href='/dashboard/courses/create-course' className='btn' > Add Course</Link>
+            <Link href='/admin/dashboard/courses/create-course' className='btn' > Add Course</Link>
           </div>
         </div>
       </div>

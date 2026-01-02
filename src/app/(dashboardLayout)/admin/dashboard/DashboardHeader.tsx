@@ -1,5 +1,5 @@
 'use client'
-import { useGetUserQuery } from '@/redux/features/userAPI';
+import { useGetUserQuery } from '@/redux/api/userApi';
 import Image from 'next/image';
 import { FiBell, FiSearch, FiMenu } from 'react-icons/fi';
 

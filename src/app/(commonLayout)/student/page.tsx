@@ -1,7 +1,7 @@
 'use client';
 
+import { useGetUserQuery } from '@/redux/api/userApi';
 import { useGetEnrolmentCourseByStudentIdQuery } from '@/redux/features/courseAPI';
-import { useGetUserQuery } from '@/redux/features/userAPI';
 import { ICourse } from '@/type/course.interface';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -16,7 +16,7 @@ export default function MyCourses() {
   
 
   const { data, isLoading } = useGetEnrolmentCourseByStudentIdQuery(userId);
-  console.log(data,"--------------------")
+
 
 
   useEffect(() => {
