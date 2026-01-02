@@ -3,7 +3,7 @@
 import AllCourses from "@/components/pages/courses/AllCourses";
 import CoursesHero from "@/components/pages/courses/CoursesHero";
 import FeaturedCourse from "@/components/pages/courses/FeaturedCourse";
-import { useGetCourseQuery } from "@/redux/features/courseAPI";
+import { useGetCourseQuery } from "@/redux/api/courseApi";
 import { useState } from "react";
 
 

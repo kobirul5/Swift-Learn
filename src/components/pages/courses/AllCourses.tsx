@@ -1,10 +1,10 @@
 'use client'
 
 import { IICourse } from "@/app/(commonLayout)/courses/page";
-import { useGetCourseQuery } from "@/redux/features/courseAPI";
 import { ICourse } from "@/type/course.interface";
 import { useEffect, useState } from "react";
 import CourseCard from "@/components/pages/home/CourseCard";
+import { useGetCourseQuery } from "@/redux/api/courseApi";
 
 interface AllCoursesProps {
     filteredCourses: IICourse[];

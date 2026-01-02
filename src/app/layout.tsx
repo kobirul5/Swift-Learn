@@ -3,7 +3,6 @@ import "./globals.css";
 import StoreProvider from "@/redux/SroteProvider";
 import { Toaster } from "react-hot-toast";
 
-
 export const metadata: Metadata = {
   title: "Swift Learn",
   description: "Learning management system",
@@ -16,14 +15,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <StoreProvider  >
+      <StoreProvider>
         <body
           className={`antialiased bg-primary-100/10`}
+          data-new-gr-c-s-check-loaded="14.1267.0"
+          data-gr-ext-installed=""
         >
           <Toaster />
 
-            {children}
-
+          {children}
         </body>
       </StoreProvider>
     </html>

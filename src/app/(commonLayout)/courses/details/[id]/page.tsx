@@ -1,5 +1,4 @@
 'use client'
-import { useCreateEnrollmentMutation, useGetCourseByIdQuery } from '@/redux/features/courseAPI';
 import { ICourse } from '@/type/course.interface';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
@@ -9,6 +8,7 @@ import { FiClock, FiStar, FiUsers } from 'react-icons/fi';
 import CourseBenefits from '../CourseBenefits';
 import CourseInstructor from '../CourseInstructor';
 import { useGetUserQuery } from '@/redux/api/userApi';
+import { useCreateEnrollmentMutation, useGetCourseByIdQuery } from '@/redux/api/courseApi';
 
 
 

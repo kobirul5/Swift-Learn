@@ -1,10 +1,10 @@
 'use client';
 import { useParams, useRouter } from 'next/navigation';
-import { useUpdateCourseMutation } from '@/redux/features/courseAPI';
 import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import useAxiosPublic from '@/hooks/useAxiosPublic';
 import { ICourse } from '@/type/course.interface';
+import { useUpdateCourseMutation } from '@/redux/api/courseApi';
 
 export default function UpdateCoursePage() {
   const [crs, setCrs] = useState<ICourse>()
