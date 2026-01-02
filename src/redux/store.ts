@@ -1,23 +1,23 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { userAPI } from '@/features/userAPI'
-import { courseAPI } from '@/features/courseAPI'
-import authReducer from "@/features/authSlice"
-import { moduleAndLectureAPI } from '@/features/moduleAndLectureAPI'
+import authReducer from "@/redux/features/authSlice"
+import { authApi } from '@/redux/api/auth' 
+import { userAPI } from './api/userApi'
+import { courseAPI } from './api/courseApi'
 
 export const store = () => {
   return configureStore({
     reducer: {
         [userAPI.reducerPath]: userAPI.reducer,
         [courseAPI.reducerPath]: courseAPI.reducer,
-        [moduleAndLectureAPI.reducerPath]: moduleAndLectureAPI.reducer,
+        [authApi.reducerPath]: authApi.reducer, 
         auth: authReducer
-
     },
     middleware: (getDefaultMiddleware)=> 
       getDefaultMiddleware().concat(
         userAPI.middleware,
         courseAPI.middleware,
-        moduleAndLectureAPI.middleware),
+        authApi.middleware // 👈 MUST
+      ),
   })
 }
 
