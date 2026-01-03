@@ -3,8 +3,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 export const axiosInstance = axios.create({
-  // baseURL: "https://swift-learn-server-fnu4.vercel.app/api",
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: "https://swiftlearn-server.vercel.app/api/v1",
+  // baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
 });
 
