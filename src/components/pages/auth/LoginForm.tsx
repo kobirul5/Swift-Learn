@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 import { FiMail, FiLock } from 'react-icons/fi';
 import Link from 'next/link';
 import { useLoginUserMutation } from '@/redux/api/auth';
@@ -35,7 +35,7 @@ export default function LoginForm() {
 
       if (res?.data?.success) {
         localStorage.setItem('accessToken', res.data.token);
-        Cookies.set('accessToken', res.data.token);
+        // Cookies.set('accessToken', res.data.token);
         toast.success('Login successful');
         setUserData({ email: '', password: '' });
         router.push('/');
