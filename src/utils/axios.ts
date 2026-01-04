@@ -1,28 +1,30 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import axios from "axios";
-import Cookies from "js-cookie";
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://swiftlearn-server.vercel.app/api/v1";
 
 export const axiosInstance = axios.create({
-  baseURL: "https://swiftlearn-server.vercel.app/api/v1",
-  // baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: API_BASE,
   withCredentials: true,
 });
 
 // Add a request interceptor
 axiosInstance.interceptors.request.use(
   function (config) {
-    // Do something before request is sent
-    const token = Cookies.get("accessToken"); // 👈 cookie name
-    console.log(token,"from interceptor--------------------------------");
-
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    // Read token from localStorage (login stores it there)
+    try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+      if (token && config.headers) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    } catch (err) {
+      // ignore server-side localStorage access
     }
 
     return config;
   },
   function (error) {
-    // Do something with request error
     return Promise.reject(error);
   }
 );
