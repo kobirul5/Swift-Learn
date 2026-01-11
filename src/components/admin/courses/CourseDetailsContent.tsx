@@ -45,8 +45,8 @@ export default function CourseDetailsContent({ courseId }: Props) {
             <ModuleCard key={module._id} module={module} />
           ))
         ) : (
-          <div className="text-center py-20 bg-white rounded-3xl shadow-lg">
-            <p className="text-2xl text-gray-500">
+          <div className="text-center py-20 bg-white rounded-3xl shadow-lg border border-dark-100">
+            <p className="text-2xl text-dark-500 italic">
               No modules yet. Add the first one!
             </p>
           </div>
