@@ -26,31 +26,37 @@ export default function CourseDetailsContent({ courseId }: Props) {
 
   return (
     <>
-      <CourseHeader
-        title={course.title}
-        description={course.description}
-        thumbnail={course.thumbnail}
-        price={course.price}
-        modulesCount={course.modules?.length || 0}
-        isFeatured={course.isFeatured}
-        updatedAt={course.updatedAt}
-      />
+      <div className="flex flex-col xl:flex-row gap-10 ">
 
-      <AddModuleForm courseId={courseId} />
+        <CourseHeader
+          title={course.title}
+          description={course.description}
+          thumbnail={course.thumbnail}
+          price={course.price}
+          modulesCount={course.modules?.length || 0}
+          isFeatured={course.isFeatured}
+          updatedAt={course.updatedAt}
+        />
 
-      <div className="space-y-8">
-        {course.modules?.length > 0 ? (
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          course.modules.map((module: any) => (
-            <ModuleCard key={module._id} module={module} />
-          ))
-        ) : (
-          <div className="text-center py-20 bg-white rounded-3xl shadow-lg border border-dark-100">
-            <p className="text-2xl text-dark-500 italic">
-              No modules yet. Add the first one!
-            </p>
+        <div className="w-full">
+
+          <AddModuleForm courseId={courseId} />
+
+          <div className="space-y-8">
+            {course.modules?.length > 0 ? (
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              course.modules.map((module: any) => (
+                <ModuleCard key={module._id} module={module} />
+              ))
+            ) : (
+              <div className="text-center py-20 bg-white rounded-3xl shadow-lg border border-dark-100">
+                <p className="text-2xl text-dark-500 italic">
+                  No modules yet. Add the first one!
+                </p>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </>
   );

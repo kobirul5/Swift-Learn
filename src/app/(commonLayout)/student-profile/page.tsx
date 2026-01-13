@@ -42,7 +42,7 @@ const ProfilePage: NextPage = () => {
       <div className="container mx-auto py-8">
         <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
           {/* Profile Header */}
-          <div className="bg-gradient-to-r from-primary-500 to-primary-600 p-6 text-white">
+          <div className="bg-linear-to-r from-primary-500 to-primary-600 p-6 text-white">
             <div className="flex items-center">
               <div className="relative h-20 w-20 rounded-full overflow-hidden border-4 border-white">
                 <Image

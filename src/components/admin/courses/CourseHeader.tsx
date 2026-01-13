@@ -22,7 +22,7 @@ export default function CourseHeader({
 }: Props) {
 
   return (
-    <div className="bg-white rounded-3xl shadow-xl overflow-hidden mb-10">
+    <div className="bg-white rounded-3xl w-full shadow-xl overflow-hidden mb-10">
       <div className="flex flex-col">
         <div className="relative w-full h-full min-h-[500px]">
           <Image
