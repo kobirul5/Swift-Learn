@@ -6,6 +6,7 @@ import CourseHeader from "./CourseHeader";
 import AddModuleForm from "./AddModuleForm";
 import ModuleCard from "./ModuleCard";
 import { useGetCourseByIdQuery } from "@/redux/api/courseApi";
+import Loader from "@/components/Shared/Loader";
 
 interface Props {
   courseId: string;
@@ -16,7 +17,7 @@ export default function CourseDetailsContent({ courseId }: Props) {
   const course = data?.data;
 
   if (isLoading)
-    return <div className="text-center py-20 text-xl">Loading...</div>;
+    return <Loader message="Fetching course structural details..." />;
   if (isError || !course)
     return (
       <div className="text-center py-20 text-2xl text-red-600">

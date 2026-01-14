@@ -7,6 +7,7 @@ import { ICourse } from '@/type/course.interface';
 import toast from 'react-hot-toast';
 import { useDeleteCourseMutation, useGetCourseQuery } from '@/redux/api/courseApi';
 import Pagination from '@/components/Shared/Pagination';
+import Loader from '@/components/Shared/Loader';
 
 const Courses = () => {
   const [page, setPage] = useState(1);
@@ -15,7 +16,7 @@ const Courses = () => {
   const [deleteCourse] = useDeleteCourseMutation();
 
   const courses = response?.data as ICourse[];
-  const totalPages = response?.pagination?.totalPages || 1;
+  const totalPages = response?.meta?.totalPage || 1;
 
   const handleDelete = async (id: string) => {
     if (!window.confirm('Are you sure you want to delete this course? This action cannot be undone.')) {
@@ -32,11 +33,7 @@ const Courses = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <p className="text-lg text-gray-600">Loading courses...</p>
-      </div>
-    );
+    return <Loader message="Loading courses..." />;
   }
 
   if (!courses || courses.length === 0) {
@@ -93,7 +90,7 @@ const Courses = () => {
                 {/* Course Info */}
                 <td className="px-6 py-5">
                   <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 bg-gray-200 rounded-xl overflow-hidden flex-shrink-0 border border-gray-300">
+                    <div className="w-16 h-16 bg-gray-200 rounded-xl overflow-hidden shrink-0 border border-gray-300">
                       {course.thumbnail ? (
                         <img
                           src={course.thumbnail}

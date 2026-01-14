@@ -9,6 +9,7 @@ import CourseBenefits from '../CourseBenefits';
 import CourseInstructor from '../CourseInstructor';
 import { useGetUserQuery } from '@/redux/api/userApi';
 import { useCreateEnrollmentMutation, useGetCourseByIdQuery } from '@/redux/api/courseApi';
+import Loader from '@/components/Shared/Loader';
 
 
 
@@ -59,7 +60,7 @@ export default function CourseDetailPage() {
 
 
   if (isLoading) {
-    return <h1 className="text-center py-40 mx-auto">Loading....</h1>;
+    return <Loader message="Analyzing course content..." minHeight="min-h-screen" />;
   }
 
   if (!course) {

@@ -6,6 +6,7 @@ import { useGetStudentsQuery } from '@/redux/api/userApi';
 import { IUser } from '@/type/user.interface';
 import Image from 'next/image';
 import Pagination from '@/components/Shared/Pagination';
+import Loader from '@/components/Shared/Loader';
 
 
 
@@ -18,7 +19,7 @@ export default function StudentsPage() {
   const { data, isLoading, error } = useGetStudentsQuery({ page, limit });
 
   const students = data?.data || [];
-  const totalPages = data?.pagination?.totalPages || 1;
+  const totalPages = data?.meta?.totalPage || 1;
 
   const filteredStudents = students.filter((student: IUser) =>
     student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -26,14 +27,7 @@ export default function StudentsPage() {
   );
 
   if (isLoading) {
-    return (
-      <div className="p-6 bg-white rounded-xl shadow flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-          <p className="mt-4 text-dark-600">Loading students...</p>
-        </div>
-      </div>
-    );
+    return <Loader message="Loading students..." />;
   }
 
   if (error) {
