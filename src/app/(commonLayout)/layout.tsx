@@ -7,9 +7,11 @@ export default function Layout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gray-50">
-        <Navbar />
-      {children}
+    <div className="">
+      <Navbar />
+      <div className="min-h-[calc(100vh-320px)] bg-gray-50">
+        {children}
+      </div>
       <Footer />
     </div>
   );
