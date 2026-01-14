@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useGetStudentsQuery } from '@/redux/api/userApi';
 import { IUser } from '@/type/user.interface';
 import Image from 'next/image';
+import Pagination from '@/components/Shared/Pagination';
 
 
 
