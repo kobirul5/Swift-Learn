@@ -1,16 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { ICourse } from '@/type/course.interface';
 import toast from 'react-hot-toast';
 import { useDeleteCourseMutation, useGetCourseQuery } from '@/redux/api/courseApi';
+import Pagination from '@/components/Shared/Pagination';
 
 const Courses = () => {
-  const { data: response, isLoading } = useGetCourseQuery(undefined);
+  const [page, setPage] = useState(1);
+  const limit = 10;
+  const { data: response, isLoading } = useGetCourseQuery({ page, limit });
   const [deleteCourse] = useDeleteCourseMutation();
 
   const courses = response?.data as ICourse[];
+  const totalPages = response?.pagination?.totalPages || 1;
 
   const handleDelete = async (id: string) => {
     if (!window.confirm('Are you sure you want to delete this course? This action cannot be undone.')) {
@@ -124,10 +129,10 @@ const Courses = () => {
                 <td className="px-6 py-5 text-sm text-gray-600">
                   {course.updatedAt
                     ? new Date(course.updatedAt).toLocaleDateString('en-US', {
-                        day: 'numeric',
-                        month: 'short',
-                        year: 'numeric',
-                      })
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric',
+                    })
                     : '-'}
                 </td>
 
@@ -164,6 +169,14 @@ const Courses = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Pagination Controls */}
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+        variant="admin"
+      />
     </div>
   );
 };

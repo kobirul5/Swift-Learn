@@ -8,9 +8,10 @@ export const courseAPI = createApi({
   tagTypes: ['course'],
   endpoints: (builder) => ({
     getCourse: builder.query({
-      query: () => ({
+      query: (params?: { page?: number; limit?: number }) => ({
         url: `/courses`,
         method: "GET",
+        params: { page: params?.page || 1, limit: params?.limit || 10 },
       }),
       providesTags: ['course']
     }),
@@ -45,7 +46,7 @@ export const courseAPI = createApi({
       invalidatesTags: ["course"]
     }),
     updateCourse: builder.mutation({
-      query: (updateCourse ) => ({
+      query: (updateCourse) => ({
         url: `/courses/${updateCourse?.id}`,
         method: 'PATCH',
         data: updateCourse
@@ -53,7 +54,7 @@ export const courseAPI = createApi({
       invalidatesTags: ["course"]
     }),
     createEnrollment: builder.mutation({
-      query: (updateCourse ) => ({
+      query: (updateCourse) => ({
         url: `/enrollment`,
         method: 'POST',
         data: updateCourse
@@ -65,7 +66,7 @@ export const courseAPI = createApi({
         url: `/modules/${courseId}`,
         method: "GET",
       }),
-      providesTags:['course']
+      providesTags: ['course']
     }),
     createModule: builder.mutation({
       query: (data) => ({
@@ -90,7 +91,7 @@ export const courseAPI = createApi({
       }),
       invalidatesTags: ['course']
     }),
-    
+
   }),
 });
 
