@@ -18,11 +18,11 @@ const navItems: NavItem[] = [
 export default function DashboardSidebar() {
     
     return (
-        <div className="hidden md:flex md:flex-shrink-0">
+        <div className="hidden md:flex md:shrink-0">
             <div className="flex flex-col w-64 border-r border-dark-200 bg-white">
                 <div className="h-0 flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
                     {/* Logo */}
-                    <div className="flex items-center flex-shrink-0 px-4">
+                    <div className="flex items-center shrink-0 px-4">
                         <Link href="/" className="text-2xl font-bold text-primary flex items-center gap-2">
                             <Image src="/logo/logo.png" alt="logo" width={30} height={30} />
                             SwiftLearn
@@ -45,7 +45,7 @@ export default function DashboardSidebar() {
                 </div>
 
                 {/* User Profile */}
-                <div className="flex-shrink-0 flex border-t border-dark-200 p-4">
+                <div className="shrink-0 flex border-t border-dark-200 p-4">
                     <div className="flex items-center">
                         <div className="h-9 w-9 rounded-full bg-primary-100 flex items-center justify-center">
                             <span className="text-primary-600 font-medium">

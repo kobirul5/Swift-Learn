@@ -38,7 +38,7 @@ export default function MyCourses() {
   if (!courses?.length) return <p className="text-center">You haven&apos;t purchased any courses yet.</p>;
 
   return (
-    <div className="max-w-6xl mx-auto py-8 px-4">
+    <div className="container mx-auto py-24  px-4">
       <h1 className="text-2xl font-bold mb-6">My Purchased Courses</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -52,7 +52,7 @@ export default function MyCourses() {
               alt={course.title}
               width={192}
               height={128}
-              className="rounded-t-2xl h-48 w-full object-cover"
+              className="rounded-t-2xl h-[300px] w-full object-cover"
             />
             <div className="p-4">
               <h2 className="text-lg font-semibold">{course.title}</h2>

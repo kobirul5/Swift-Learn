@@ -6,100 +6,93 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 const ProfilePage: NextPage = () => {
-  // User data - in a real app, this would come from an API or context
 
-  const [user, setUser] = useState<IUser>({
-    _id: "",
-    name: "",
-    email: "",
-    image: "",
-  });
+
   const { data, isLoading } = useGetUserQuery(undefined);
 
-  useEffect(() => {
-    if (data) {
-      setUser(data.data);
-    }
-  }, [data]);
 
   if (isLoading) {
-    return <h1 className="text-center py-40 mx-auto">Loading....</h1>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl font-medium text-primary-600 animate-pulse">Loading profile...</div>
+      </div>
+    );
   }
 
-
-
-  // const user: IUser = {
-  //   _id: "asdfsdfadfasd",
-  //   name: "Md. Kobirul Islam",
-  //   email: "kobirul@gmail.com",
-  //   image: "https://i.ibb.co/G4yDhqLg/man-7.jpg",
-  //   role: "admin"
-  // };
-
   return (
-    <div className="min-h-screen  pt-20">
+    <div className="min-h-screen bg-gray-50/50 pt-16 pb-16">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100/80">
+          {/* === Hero / Header Section === */}
+          <div className="bg-gradient-to-r from-primary-500 to-primary-600 px-6 py-10 md:py-12 lg:py-14 text-white relative overflow-hidden">
+            {/* subtle overlay pattern (optional eye-catching effect) */}
+            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_30%_70%,white_1px,transparent_1px)] bg-[length:20px_20px]" />
 
-      <div className="container mx-auto py-8">
-        <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-          {/* Profile Header */}
-          <div className="bg-gradient-to-r from-primary-500 to-primary-600 p-6 text-white">
-            <div className="flex items-center">
-              <div className="relative h-20 w-20 rounded-full overflow-hidden border-4 border-white">
-                <Image
-                  src={user.image || "/public/logo/logo.png"}
-                  alt={user.name || 'user name'}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-full"
-                />
+            <div className="relative flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8">
+              <div className="relative">
+                <div className="h-28 w-28 sm:h-32 sm:w-32 rounded-full overflow-hidden border-4 border-white/90 shadow-2xl ring-2 ring-white/30">
+                  <Image
+                    src={data?.data?.image || "/public/logo/logo.png"}
+                    alt={data?.data.name || "Profile"}
+                    fill
+                    className="object-cover transition-transform duration-500 hover:scale-110"
+                  />
+                </div>
+                {/* subtle glow effect */}
+                <div className="absolute -inset-2 rounded-full bg-white/20 blur-xl -z-10" />
               </div>
-              <div className="ml-6">
-                <h1 className="text-2xl font-bold">{user?.name}</h1>
-                <p className="text-primary-100">{user?.role}</p>
+
+              <div className="text-center sm:text-left">
+                <h1 className="text-3xl sm:text-4xl font-bold tracking-tight drop-shadow-md">
+                  {data?.data.name || "Welcome"}
+                </h1>
+                <p className="mt-2 text-lg text-primary-100/90 font-medium">
+                  {data?.data.role ? data?.data.role.charAt(0).toUpperCase() + data?.data.role.slice(1) : "User"}
+                </p>
               </div>
             </div>
           </div>
 
-          {/* Profile Content */}
-          <div className="p-6">
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-dark-800 mb-4">Personal Information</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-dark-600 mb-1">Full Name</label>
-                  <div className="p-3 bg-dark-50 rounded-md border border-dark-200">
-                    {user.name}
+          {/* === Main Content === */}
+          <div className="p-6 md:p-8 lg:p-10">
+            <div className="mb-10">
+              <h2 className="text-2xl font-bold text-dark-800 mb-6 border-b border-primary-100 pb-3">
+                Personal Information
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+                {[
+                  { label: "Full Name", value: data?.data.name || "—" },
+                  { label: "Email Address", value: data?.data.email || "—" },
+                  { label: "Role", value: data?.data.role || "User", isBadge: true },
+                ].map((item, idx) => (
+                  <div key={idx} className="group">
+                    <label className="block text-sm font-medium text-dark-600 mb-2.5">
+                      {item.label}
+                    </label>
+                    {item.isBadge ? (
+                      <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary-100 text-primary-800 font-medium shadow-sm transition-all group-hover:shadow-md">
+                        {item.value}
+                      </div>
+                    ) : (
+                      <div className="p-4 bg-dark-50/70 rounded-xl border border-dark-200 text-dark-800 font-medium transition-all group-hover:shadow-md group-hover:border-primary-200">
+                        {item.value}
+                      </div>
+                    )}
                   </div>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-dark-600 mb-1">Email Address</label>
-                  <div className="p-3 bg-dark-50 rounded-md border border-dark-200">
-                    {user.email}
-                  </div>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-dark-600 mb-1">Role</label>
-                  <div className="p-3 bg-dark-50 rounded-md border border-dark-200">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
-                      {user.role}
-                    </span>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
 
-            <div className="border-t border-dark-200 pt-6">
-              <h2 className="text-xl font-semibold text-dark-800 mb-4">Account Settings</h2>
-              
-              <div className="space-y-4">
-                <button className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition-colors">
+            <div className="pt-8 border-t border-dark-200">
+              <h2 className="text-2xl font-bold text-dark-800 mb-6">Account Actions</h2>
+
+              <div className="flex flex-wrap gap-4">
+                <button className="px-7 py-3 bg-primary-600 text-white font-medium rounded-xl hover:bg-primary-700 active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg">
                   Edit Profile
                 </button>
-                
-                <button className="ml-4 px-4 py-2 bg-dark-200 text-dark-800 rounded-md hover:bg-dark-300 transition-colors">
+
+                <button className="px-7 py-3 bg-dark-200 text-dark-800 font-medium rounded-xl hover:bg-dark-300 active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg">
                   Change Password
                 </button>
               </div>

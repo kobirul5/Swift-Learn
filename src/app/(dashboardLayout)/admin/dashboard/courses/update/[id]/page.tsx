@@ -1,35 +1,24 @@
 'use client';
 import { useParams, useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import { useEffect, useState } from 'react';
-import useAxiosPublic from '@/hooks/useAxiosPublic';
+import { useState } from 'react';
 import { ICourse } from '@/type/course.interface';
-import { useUpdateCourseMutation } from '@/redux/api/courseApi';
+import { useUpdateCourseMutation, useGetCourseByIdQuery } from '@/redux/api/courseApi';
 
 export default function UpdateCoursePage() {
-  const [crs, setCrs] = useState<ICourse>()
   const router = useRouter();
   const params = useParams();
-  const axiosPublic = useAxiosPublic()
   const [updateCourse] = useUpdateCourseMutation();
 
-  useEffect(() => {
-    const srcFunc = async () => {
-      const crs = await axiosPublic.get(`/api/courses/${params.id}`)
-      setCrs(crs.data.data)
-
-    }
-    srcFunc()
-  }, [])
+  const { data, isLoading, error: queryError } = useGetCourseByIdQuery(params.id as string);
+  const crs = data?.data as ICourse;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState('');
 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setError('');
     const form = e.target as HTMLFormElement;
     const title = (form.elements.namedItem('title') as HTMLInputElement).value;
     const description = (form.elements.namedItem('description') as HTMLInputElement).value;
@@ -52,13 +41,36 @@ export default function UpdateCoursePage() {
         toast.error("Update failed!");
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong');
+      toast.error(err instanceof Error ? err.message : 'Something went wrong');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  
+  if (isLoading) {
+    return (
+      <div className="p-6 bg-white mx-auto rounded-2xl flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+          <p className="mt-4 text-dark-600">Loading course...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (queryError) {
+    return (
+      <div className="p-6 bg-white mx-auto rounded-2xl">
+        <div className="text-center text-red-600">
+          <p>Error loading course. Please try again.</p>
+          <button onClick={() => router.back()} className="mt-4 text-primary-600 hover:text-primary-800">
+            ← Go Back
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 bg-white mx-auto rounded-2xl">
       <div className="flex justify-between items-center mb-8">
@@ -67,7 +79,6 @@ export default function UpdateCoursePage() {
       </div>
 
       <form onSubmit={handleSubmit} className="p-6">
-        {error && <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">{error}</div>}
 
         <div className="grid grid-cols-1 gap-6">
           <div>

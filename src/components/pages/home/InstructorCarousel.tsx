@@ -44,7 +44,7 @@ const instructors: Instructor[] = [
 
 const InstructorCarousel = () => {
   return (
-    <section className="pt-12 mx-auto px-4 sm:px-6 lg:px-8 ">
+    <section className="container mx-auto pt-12 mx-auto px-4 sm:px-6 lg:px-8 ">
         <div className="relative">
           <Swiper
             modules={[Navigation, Pagination, Autoplay]}

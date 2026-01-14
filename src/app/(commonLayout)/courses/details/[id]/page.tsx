@@ -47,12 +47,7 @@ export default function CourseDetailPage() {
 
     const enrolmentData = {
       student: user.data._id,
-      progress: [
-        {
-          course: courseId ,
-          completedLectures: []
-        }
-      ]
+      course: courseId,
     }
     const res = await createEnrollment(enrolmentData)
     if (res?.data?.success) {
