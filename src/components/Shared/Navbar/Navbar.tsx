@@ -30,8 +30,6 @@ const Navbar = () => {
   const [logoutUser] = useLogoutUserMutation();
   const dispatch = useDispatch();
 
-  console.log("Navbar User Data:", data);
-
   const router = useRouter();
   const pathname = usePathname();
 
@@ -64,7 +62,7 @@ const Navbar = () => {
     if (data?.data?.role === "admin") {
       setIsAdmin(true);
       setIsLoggedIn(true);
-    } else if (data?.data.role == "student") {
+    } else if (data?.data?.role === "student") {
       setIsLoggedIn(true);
     } else {
       setIsAdmin(false);
@@ -91,11 +89,10 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-white shadow-md py-2"
-          : "bg-white/90 backdrop-blur-sm py-4"
-      }`}
+      className={`fixed w-full z-50 transition-all duration-300 ${isScrolled
+        ? "bg-white shadow-md py-2"
+        : "bg-white/90 backdrop-blur-sm py-4"
+        }`}
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
         <Link
@@ -105,28 +102,8 @@ const Navbar = () => {
           <Image src="/logo/logo.png" alt="logo" width={30} height={30} />
           SwiftLearn
         </Link>
-
         {/* Desktop Nav */}
         <div className="hidden lg:flex items-center space-x-6">
-          {mounted &&
-            navLinks.map(
-              ({ label, href, icon, adminOnly, authOnly }) =>
-                (!adminOnly || isAdmin) &&
-                (!authOnly || isLoggedIn) && (
-                  <Link
-                    key={href}
-                    href={href}
-                    className={`flex items-center space-x-1 text-sm font-medium ${
-                      pathname === href
-                        ? "text-primary font-semibold"
-                        : "text-dark-700 hover:text-primary"
-                    }`}
-                  >
-                    {icon}
-                    <span>{label}</span>
-                  </Link>
-                )
-            )}
 
           <div className="relative">
             <input
@@ -136,6 +113,26 @@ const Navbar = () => {
             />
             <FiSearch className="absolute left-3 top-2.5 text-dark-400" />
           </div>
+          {mounted &&
+            navLinks.map(
+              ({ label, href, icon, adminOnly, authOnly }) =>
+                (!adminOnly || isAdmin) &&
+                (!authOnly || isLoggedIn) && (
+                  <Link
+                    key={href}
+                    href={href}
+                    className={`flex items-center space-x-1 text-sm font-medium ${pathname === href
+                      ? "text-primary font-semibold"
+                      : "text-dark-700 hover:text-primary"
+                      }`}
+                  >
+                    {icon}
+                    <span>{label}</span>
+                  </Link>
+                )
+            )}
+
+
 
           {isLoggedIn ? (
             <button
@@ -182,11 +179,10 @@ const Navbar = () => {
                   <Link
                     key={href}
                     href={href}
-                    className={`flex items-center space-x-2 py-2 px-3 rounded-md ${
-                      pathname === href
-                        ? "bg-primary-100 text-primary font-semibold"
-                        : "text-dark-700 hover:bg-dark-100"
-                    }`}
+                    className={`flex items-center space-x-2 py-2 px-3 rounded-md ${pathname === href
+                      ? "bg-primary-100 text-primary font-semibold"
+                      : "text-dark-700 hover:bg-dark-100"
+                      }`}
                     onClick={() => setIsOpen(false)}
                   >
                     {icon}

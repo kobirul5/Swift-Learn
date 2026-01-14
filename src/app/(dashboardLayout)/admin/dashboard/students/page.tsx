@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import useAxiosPublic from '@/hooks/useAxiosPublic';
+import { useGetStudentsQuery } from '@/redux/api/userApi';
 import { IUser } from '@/type/user.interface';
 import Image from 'next/image';
 
@@ -10,31 +10,40 @@ import Image from 'next/image';
 
 export default function StudentsPage() {
   const router = useRouter();
-  const [students, setStudents] = useState<IUser[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
   const limit = 5;
-  const axiosPublic = useAxiosPublic()
 
-  useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const res = await axiosPublic.get(`/api/students?page=${page}&limit=${limit}`);
-        setStudents(res.data.data);
-        setTotalPages(res.data.pagination.totalPages);
-      } catch (error) {
-        console.error('Error fetching students:', error);
-      }
-    };
+  const { data, isLoading, error } = useGetStudentsQuery({ page, limit });
 
-    fetchStudents();
-  }, [page, axiosPublic]);
+  const students = data?.data || [];
+  const totalPages = data?.pagination?.totalPages || 1;
 
-  const filteredStudents = students.filter(student =>
+  const filteredStudents = students.filter((student: IUser) =>
     student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     student.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (isLoading) {
+    return (
+      <div className="p-6 bg-white rounded-xl shadow flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+          <p className="mt-4 text-dark-600">Loading students...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 bg-white rounded-xl shadow">
+        <div className="text-center text-red-600">
+          <p>Error loading students. Please try again.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 bg-white rounded-xl shadow">
@@ -75,7 +84,7 @@ export default function StudentsPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredStudents.map((student) => (
+              {filteredStudents.map((student: IUser) => (
                 <tr key={student._id} className="border-b hover:bg-dark-50">
                   <td className="py-4">
                     <div className="flex items-center">
