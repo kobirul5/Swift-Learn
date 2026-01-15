@@ -42,6 +42,9 @@ export default function LoginForm() {
        
       } else {
         toast.error(res.error.data.message || "Something went wrong");
+        if(res.error.data.message === "Please verify your email!") {
+          router.push(`/verify-otp?email=${userData.email}`);
+        }
       }
     } catch (err:any) {
       toast.error(err.message || "Something went wrong");
