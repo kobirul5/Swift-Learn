@@ -5,6 +5,8 @@ import { userAPI } from './api/userApi'
 import { courseAPI } from './api/courseApi'
 import { testimonialApi } from './api/testimonialApi'
 
+import { faqAPI } from './api/faqApi'
+
 export const store = () => {
   return configureStore({
     reducer: {
@@ -12,6 +14,7 @@ export const store = () => {
       [courseAPI.reducerPath]: courseAPI.reducer,
       [authApi.reducerPath]: authApi.reducer,
       [testimonialApi.reducerPath]: testimonialApi.reducer,
+      [faqAPI.reducerPath]: faqAPI.reducer,
       auth: authReducer
     },
     middleware: (getDefaultMiddleware) =>
@@ -19,7 +22,8 @@ export const store = () => {
         userAPI.middleware,
         courseAPI.middleware,
         authApi.middleware,
-        testimonialApi.middleware
+        testimonialApi.middleware,
+        faqAPI.middleware
       ),
   })
 }
