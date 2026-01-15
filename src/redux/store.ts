@@ -1,22 +1,25 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authReducer from "@/redux/features/authSlice"
-import { authApi } from '@/redux/api/auth' 
+import { authApi } from '@/redux/api/auth'
 import { userAPI } from './api/userApi'
 import { courseAPI } from './api/courseApi'
+import { testimonialApi } from './api/testimonialApi'
 
 export const store = () => {
   return configureStore({
     reducer: {
-        [userAPI.reducerPath]: userAPI.reducer,
-        [courseAPI.reducerPath]: courseAPI.reducer,
-        [authApi.reducerPath]: authApi.reducer, 
-        auth: authReducer
+      [userAPI.reducerPath]: userAPI.reducer,
+      [courseAPI.reducerPath]: courseAPI.reducer,
+      [authApi.reducerPath]: authApi.reducer,
+      [testimonialApi.reducerPath]: testimonialApi.reducer,
+      auth: authReducer
     },
-    middleware: (getDefaultMiddleware)=> 
+    middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(
         userAPI.middleware,
         courseAPI.middleware,
-        authApi.middleware // 👈 MUST
+        authApi.middleware,
+        testimonialApi.middleware
       ),
   })
 }
