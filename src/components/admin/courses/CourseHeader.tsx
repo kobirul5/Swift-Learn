@@ -44,7 +44,7 @@ export default function CourseHeader({
 
         <div className="md:col-span-2 p-8 lg:p-12">
           <h1 className="text-4xl font-bold text-dark-900 mb-6">{title}</h1>
-          <p className="text-lg text-dark-600 mb-8 leading-relaxed">{description}</p>
+          <p className="text-lg text-dark-600 mb-8 leading-relaxed text-justify ">{description}</p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div>

@@ -41,10 +41,10 @@ export default function LoginForm() {
         router.push('/');
        
       } else {
-        toast.error('Invalid credentials');
+        toast.error(res.error.data.message || "Something went wrong");
       }
-    } catch {
-      toast.error('Something went wrong');
+    } catch (err:any) {
+      toast.error(err.message || "Something went wrong");
     }
   };
 
