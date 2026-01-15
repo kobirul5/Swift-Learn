@@ -100,16 +100,16 @@ const TestimonialManagement = () => {
                                     <div className="flex items-center gap-3">
                                         <div className="relative w-10 h-10">
                                             <Image
-                                                src={item.user?.image || "https://i.ibb.co/G4yDhqLg/man-7.jpg"}
-                                                alt={item.user?.name || ""}
+                                                src={item.image || "https://i.ibb.co/G4yDhqLg/man-7.jpg"}
+                                                alt={item.name || ""}
                                                 fill
                                                 className="rounded-full object-cover"
                                             />
                                         </div>
                                         <div>
-                                            <div className="text-sm font-medium text-gray-900">{item.user?.name}</div>
+                                            <div className="text-sm font-medium text-gray-900">{item.name}</div>
                                             <div className="text-sm text-gray-500">
-                                                {item.user?.education || item.user?.role}
+                                                {item.designation}
                                             </div>
                                         </div>
                                     </div>
