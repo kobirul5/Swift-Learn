@@ -3,7 +3,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 
 
 export const userAPI = createApi({
-  reducerPath: "baseAPI",
+  reducerPath: "userAPI",
   baseQuery: axiosBaseQuery(),
   tagTypes: ['user'],
   endpoints: (builder) => ({
@@ -29,12 +29,21 @@ export const userAPI = createApi({
       }),
       invalidatesTags: ["user"]
     }),
-
+    updateMe: builder.mutation({
+      query: (data) => ({
+        url: "/users/update-me",
+        method: "PATCH",
+        data: data,
+        contentType: 'multipart/form-data',
+      }),
+      invalidatesTags: ["user"]
+    }),
   }),
 });
 
 export const {
   useGetUserQuery,
   useGetStudentsQuery,
-  useLogoutUserMutation
+  useLogoutUserMutation,
+  useUpdateMeMutation
 } = userAPI;
