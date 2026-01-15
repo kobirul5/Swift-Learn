@@ -19,7 +19,7 @@ const ProfilePage: NextPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50/50 pt-16 pb-16">
+    <div className="min-h-screen bg-gray-50/50 pt-24 pb-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100/80">
           {/* === Hero / Header Section === */}
@@ -34,7 +34,7 @@ const ProfilePage: NextPage = () => {
                     src={data?.data?.image || "/public/logo/logo.png"}
                     alt={data?.data.name || "Profile"}
                     fill
-                    className="object-cover transition-transform duration-500 hover:scale-110"
+                    className="object-cover rounded-full "
                   />
                 </div>
                 {/* subtle glow effect */}

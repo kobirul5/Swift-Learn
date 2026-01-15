@@ -2,7 +2,8 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/utils/cd";
-import AddLectureForm from "./AddLectureForm";
+import { Plus } from "lucide-react";
+import LectureModal from "@/components/Modals/LectureModal";
 import LectureItem from "./LectureItem";
 
 interface Module {
@@ -26,6 +27,7 @@ interface Props {
 
 export default function ModuleCard({ module }: Props) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLectureModalOpen, setIsLectureModalOpen] = useState(false);
 
   return (
     <div className="border-b border-primary-200 bg-primary-50">
@@ -68,8 +70,14 @@ export default function ModuleCard({ module }: Props) {
       {/* Module Content */}
       {isOpen && (
         <div className="pb-4 bg-white/50">
-          <div className="px-4 pt-4">
-            <AddLectureForm moduleId={module._id} />
+          <div className="px-4 pt-4 flex justify-end">
+            <button
+              onClick={() => setIsLectureModalOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white text-xs font-bold rounded-lg hover:bg-primary-700 transition-all active:scale-95 shadow-md shadow-primary-200"
+            >
+              <Plus className="w-4 h-4" />
+              Add Lecture
+            </button>
           </div>
 
           <div className="mt-4 px-4 space-y-2">
@@ -97,6 +105,13 @@ export default function ModuleCard({ module }: Props) {
             )}
           </div>
         </div>
+      )}
+
+      {isLectureModalOpen && (
+        <LectureModal
+          moduleId={module._id}
+          toggleModalLecture={() => setIsLectureModalOpen(false)}
+        />
       )}
     </div>
   );
