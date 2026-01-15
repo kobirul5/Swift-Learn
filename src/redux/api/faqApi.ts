@@ -7,9 +7,10 @@ export const faqAPI = createApi({
     tagTypes: ["faq"],
     endpoints: (builder) => ({
         getFaqs: builder.query({
-            query: () => ({
+            query: (params?: { page?: number; limit?: number; searchTerm?: string }) => ({
                 url: "/faqs",
                 method: "GET",
+                params,
             }),
             providesTags: ["faq"],
         }),

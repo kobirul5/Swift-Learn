@@ -7,9 +7,10 @@ export const testimonialApi = createApi({
     tagTypes: ["testimonial"],
     endpoints: (builder) => ({
         getAllTestimonials: builder.query({
-            query: () => ({
+            query: (params?: { page?: number; limit?: number; searchTerm?: string }) => ({
                 url: "/testimonials",
                 method: "GET",
+                params,
             }),
             providesTags: ["testimonial"],
         }),

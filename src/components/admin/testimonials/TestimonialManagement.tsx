@@ -9,9 +9,14 @@ import { FaCheck, FaTrash, FaStar } from "react-icons/fa";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
+import { useState } from "react";
+import Pagination from "@/components/Shared/Pagination";
 
 const TestimonialManagement = () => {
-    const { data: testimonialsResponse, isLoading } = useGetAllTestimonialsQuery({});
+    const [page, setPage] = useState(1);
+    const [searchTerm, setSearchTerm] = useState('');
+    const limit = 10;
+    const { data: testimonialsResponse, isLoading } = useGetAllTestimonialsQuery({ page, limit, searchTerm });
     const [approveTestimonial] = useApproveTestimonialMutation();
     const [deleteTestimonial] = useDeleteTestimonialMutation();
 
@@ -53,7 +58,29 @@ const TestimonialManagement = () => {
 
     return (
         <div className="p-6 bg-white rounded-xl shadow-sm">
-            <h2 className="text-2xl font-bold mb-6 text-dark-400">Manage Testimonials</h2>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                <div>
+                    <h2 className="text-2xl font-bold text-dark-400">Manage Testimonials</h2>
+                    <p className="text-dark-500 text-sm">Review and manage student testimonials</p>
+                </div>
+                <div className="relative w-full md:w-80">
+                    <input
+                        type="text"
+                        placeholder="Search testimonials..."
+                        value={searchTerm}
+                        onChange={(e) => {
+                            setSearchTerm(e.target.value);
+                            setPage(1);
+                        }}
+                        className="w-full pl-10 pr-4 py-2 border border-dark-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:outline-none transition"
+                    />
+                    <div className="absolute left-3 top-2.5 text-dark-400">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
 
             <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
@@ -129,6 +156,16 @@ const TestimonialManagement = () => {
                         ))}
                     </tbody>
                 </table>
+
+                {/* Pagination */}
+                {testimonialsResponse?.meta && testimonialsResponse.meta.totalPages > 0 && (
+                    <Pagination
+                        currentPage={page}
+                        totalPages={testimonialsResponse.meta.totalPages}
+                        onPageChange={(p) => setPage(p)}
+                        variant="admin"
+                    />
+                )}
 
                 {testimonials.length === 0 && (
                     <div className="p-10 text-center text-gray-500">No testimonials found.</div>

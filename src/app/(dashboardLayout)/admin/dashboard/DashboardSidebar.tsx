@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { FiHome, FiBook, FiUsers, FiSettings, FiStar, FiHelpCircle } from 'react-icons/fi';
+import { FiHome, FiBook, FiUsers, FiSettings, FiStar, FiHelpCircle, FiMail } from 'react-icons/fi';
 
 interface NavItem {
     name: string;
@@ -14,6 +14,7 @@ const navItems: NavItem[] = [
     { name: 'Students', href: '/admin/dashboard/students', icon: <FiUsers /> },
     { name: 'Testimonials', href: '/admin/dashboard/testimonials', icon: <FiStar /> },
     { name: 'FAQs', href: '/admin/dashboard/faqs', icon: <FiHelpCircle /> },
+    { name: 'Messages', href: '/admin/dashboard/messages', icon: <FiMail /> },
     { name: 'Settings', href: '/admin/dashboard/settings', icon: <FiSettings /> },
 ];
 
