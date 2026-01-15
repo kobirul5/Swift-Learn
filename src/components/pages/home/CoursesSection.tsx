@@ -2,6 +2,7 @@
 import Heading from '@/components/Heading';
 import CourseCard from '@/components/pages/home/CourseCard';
 import { useGetCourseQuery } from '@/redux/api/courseApi';
+import Loader from '@/components/Shared/Loader';
 import { ICourse } from '@/type/course.interface';
 
 
@@ -13,7 +14,7 @@ const CoursesSection = () => {
 
 
   if (isLoading) {
-    return <h1 className="text-center my-40 mx-auto">Loading....</h1>;
+    return <Loader message="Designing your future..." minHeight="min-h-[200px]" />;
   }
 
   const courses = data?.data ?? [];

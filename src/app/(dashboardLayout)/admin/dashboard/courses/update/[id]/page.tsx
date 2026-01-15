@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { ICourse } from '@/type/course.interface';
 import { useUpdateCourseMutation, useGetCourseByIdQuery } from '@/redux/api/courseApi';
+import Loader from '@/components/Shared/Loader';
 
 export default function UpdateCoursePage() {
   const router = useRouter();
@@ -48,14 +49,7 @@ export default function UpdateCoursePage() {
   };
 
   if (isLoading) {
-    return (
-      <div className="p-6 bg-white mx-auto rounded-2xl flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-          <p className="mt-4 text-dark-600">Loading course...</p>
-        </div>
-      </div>
-    );
+    return <Loader message="Preparing course data..." />;
   }
 
   if (queryError) {

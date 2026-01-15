@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useGetModuleQuery } from "@/redux/api/courseApi"
+import Loader from "@/components/Shared/Loader"
 import { IModule } from "@/type/module"
 import { LectureSidebar } from "./LectureSidebar"
 import { VideoPlayer } from "./VideoPlayer"
@@ -47,11 +48,7 @@ export function CoursePlayerContainer({ courseId }: CoursePlayerContainerProps) 
     }
 
     if (isLoading) {
-        return (
-            <div className="flex items-center justify-center py-40">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
-            </div>
-        )
+        return <Loader message="Setting up your classroom..." minHeight="min-h-screen" />;
     }
 
     if (isError || modules.length === 0) {

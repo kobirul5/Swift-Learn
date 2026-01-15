@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { FiHome, FiBook, FiUsers, FiSettings } from 'react-icons/fi';
+import { FiHome, FiBook, FiUsers, FiSettings, FiStar } from 'react-icons/fi';
 
 interface NavItem {
     name: string;
@@ -12,11 +12,12 @@ const navItems: NavItem[] = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: <FiHome /> },
     { name: 'Courses', href: '/admin/dashboard/courses', icon: <FiBook /> },
     { name: 'Students', href: '/admin/dashboard/students', icon: <FiUsers /> },
+    { name: 'Testimonials', href: '/admin/dashboard/testimonials', icon: <FiStar /> },
     { name: 'Settings', href: '/admin/dashboard/settings', icon: <FiSettings /> },
 ];
 
 export default function DashboardSidebar() {
-    
+
     return (
         <div className="hidden md:flex md:shrink-0">
             <div className="flex flex-col w-64 border-r border-dark-200 bg-white">
@@ -49,7 +50,7 @@ export default function DashboardSidebar() {
                     <div className="flex items-center">
                         <div className="h-9 w-9 rounded-full bg-primary-100 flex items-center justify-center">
                             <span className="text-primary-600 font-medium">
-                                    <Image src="/logo/logo.png" alt="logo" width={30} height={30} />
+                                <Image src="/logo/logo.png" alt="logo" width={30} height={30} />
                             </span>
                         </div>
                         <div className="ml-3">

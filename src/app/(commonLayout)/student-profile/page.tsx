@@ -4,29 +4,28 @@ import { IUser } from '@/type/user.interface';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import Loader from '@/components/Shared/Loader';
+import ProfileUpdateModal from '@/components/Modals/ProfileUpdateModal';
+import ChangePasswordModal from '@/components/Modals/ChangePasswordModal';
 
 const ProfilePage: NextPage = () => {
-
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const { data, isLoading } = useGetUserQuery(undefined);
 
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl font-medium text-primary-600 animate-pulse">Loading profile...</div>
-      </div>
-    );
+    return <Loader message="Retrieving your profile..." minHeight="min-h-screen" />;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50/50 pt-16 pb-16">
+    <div className="min-h-screen bg-gray-50/50 pt-24 pb-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100/80">
           {/* === Hero / Header Section === */}
-          <div className="bg-gradient-to-r from-primary-500 to-primary-600 px-6 py-10 md:py-12 lg:py-14 text-white relative overflow-hidden">
+          <div className="bg-linear-to-r from-primary-500 to-primary-600 px-6 py-10 md:py-12 lg:py-14 text-white relative overflow-hidden">
             {/* subtle overlay pattern (optional eye-catching effect) */}
-            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_30%_70%,white_1px,transparent_1px)] bg-[length:20px_20px]" />
+            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_30%_70%,white_1px,transparent_1px)] bg-size-[20px_20px]" />
 
             <div className="relative flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8">
               <div className="relative">
@@ -35,7 +34,7 @@ const ProfilePage: NextPage = () => {
                     src={data?.data?.image || "/public/logo/logo.png"}
                     alt={data?.data.name || "Profile"}
                     fill
-                    className="object-cover transition-transform duration-500 hover:scale-110"
+                    className="object-cover rounded-full "
                   />
                 </div>
                 {/* subtle glow effect */}
@@ -64,6 +63,7 @@ const ProfilePage: NextPage = () => {
                 {[
                   { label: "Full Name", value: data?.data.name || "—" },
                   { label: "Email Address", value: data?.data.email || "—" },
+                  { label: "Education / Learning", value: data?.data.education || "—" },
                   { label: "Role", value: data?.data.role || "User", isBadge: true },
                 ].map((item, idx) => (
                   <div key={idx} className="group">
@@ -88,11 +88,17 @@ const ProfilePage: NextPage = () => {
               <h2 className="text-2xl font-bold text-dark-800 mb-6">Account Actions</h2>
 
               <div className="flex flex-wrap gap-4">
-                <button className="px-7 py-3 bg-primary-600 text-white font-medium rounded-xl hover:bg-primary-700 active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg">
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="px-7 py-3 bg-primary-600 text-white font-medium rounded-xl hover:bg-primary-700 active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg"
+                >
                   Edit Profile
                 </button>
 
-                <button className="px-7 py-3 bg-dark-200 text-dark-800 font-medium rounded-xl hover:bg-dark-300 active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg">
+                <button
+                  onClick={() => setIsPasswordModalOpen(true)}
+                  className="px-7 py-3 bg-dark-200 text-dark-800 font-medium rounded-xl hover:bg-dark-300 active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg"
+                >
                   Change Password
                 </button>
               </div>
@@ -100,6 +106,19 @@ const ProfilePage: NextPage = () => {
           </div>
         </div>
       </div>
+
+      {isModalOpen && data?.data && (
+        <ProfileUpdateModal
+          user={data.data}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
+
+      {isPasswordModalOpen && (
+        <ChangePasswordModal
+          onClose={() => setIsPasswordModalOpen(false)}
+        />
+      )}
     </div>
   );
 };

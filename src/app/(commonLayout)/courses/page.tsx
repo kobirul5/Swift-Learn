@@ -4,8 +4,9 @@ import AllCourses from "@/components/pages/courses/AllCourses";
 import CoursesHero from "@/components/pages/courses/CoursesHero";
 import FeaturedCourse from "@/components/pages/courses/FeaturedCourse";
 import { useGetCourseQuery } from "@/redux/api/courseApi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Pagination from "@/components/Shared/Pagination";
+import Loader from "@/components/Shared/Loader";
 
 
 
@@ -31,24 +32,21 @@ export default function CoursesPage() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [page, setPage] = useState(1);
   const limit = 12;
-  const { data, isLoading } = useGetCourseQuery({ page, limit });
+  const { data, isLoading } = useGetCourseQuery({ page, limit, searchTerm: searchQuery, category: activeCategory });
   console.log("Courses Data:", data);
 
-  const totalPages = data?.pagination?.totalPages || 1;
+  const totalPages = data?.meta?.totalPage || 1;
 
+  // Reset page to 1 when search or category changes
+  useEffect(() => {
+    setPage(1);
+  }, [searchQuery, activeCategory]);
 
   if (isLoading) {
-    return <h1 className="text-center my-40 mx-auto">Loading....</h1>;
+    return <Loader message="Fetching the best courses for you..." />;
   }
 
-
-
-  const filteredCourses = data?.data.filter((course: IICourse) => {
-    const matchesCategory = activeCategory === 'All' || course.category === activeCategory;
-    const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      course.instructor.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  const filteredCourses = data?.data || [];
 
 
 

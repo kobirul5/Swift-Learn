@@ -6,6 +6,7 @@ import { ICourse } from '@/type/course.interface';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import Loader from '@/components/Shared/Loader';
 
 
 export default function MyCourses() {
@@ -14,7 +15,7 @@ export default function MyCourses() {
   const { data: userData } = useGetUserQuery(undefined)
 
   const userId = userData?.data?._id;
-  
+
 
   const { data, isLoading } = useGetEnrolmentCourseByStudentIdQuery(userId);
 
@@ -32,7 +33,7 @@ export default function MyCourses() {
 
 
   if (isLoading) {
-    return <h1 className="text-center py-40 mx-auto">Loading....</h1>;
+    return <Loader message="Fetching your learning journey..." minHeight="min-h-screen" />;
   }
 
   if (!courses?.length) return <p className="text-center">You haven&apos;t purchased any courses yet.</p>;
