@@ -1,5 +1,3 @@
-"use client";
-
 import TestimonialManagement from "@/components/admin/testimonials/TestimonialManagement";
 
 const AdminTestimonialPage = () => {
