@@ -28,7 +28,7 @@ const Navbar = () => {
 
   const { data } = useGetUserQuery(undefined);
   const [logoutUser] = useLogoutUserMutation();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const router = useRouter();
   const pathname = usePathname();
@@ -81,7 +81,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     await logoutUser(undefined);
     localStorage.removeItem("accessToken");
-    dispatch(userAPI.util.resetApiState());
+    // dispatch(userAPI.util.resetApiState());
     setIsLoggedIn(false);
     setIsAdmin(false);
     router.push("/");
