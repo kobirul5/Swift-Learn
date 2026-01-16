@@ -1,7 +1,10 @@
 'use client';
 
 import { BarChart3 } from 'lucide-react';
-import ReactApexChart from 'react-apexcharts';
+import dynamic from 'next/dynamic';
+const ReactApexChart = dynamic(() => import('react-apexcharts'), {
+  ssr: false,
+});
 
 export default function ProgressOverview() {
   return (
