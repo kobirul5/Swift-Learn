@@ -2,32 +2,35 @@
 
 import {
     useGetAllTestimonialsQuery,
-    useApproveTestimonialMutation,
+    useUpdateTestimonialStatusMutation,
     useDeleteTestimonialMutation,
 } from "@/redux/api/testimonialApi";
-import { FaCheck, FaTrash, FaStar } from "react-icons/fa";
+import { FaCheck, FaTrash, FaStar, FaEye, FaTimes } from "react-icons/fa";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import Pagination from "@/components/Shared/Pagination";
+import TestimonialDetailsModal from "@/components/Modals/TestimonialDetailsModal";
+import Loader from "@/components/Shared/Loader";
 
 const TestimonialManagement = () => {
     const [page, setPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
+    const [selectedTestimonial, setSelectedTestimonial] = useState<any>(null);
     const limit = 10;
     const { data: testimonialsResponse, isLoading } = useGetAllTestimonialsQuery({ page, limit, searchTerm });
-    const [approveTestimonial] = useApproveTestimonialMutation();
+    const [updateStatus] = useUpdateTestimonialStatusMutation();
     const [deleteTestimonial] = useDeleteTestimonialMutation();
 
     const testimonials = testimonialsResponse?.data || [];
 
-    const handleApprove = async (id: string) => {
+    const handleStatusUpdate = async (id: string, isApproved: boolean) => {
         try {
-            await approveTestimonial(id).unwrap();
-            toast.success("Testimonial approved successfully");
+            await updateStatus({ id, isApproved }).unwrap();
+            toast.success(`Testimonial ${isApproved ? "approved" : "unapproved"} successfully`);
         } catch (error: any) {
-            toast.error(error?.data?.message || "Failed to approve testimonial");
+            toast.error(error?.data?.message || "Failed to update testimonial status");
         }
     };
 
@@ -53,14 +56,17 @@ const TestimonialManagement = () => {
     };
 
     if (isLoading) {
-        return <div className="p-10 text-center">Loading testimonials...</div>;
+        return <Loader
+            message="Loading testimonials..."
+            
+        />
     }
 
     return (
         <div className="p-6 bg-white rounded-xl shadow-sm">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                 <div>
-                    <h2 className="text-2xl font-bold text-dark-400">Manage Testimonials</h2>
+                    <h2 className="text-2xl font-bold">Manage Testimonials</h2>
                     <p className="text-dark-500 text-sm">Review and manage student testimonials</p>
                 </div>
                 <div className="relative w-full md:w-80">
@@ -90,7 +96,7 @@ const TestimonialManagement = () => {
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rating</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Content</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
@@ -134,10 +140,25 @@ const TestimonialManagement = () => {
                                         </span>
                                     )}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">
-                                    {!item.isApproved && (
+                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center space-x-3">
+                                    <button
+                                        onClick={() => setSelectedTestimonial(item)}
+                                        className="text-blue-600 hover:text-blue-900"
+                                        title="View Details"
+                                    >
+                                        <FaEye size={18} />
+                                    </button>
+                                    {item.isApproved ? (
                                         <button
-                                            onClick={() => handleApprove(item._id)}
+                                            onClick={() => handleStatusUpdate(item._id, false)}
+                                            className="text-orange-600 hover:text-orange-900"
+                                            title="Unapprove"
+                                        >
+                                            <FaTimes size={18} />
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={() => handleStatusUpdate(item._id, true)}
                                             className="text-green-600 hover:text-green-900"
                                             title="Approve"
                                         >
@@ -171,6 +192,12 @@ const TestimonialManagement = () => {
                     <div className="p-10 text-center text-gray-500">No testimonials found.</div>
                 )}
             </div>
+
+            {/* View Modal */}
+            <TestimonialDetailsModal
+                testimonial={selectedTestimonial}
+                onClose={() => setSelectedTestimonial(null)}
+            />
         </div>
     );
 };
