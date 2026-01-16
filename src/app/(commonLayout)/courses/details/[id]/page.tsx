@@ -26,7 +26,7 @@ export default function CourseDetailPage() {
 
   useEffect(() => {
     if (!user) {
-      router.push('/auth/login')
+      router.push('/login')
       return
     }
     if (data) {
