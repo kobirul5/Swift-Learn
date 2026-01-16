@@ -7,9 +7,10 @@ export const testimonialApi = createApi({
     tagTypes: ["testimonial"],
     endpoints: (builder) => ({
         getAllTestimonials: builder.query({
-            query: () => ({
+            query: (params?: { page?: number; limit?: number; searchTerm?: string }) => ({
                 url: "/testimonials",
                 method: "GET",
+                params,
             }),
             providesTags: ["testimonial"],
         }),
@@ -28,12 +29,20 @@ export const testimonialApi = createApi({
             }),
             invalidatesTags: ["testimonial"],
         }),
-        approveTestimonial: builder.mutation({
-            query: (id) => ({
-                url: `/testimonials/${id}/approve`,
+        updateTestimonialStatus: builder.mutation({
+            query: ({ id, isApproved }) => ({
+                url: `/testimonials/${id}/status`,
                 method: "PATCH",
+                data: { isApproved },
             }),
             invalidatesTags: ["testimonial"],
+        }),
+        getSingleTestimonial: builder.query({
+            query: (id) => ({
+                url: `/testimonials/${id}`,
+                method: "GET",
+            }),
+            providesTags: ["testimonial"],
         }),
         deleteTestimonial: builder.mutation({
             query: (id) => ({
@@ -49,6 +58,7 @@ export const {
     useGetAllTestimonialsQuery,
     useGetApprovedTestimonialsQuery,
     useCreateTestimonialMutation,
-    useApproveTestimonialMutation,
+    useUpdateTestimonialStatusMutation,
+    useGetSingleTestimonialQuery,
     useDeleteTestimonialMutation,
 } = testimonialApi;

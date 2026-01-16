@@ -1,8 +1,7 @@
-'use client';
-
 import Link from 'next/link';
 import { JSX } from 'react';
-import { FiMail, FiPhone, FiMapPin, FiSend, FiFacebook, FiTwitter, FiLinkedin, FiInstagram } from 'react-icons/fi';
+import { FiMail, FiPhone, FiMapPin, FiFacebook, FiTwitter, FiLinkedin, FiInstagram } from 'react-icons/fi';
+import ContactForm from './ContactForm';
 
 interface ISocialIcon {
     name: string,
@@ -89,9 +88,9 @@ const ContactUs = () => {
                         <div className="mt-10">
                             <h4 className="text-lg font-medium text-dark-900 mb-4">Follow Us</h4>
                             <div className="flex space-x-4">
-                                {socialIcon.map((platform, idx) => (
+                                {socialIcon.map((platform) => (
                                     <Link
-                                        key={idx}
+                                        key={platform.name}
                                         href="#"
                                         className="bg-dark-100 hover:bg-primary-100 w-10 h-10 rounded-full flex items-center justify-center transition-colors"
                                         aria-label={platform.name}
@@ -99,7 +98,7 @@ const ContactUs = () => {
                                         <span className="sr-only">{platform.name}</span>
                                         <span className="text-sm text-primary-600 font-semibold">
                                             {platform.icon}
-                                            </span>
+                                        </span>
                                     </Link>
                                 ))}
                             </div>
@@ -107,67 +106,7 @@ const ContactUs = () => {
                     </div>
 
                     {/* Contact Form */}
-                    <div className="bg-white rounded-2xl shadow-lg p-8 lg:p-10">
-                        <h3 className="text-2xl font-bold text-dark-900 mb-6">Send Us a Message</h3>
-                        <form className="space-y-4">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                                <div>
-                                    <label htmlFor="first-name" className="block text-sm font-medium text-dark-700 mb-1">
-                                        Your Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="first-name"
-                                        className="w-full px-4 py-3 rounded-lg border border-dark-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                                        placeholder="John"
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="email" className="block text-sm font-medium text-dark-700 mb-1">
-                                        Email Address
-                                    </label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        className="w-full px-4 py-3 rounded-lg border border-dark-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                                        placeholder="you@example.com"
-                                    />
-                                </div>
-                            </div>
-
-                            <div>
-                                <label htmlFor="subject" className="block text-sm font-medium text-dark-700 mb-1">
-                                    Subject
-                                </label>
-                                <input
-                                    type="text"
-                                    id="subject"
-                                    className="w-full px-4 py-3 rounded-lg border border-dark-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                                    placeholder="How can we help?"
-                                />
-                            </div>
-
-                            <div>
-                                <label htmlFor="message" className="block text-sm font-medium text-dark-700 mb-1">
-                                    Message
-                                </label>
-                                <textarea
-                                    id="message"
-                                    rows={5}
-                                    className="w-full px-4 py-3 rounded-lg border border-dark-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                                    placeholder="Your message here..."
-                                ></textarea>
-                            </div>
-
-                            <button
-                                type="submit"
-                                className="w-full flex items-center justify-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors font-medium"
-                            >
-                                <FiSend className="mr-2" />
-                                Send Message
-                            </button>
-                        </form>
-                    </div>
+                    <ContactForm />
                 </div>
             </div>
         </section>

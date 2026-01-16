@@ -1,9 +1,8 @@
 'use client'
 import { useGetUserQuery } from '@/redux/api/userApi';
-import { IUser } from '@/type/user.interface';
 import { NextPage } from 'next';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Loader from '@/components/Shared/Loader';
 import ProfileUpdateModal from '@/components/Modals/ProfileUpdateModal';
 import ChangePasswordModal from '@/components/Modals/ChangePasswordModal';
