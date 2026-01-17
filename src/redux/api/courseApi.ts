@@ -54,7 +54,7 @@ export const courseAPI = createApi({
       query: (updateCourse) => ({
         url: `/courses/${updateCourse?.id}`,
         method: 'PATCH',
-        data: updateCourse
+        data: updateCourse.data
       }),
       invalidatesTags: ["course"]
     }),
