@@ -15,10 +15,17 @@ export const userAPI = createApi({
       providesTags: ['user']
     }),
     getStudents: builder.query({
-      query: ({ page = 1, limit = 5 }) => ({
+      query: (params?: { page?: number; limit?: number; searchTerm?: string; status?: string }) => ({
         url: `/students`,
         method: "GET",
-        params: { page, limit },
+        params: params,
+      }),
+      providesTags: ['user']
+    }),
+    getSingleStudents: builder.query({
+      query: (params?: { _id: string }) => ({
+        url: `/students/${params?._id}`,
+        method: "GET",
       }),
       providesTags: ['user']
     }),
@@ -45,5 +52,6 @@ export const {
   useGetUserQuery,
   useGetStudentsQuery,
   useLogoutUserMutation,
-  useUpdateMeMutation
+  useUpdateMeMutation,
+  useGetSingleStudentsQuery
 } = userAPI;

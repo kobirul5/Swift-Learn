@@ -53,7 +53,7 @@ export default function MyCourses() {
               alt={course.title}
               width={192}
               height={128}
-              className="rounded-t-2xl h-[300px] w-full object-cover"
+              className="rounded-t-2xl h-[300] w-full object-cover"
             />
             <div className="p-4">
               <h2 className="text-lg font-semibold">{course.title}</h2>

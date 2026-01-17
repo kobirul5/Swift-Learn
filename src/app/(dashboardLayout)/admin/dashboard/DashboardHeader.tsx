@@ -1,11 +1,10 @@
-'use client'
-import { useGetUserQuery } from '@/redux/api/userApi';
-import Image from 'next/image';
-import { FiBell, FiSearch, FiMenu } from 'react-icons/fi';
+"use client";
+import { useGetUserQuery } from "@/redux/api/userApi";
+import Image from "next/image";
+import { FiBell, FiSearch, FiMenu } from "react-icons/fi";
 
 export default function DashboardHeader() {
-
-  const { data } = useGetUserQuery(undefined)
+  const { data } = useGetUserQuery(undefined);
 
   return (
     <div className="bg-white shadow-sm">
@@ -37,11 +36,19 @@ export default function DashboardHeader() {
           <div className="relative">
             <button className="flex items-center space-x-2 focus:outline-none">
               <div className="h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center">
-                <span className="text-primary-600 font-medium">
-                  <Image src="/logo/logo.png" alt="logo" width={30} height={30} />
+                <span className="text-primary-600 font-medium rounded-full w-8 h-8 ">
+                  <Image
+                    src={data?.data?.image}
+                    alt="logo"
+                    width={32}
+                    height={32}
+                    className="w-full h-full object-cover rounded-full"
+                  />
                 </span>
               </div>
-              <span className="hidden md:block text-sm font-medium text-dark-700">User</span>
+              <span className="hidden md:block text-sm font-medium text-dark-700">
+                {data?.data?.name}
+              </span>
             </button>
           </div>
         </div>

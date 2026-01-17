@@ -31,9 +31,8 @@ export default function CoursesPage() {
   const [activeCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [page, setPage] = useState(1);
-  const limit = 12;
+  const limit = 1;
   const { data, isLoading } = useGetCourseQuery({ page, limit, searchTerm: searchQuery, category: activeCategory });
-  console.log("Courses Data:", data);
 
   const totalPages = data?.meta?.totalPage || 1;
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import {
@@ -63,12 +64,13 @@ const TestimonialManagement = () => {
     }
 
     return (
-        <div className="p-6 bg-white rounded-xl shadow-sm">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-                <div>
-                    <h2 className="text-2xl font-bold">Manage Testimonials</h2>
-                    <p className="text-dark-500 text-sm">Review and manage student testimonials</p>
-                </div>
+        <div className="">
+            <div className="p-6 border-b border-primary-100">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                    <div>
+                        <h2 className="text-2xl font-bold text-primary-700">Manage Testimonials</h2>
+                        {/* <p className="text-gray-600 text-sm mt-1">Review and manage student testimonials</p> */}
+                    </div>
                 <div className="relative w-full md:w-80">
                     <input
                         type="text"
@@ -78,16 +80,17 @@ const TestimonialManagement = () => {
                             setSearchTerm(e.target.value);
                             setPage(1);
                         }}
-                        className="w-full pl-10 pr-4 py-2 border border-dark-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:outline-none transition"
+                        className="w-full pl-10 pr-4 py-2 border border-primary-100 rounded-lg focus:ring-2 focus:ring-primary-500 focus:outline-none transition"
                     />
-                    <div className="absolute left-3 top-2.5 text-dark-400">
+                    <div className="absolute left-3 top-2.5 text-gray-400">
                         <FaSearch className="w-4 h-4" />
                     </div>
                 </div>
             </div>
+            </div>
 
-            <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
+            <div className="overflow-x-auto p-6">
+                <table className="min-w-full divide-y divide-primary-100">
                     <thead className="bg-gray-50">
                         <tr>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
@@ -97,7 +100,7 @@ const TestimonialManagement = () => {
                             <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
+                    <tbody className="divide-y divide-primary-100">
                         {testimonials.map((item: any) => (
                             <tr key={item._id}>
                                 <td className="px-6 py-4 whitespace-nowrap">
