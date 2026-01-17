@@ -14,7 +14,7 @@ export default function StudentsPage() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState<number>(1);
-  const limit = 5;
+  const limit = 2;
 
   const { data, isLoading, error } = useGetStudentsQuery({ page, limit });
 
