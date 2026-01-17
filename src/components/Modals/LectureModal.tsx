@@ -4,7 +4,6 @@ import { useCreateLectureMutation } from '@/redux/api/courseApi';
 import { useState, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { FiX, FiPlus, FiTrash, FiLoader, FiUpload, FiFileText, FiCheckCircle, FiVideo } from 'react-icons/fi';
-import Image from 'next/image';
 
 interface VideoModalProps {
   moduleId: string;
@@ -87,6 +86,7 @@ export default function LectureModal({ moduleId, toggleModalLecture }: VideoModa
       } else {
         toast.error(res?.message || 'Failed to create lecture');
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(error);
       toast.error(error?.data?.message || 'Something went wrong!');

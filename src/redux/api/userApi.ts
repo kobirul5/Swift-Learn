@@ -22,6 +22,13 @@ export const userAPI = createApi({
       }),
       providesTags: ['user']
     }),
+    getSingleStudents: builder.query({
+      query: (params?: { _id: string }) => ({
+        url: `/students/${params?._id}`,
+        method: "GET",
+      }),
+      providesTags: ['user']
+    }),
     logoutUser: builder.mutation({
       query: () => ({
         url: "/users/logout",
@@ -45,5 +52,6 @@ export const {
   useGetUserQuery,
   useGetStudentsQuery,
   useLogoutUserMutation,
-  useUpdateMeMutation
+  useUpdateMeMutation,
+  useGetSingleStudentsQuery
 } = userAPI;

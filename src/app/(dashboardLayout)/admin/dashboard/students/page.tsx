@@ -7,6 +7,9 @@ import { IUser } from "@/type/user.interface";
 import Image from "next/image";
 import Loader from "@/components/Shared/Loader";
 import Pagination from "@/components/Shared/Pagination";
+import { FaEye, FaTrash } from "react-icons/fa";
+import { MdBlock} from "react-icons/md";
+import { IoCheckmarkSharp } from "react-icons/io5";
 
 export default function StudentsPage() {
   const router = useRouter();
@@ -85,14 +88,15 @@ export default function StudentsPage() {
                 </label>
                 <select
                   id="status"
-                  className="w-full px-4 py-2 border border-primary-100 rounded-md focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-4 py-2 border border-primary-100 rounded-md focus:ring-primary-500 focus:border-primary-500 space-y-3 "
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
                 >
-                  <option value="">All</option>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                  <option value="banned">Banned</option>
+                  <option value="" >All</option>
+                  <option value="active" >Active</option>
+                  <option value="inactive" >Inactive</option>
+                  <option value="banned" >Banned</option>
+                  {/* <option value="deleted">Deleted</option> */}
                 </select>
               </div>
             </div>
@@ -105,6 +109,7 @@ export default function StudentsPage() {
                     <th className="pb-3">Email</th>
                     <th className="pb-3">Role</th>
                     <th className="pb-3">Joined</th>
+                    <th className="pb-3">Status</th>
                     <th className="pb-3">Actions</th>
                   </tr>
                 </thead>
@@ -148,17 +153,40 @@ export default function StudentsPage() {
                         ).toLocaleDateString()}
                       </td>
                       <td>
-                        <div className="flex space-x-2">
+                        <span className={`px-2 py-1 rounded-full text-xs 
+                          ${
+                            student.status === "active"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
+                          }`
+                          }>
+                          {student.status}
+
+                        </span>
+                      </td>
+                      <td>
+                        <div className="flex space-x-3">
                           <button
                             className="text-primary-600 hover:text-primary-800"
                             onClick={() =>
                               router.push(`/dashboard/students/${student._id}`)
                             }
                           >
-                            Edit
+                            <FaEye className="text-lg" />
                           </button>
-                          <button className="text-red-600 hover:text-red-800">
-                            Delete
+                          <button className="">
+                            {
+                              student.status === "banned" ? (
+                                <IoCheckmarkSharp className="text-green-500 hover:text-green-800  font-bold text-lg " />
+                              ) : (
+                                <MdBlock className="text-lg text-red-500" />
+                              )
+                            }
+                            {/* <MdBlock className="text-lg" /> */}
+                            
+                          </button>
+                          <button className="text-red-500 hover:text-red-800">
+                            <FaTrash className="text-lg" />
                           </button>
                         </div>
                       </td>

@@ -69,12 +69,6 @@ const Courses = () => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full sm:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 />
-                <select className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500">
-                  <option>Filter by status</option>
-                  <option>Published</option>
-                  <option>Draft</option>
-                  <option>Archived</option>
-                </select>
                 <Link
                   href="/admin/dashboard/courses/create-course"
                   className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition font-medium text-center"
@@ -93,7 +87,7 @@ const Courses = () => {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[800px]">
+              <table className="w-full min-w-[800]">
                 <thead className="bg-gray-50 border-b border-primary-100">
                   <tr>
                     <th className="text-left px-6 py-4 text-sm font-semibold text-gray-700">
@@ -124,6 +118,7 @@ const Courses = () => {
                         <div className="flex items-center gap-4">
                           <div className="w-16 h-16 bg-gray-200 rounded-xl overflow-hidden shrink-0 border border-gray-300">
                             {course.thumbnail ? (
+                              // eslint-disable-next-line @next/next/no-img-element
                               <img
                                 src={course.thumbnail}
                                 alt={course.title}

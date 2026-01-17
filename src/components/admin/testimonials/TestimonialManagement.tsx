@@ -69,7 +69,7 @@ const TestimonialManagement = () => {
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                     <div>
                         <h2 className="text-2xl font-bold text-primary-700">Manage Testimonials</h2>
-                        <p className="text-gray-600 text-sm mt-1">Review and manage student testimonials</p>
+                        {/* <p className="text-gray-600 text-sm mt-1">Review and manage student testimonials</p> */}
                     </div>
                 <div className="relative w-full md:w-80">
                     <input
@@ -100,7 +100,7 @@ const TestimonialManagement = () => {
                             <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-primary-100">
+                    <tbody className="divide-y divide-primary-100">
                         {testimonials.map((item: any) => (
                             <tr key={item._id}>
                                 <td className="px-6 py-4 whitespace-nowrap">
