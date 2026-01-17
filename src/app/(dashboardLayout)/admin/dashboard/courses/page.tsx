@@ -45,11 +45,13 @@ const Courses = () => {
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-      {/* Header */}
-      <div className="p-6 border-b border-gray-200">
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-          <h2 className="text-2xl font-bold text-gray-900">All Courses</h2>
+    <div className="min-h-screen bg-gray-50 text-gray-900 rounded-2xl">
+      <main className="p-4 md:p-6 lg:p-8">
+        <div className="overflow-hidden">
+          {/* Header */}
+          <div className="p-6 border-b border-primary-100">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+          <h2 className="text-2xl font-bold text-primary-700">All Courses</h2>
           <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
             <input
               type="text"
@@ -75,7 +77,7 @@ const Courses = () => {
       {/* Responsive Table */}
       <div className="overflow-x-auto">
         <table className="w-full min-w-[800px]">
-          <thead className="bg-gray-50 border-b border-gray-200">
+          <thead className="bg-gray-50 border-b border-primary-100">
             <tr>
               <th className="text-left px-6 py-4 text-sm font-semibold text-gray-700">Course</th>
               <th className="text-left px-6 py-4 text-sm font-semibold text-gray-700">Modules</th>
@@ -84,7 +86,7 @@ const Courses = () => {
               <th className="text-center px-6 py-4 text-sm font-semibold text-gray-700">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-primary-100">
             {courses.map((course) => (
               <tr key={course._id} className="hover:bg-gray-50 transition duration-150">
                 {/* Course Info */}
@@ -167,13 +169,15 @@ const Courses = () => {
         </table>
       </div>
 
-      {/* Pagination Controls */}
-      <Pagination
-        currentPage={page}
-        totalPages={totalPages}
-        onPageChange={setPage}
-        variant="admin"
-      />
+          {/* Pagination Controls */}
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            variant="admin"
+          />
+        </div>
+      </main>
     </div>
   );
 };
