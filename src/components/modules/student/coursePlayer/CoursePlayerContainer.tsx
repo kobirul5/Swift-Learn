@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useGetModuleQuery } from "@/redux/api/courseApi"
 import Loader from "@/components/Shared/Loader"
 import { IModule } from "@/type/module"
@@ -35,6 +35,7 @@ export function CoursePlayerContainer({ courseId }: CoursePlayerContainerProps) 
 
     if (effectiveLectureId) {
         for (let mIdx = 0; mIdx < modules.length; mIdx++) {
+            // eslint-disable-next-line @next/next/no-assign-module-variable
             const module = modules[mIdx]
             const lIdx = module.lectures.findIndex(l => l._id === effectiveLectureId)
             if (lIdx !== -1) {
@@ -55,7 +56,7 @@ export function CoursePlayerContainer({ courseId }: CoursePlayerContainerProps) 
         return (
             <div className="text-center py-40">
                 <h2 className="text-2xl font-bold text-gray-800">Oops! Content not found.</h2>
-                <p className="text-gray-600 mt-2">We couldn't load the modules for this course.</p>
+                <p className="text-gray-600 mt-2">We couldn&apos;t load the modules for this course.</p>
             </div>
         )
     }

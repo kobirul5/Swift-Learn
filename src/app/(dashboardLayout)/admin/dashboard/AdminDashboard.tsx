@@ -143,9 +143,7 @@ export default function DashboardPage() {
 
         {/* Quick Actions */}
         <div className="mt-10 flex flex-wrap gap-4">
-          <button className="btn">
-           <Link href="/admin/dashboard/courses/create-course">Add New Course</Link>
-          </button>
+          <Link href="/admin/dashboard/courses/create-course" className="btn">Add New Course</Link>
         </div>
       </main>
     </div>

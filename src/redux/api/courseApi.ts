@@ -54,7 +54,7 @@ export const courseAPI = createApi({
       query: (updateCourse) => ({
         url: `/courses/${updateCourse?.id}`,
         method: 'PATCH',
-        data: updateCourse
+        data: updateCourse.data
       }),
       invalidatesTags: ["course"]
     }),
@@ -69,6 +69,13 @@ export const courseAPI = createApi({
     getModule: builder.query({
       query: (courseId) => ({
         url: `/modules/${courseId}`,
+        method: "GET",
+      }),
+      providesTags: ['course']
+    }),
+    getSingleLecture: builder.query({
+      query: (lectureId) => ({
+        url: `/lecture/single/${lectureId}`,
         method: "GET",
       }),
       providesTags: ['course']
@@ -96,6 +103,13 @@ export const courseAPI = createApi({
       }),
       invalidatesTags: ['course']
     }),
+    unlockLecture: builder.mutation({
+      query: ({ id }) => ({
+        url: `/lecture/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ['course']
+    }),
 
   }),
 });
@@ -112,5 +126,7 @@ export const {
   useCreateModuleMutation,
   useCreateLectureMutation,
   useDeleteLectureMutation,
+  useGetSingleLectureQuery,
+  useUnlockLectureMutation,
 
 } = courseAPI;

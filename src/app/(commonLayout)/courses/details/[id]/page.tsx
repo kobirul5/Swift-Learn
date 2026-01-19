@@ -1,66 +1,75 @@
-'use client'
-import { ICourse } from '@/type/course.interface';
-import Image from 'next/image';
-import { useParams, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import { FiClock, FiStar, FiUsers } from 'react-icons/fi';
-import CourseBenefits from '../CourseBenefits';
-import CourseInstructor from '../CourseInstructor';
-import { useGetUserQuery } from '@/redux/api/userApi';
-import { useCreateEnrollmentMutation, useGetCourseByIdQuery } from '@/redux/api/courseApi';
-import Loader from '@/components/Shared/Loader';
-
-
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+import { ICourse } from "@/type/course.interface";
+import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { FiClock, FiStar, FiUsers } from "react-icons/fi";
+import CourseBenefits from "../CourseBenefits";
+import CourseInstructor from "../CourseInstructor";
+import { useGetUserQuery } from "@/redux/api/userApi";
+import {
+  useCreateEnrollmentMutation,
+  useGetCourseByIdQuery,
+} from "@/redux/api/courseApi";
+import Loader from "@/components/Shared/Loader";
 
 export default function CourseDetailPage() {
-  const { id } = useParams()
+  const { id } = useParams();
   const [course, setCourses] = useState<ICourse>();
   const { data, isLoading } = useGetCourseByIdQuery(id);
-  const { data: user } = useGetUserQuery(undefined)
-  const [createEnrollment] = useCreateEnrollmentMutation()
+  const { data: user } = useGetUserQuery(undefined);
+  const [createEnrollment] = useCreateEnrollmentMutation();
 
-  const router = useRouter()
-
+  const router = useRouter();
 
   useEffect(() => {
     if (!user) {
-      router.push('/login')
-      return
+      router.push("/login");
+      return;
     }
     if (data) {
       setCourses(data.data);
     }
   }, [data, user, router]);
 
-
-
   const handleEnrollment = async (courseId: string) => {
     if (!courseId) {
-      toast.error("Something is Wrong")
-      return
+      toast.error("Something is Wrong");
+      return;
     }
     if (!user?.data?._id) {
       toast.error("Please login first");
-      return
+      return;
     }
 
     const enrolmentData = {
       student: user.data._id,
       course: courseId,
-    }
-    const res = await createEnrollment(enrolmentData)
-    if (res?.data?.success) {
-      toast.success("Enrollment Successful")
-      router.push('/student')
-    }
+    };
+    try {
+      const res = await createEnrollment(enrolmentData);
 
-  }
+      console.log(res.data.data.url);
+      if (res?.data?.success) {
+        toast.success("Enrollment Successful");
+        router.push(res.data.data.url);
+      }
 
+      // if (res?.error?.data?.message) {
+      //   toast.error(res.error.data.message);
+      // }
+
+    } catch (error: any) {
+      toast.error(error.data.message || "Something went wrong");
+    }
+  };
 
   if (isLoading) {
-    return <Loader message="Analyzing course content..." minHeight="min-h-screen" />;
+    return (
+      <Loader message="Analyzing course content..." minHeight="min-h-screen" />
+    );
   }
 
   if (!course) {
@@ -73,7 +82,7 @@ export default function CourseDetailPage() {
         {/* Thumbnail */}
         <div className="relative w-full h-80 lg:h-full rounded-xl overflow-hidden shadow-md">
           <Image
-            src={course.thumbnail || '/fallback.png'}
+            src={course.thumbnail || "/fallback.png"}
             alt={course.title}
             fill
             className="object-cover"
@@ -82,7 +91,9 @@ export default function CourseDetailPage() {
 
         {/* Details */}
         <div>
-          <h1 className="text-3xl font-bold text-dark-900 mb-4">{course.title}</h1>
+          <h1 className="text-3xl font-bold text-dark-900 mb-4">
+            {course.title}
+          </h1>
 
           <p className="text-lg text-dark-600 mb-6">{course.description}</p>
 
@@ -94,17 +105,19 @@ export default function CourseDetailPage() {
               <FiUsers className="mr-1" /> 1200+ Students
             </span>
             <span className="flex items-center">
-              <FiStar className="mr-1 text-yellow-500" /> {course?.rating || 0}/5
+              <FiStar className="mr-1 text-yellow-500" /> {course?.rating || 0}
+              /5
             </span>
           </div>
 
           <div className="text-2xl font-bold text-primary-600 mb-6">
-            ${course?.price?.toFixed(2) || 'Free'}
+            ${course?.price?.toFixed(2) || "Free"}
           </div>
 
           <button
             onClick={() => handleEnrollment(course._id)}
-            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-700 transition-colors">
+            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-700 transition-colors"
+          >
             Enroll Now
           </button>
         </div>

@@ -64,7 +64,9 @@ export default function DashboardSidebar() {
 
         {/* User Profile */}
         <div className="shrink-0 flex border-t border-dark-200 p-4">
-          <UserProfileCard />
+          <Link href="/student-profile">
+            <UserProfileCard />
+          </Link>
         </div>
       </div>
     </div>

@@ -4,7 +4,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ICourse } from "@/type/course.interface";
-import toast from "react-hot-toast";
 import {
   useDeleteCourseMutation,
   useGetCourseQuery,
@@ -12,6 +11,7 @@ import {
 import Pagination from "@/components/Shared/Pagination";
 import Loader from "@/components/Shared/Loader";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const Courses = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -28,28 +28,38 @@ const Courses = () => {
   const totalPages = response?.meta?.totalPage || 1;
 
   const handleDelete = async (id: string) => {
-    if (
-      !window.confirm(
-        "Are you sure you want to delete this course? This action cannot be undone."
-      )
-    ) {
-      return;
-    }
-
-    try {
-      await deleteCourse(id).unwrap();
-      toast.success("Course deleted successfully!");
-    } catch (err: any) {
-      console.error(err);
-      toast.error(err?.data?.message || "Failed to delete course");
-    }
+    Swal.fire({
+      title: "Are you sure you want to delete this course? ",
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#371986",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deleteCourse(id).unwrap();
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+          });
+        } catch (err: any) {
+          console.error(err);
+          Swal.fire({
+            title: "Oops!",
+            text: `err?.data?.message || "Failed to delete course`,
+            icon: "error",
+          });
+        }
+      }
+    });
   };
 
   if (isLoading) {
     return <Loader message="Loading courses..." />;
   }
-
-
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 rounded-2xl">
@@ -179,15 +189,15 @@ const Courses = () => {
                             href={`/admin/dashboard/courses/details/${course._id}`}
                             className="text-primary-600 hover:text-primary-800 font-medium text-sm underline"
                           >
-                           <FaEye className="text-lg"/>
+                            <FaEye className="text-lg" />
                           </Link>
 
                           {/* Edit */}
                           <Link
-                            href={`/admin/dashboard/courses/edit/${course._id}`}
+                            href={`/admin/dashboard/courses/update/${course._id}`}
                             className=" text-blue-700 rounded-lg text-sm font-medium hover:bg-blue-200 transition"
                           >
-                            <FaEdit className="text-lg"/>
+                            <FaEdit className="text-lg" />
                           </Link>
 
                           {/* Delete */}
@@ -195,7 +205,7 @@ const Courses = () => {
                             onClick={() => handleDelete(course._id)}
                             className="text-red-500 rounded-lg text-sm font-medium hover:bg-red-200 transition"
                           >
-                            <FaTrash className="text-lg"/>
+                            <FaTrash className="text-lg" />
                           </button>
                         </div>
                       </td>

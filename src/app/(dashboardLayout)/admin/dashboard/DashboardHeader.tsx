@@ -37,13 +37,15 @@ export default function DashboardHeader() {
             <button className="flex items-center space-x-2 focus:outline-none">
               <div className="h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center">
                 <span className="text-primary-600 font-medium rounded-full w-8 h-8 ">
-                  <Image
-                    src={data?.data?.image}
-                    alt="logo"
-                    width={32}
-                    height={32}
-                    className="w-full h-full object-cover rounded-full"
-                  />
+                  {data?.data?.image && (
+                    <Image
+                      src={data?.data?.image}
+                      alt="logo"
+                      width={32}
+                      height={32}
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  )}
                 </span>
               </div>
               <span className="hidden md:block text-sm font-medium text-dark-700">

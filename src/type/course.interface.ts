@@ -15,6 +15,7 @@ export interface ICourse {
   description?: string;
   price: number;
   thumbnail?: string;
+  isFeatured?: boolean;
   rating:number;
   modules: string[];
   createdAt?: string;

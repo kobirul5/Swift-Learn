@@ -5,7 +5,8 @@ export interface ILecture {
   title: string;
   videoUrl?: string;
   duration: string;
-  isCompleted: boolean;
+  isLocked: boolean;
+  isCompleted?: boolean;
   notes: string[];
 }
 

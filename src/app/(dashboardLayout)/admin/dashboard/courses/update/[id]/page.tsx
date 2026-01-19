@@ -1,158 +1,343 @@
 'use client';
 import { useParams, useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
-import { useState } from 'react';
-import { ICourse } from '@/type/course.interface';
+import { FaFile } from 'react-icons/fa';
+import Image from 'next/image';
+
 import { useUpdateCourseMutation, useGetCourseByIdQuery } from '@/redux/api/courseApi';
 import Loader from '@/components/Shared/Loader';
 
 export default function UpdateCoursePage() {
   const router = useRouter();
-  const params = useParams();
+  const params = useParams<{ id: string }>();
+
   const [updateCourse] = useUpdateCourseMutation();
+  const { data, isLoading, error: queryError } = useGetCourseByIdQuery(params.id);
 
-  const { data, isLoading, error: queryError } = useGetCourseByIdQuery(params.id as string);
-  const crs = data?.data as ICourse;
+  const courseData = data?.data;
 
+  // Form states
+  const [course, setCourse] = useState({
+    title: '',
+    description: '',
+    price: 0,
+    isFeatured: false,
+  });
+
+  // Thumbnail states
+  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string>('');
+  const [isDragOver, setIsDragOver] = useState(false);
+
+  // UI states
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
+  // Populate form with existing course data
+  useEffect(() => {
+    if (courseData) {
+      setCourse({
+        title: courseData.title || '',
+        description: courseData.description || '',
+        price: courseData.price || 0,
+        isFeatured: courseData.isFeatured ?? false,
+      });
+
+      if (courseData.thumbnail) {
+        setThumbnailPreview(courseData.thumbnail);
+      }
+    }
+  }, [courseData]);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value, type } = e.target;
+    if (type === 'checkbox') {
+      const checked = (e.target as HTMLInputElement).checked;
+      setCourse((prev) => ({ ...prev, [name]: checked }));
+    } else {
+      setCourse((prev) => ({
+        ...prev,
+        [name]: name === 'price' ? Number(value) || 0 : value,
+      }));
+    }
+  };
+
+  const handleFileSelect = (file: File) => {
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!validTypes.includes(file.type)) {
+      toast.error('Please upload a valid image (JPG, PNG, WebP)');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image size must be less than 5MB');
+      return;
+    }
+
+    setThumbnailFile(file);
+    setThumbnailPreview(URL.createObjectURL(file));
+  };
+
+  const removeThumbnail = () => {
+    if (thumbnailPreview && thumbnailFile) {
+      URL.revokeObjectURL(thumbnailPreview);
+    }
+    setThumbnailFile(null);
+    setThumbnailPreview('');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    const form = e.target as HTMLFormElement;
-    const title = (form.elements.namedItem('title') as HTMLInputElement).value;
-    const description = (form.elements.namedItem('description') as HTMLInputElement).value;
-    const price = parseFloat((form.elements.namedItem('price') as HTMLInputElement).value);
-    const thumbnail = (form.elements.namedItem('thumbnail') as HTMLInputElement).value;
 
-    const updatedData = {
-      id: params.id,
-      title,
-      description,
-      price,
-      thumbnail,
+    if (!course.title.trim()) {
+      toast.error('Course title is required');
+      return;
     }
+
+    setIsSubmitting(true);
+    setError('');
+
     try {
-      const res = await updateCourse(updatedData);
-      if (res?.data?.success) {
-        toast.success("Course updated successfully!");
-        router.push('/dashboard/courses');
-      } else {
-        toast.error("Update failed!");
+      const formData = new FormData();
+
+      formData.append(
+        'data',
+        JSON.stringify({
+          title: course.title,
+          description: course.description,
+          price: course.price,
+          isFeatured: course.isFeatured,
+          // If user didn't upload new thumbnail → keep old one (optional)
+          ...(thumbnailPreview && !thumbnailFile && { thumbnail: courseData?.thumbnail }),
+        })
+      );
+
+      if (thumbnailFile) {
+        formData.append('file', thumbnailFile);
       }
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Something went wrong');
+
+      // Most RTK Query update mutations accept { id, body }
+      const res = await updateCourse({
+        id: params.id,
+        data: formData,
+      }).unwrap();
+
+
+      if (res?.success) {
+        toast.success('Course updated successfully!');
+        router.push('/admin/dashboard/courses');
+      }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      console.error(err);
+      const message = err?.data?.message || err?.message || 'Failed to update course';
+      setError(message);
+      toast.error(message);
     } finally {
       setIsSubmitting(false);
     }
   };
 
   if (isLoading) {
-    return <Loader message="Preparing course data..." />;
+    return <Loader message="Loading course data..." />;
   }
 
-  if (queryError) {
+  if (queryError || !courseData) {
     return (
-      <div className="p-6 bg-white mx-auto rounded-2xl">
-        <div className="text-center text-red-600">
-          <p>Error loading course. Please try again.</p>
-          <button onClick={() => router.back()} className="mt-4 text-primary-600 hover:text-primary-800">
-            ← Go Back
-          </button>
-        </div>
+      <div className="p-8 bg-white rounded-2xl text-center">
+        <p className="text-red-600 mb-4">Error loading course data</p>
+        <button
+          onClick={() => router.back()}
+          className="px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition"
+        >
+          ← Go Back
+        </button>
       </div>
     );
   }
 
   return (
-    <div className="p-6 bg-white mx-auto rounded-2xl">
+    <form onSubmit={handleSubmit} className="p-6 lg:p-8 bg-white rounded-2xl">
+      {/* Server error display */}
+      {error && (
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg">
+          {error}
+        </div>
+      )}
+
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-dark-800">Update Course </h1>
-        <button onClick={() => router.back()} className="text-dark-600 hover:text-dark-800">← Back to Courses</button>
+        <h1 className="text-2xl font-bold text-gray-800">Update Course</h1>
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="text-gray-600 hover:text-gray-900 transition"
+        >
+          ← Back to Courses
+        </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="p-6">
-
-        <div className="grid grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Left: Form Fields */}
+        <div className="lg:col-span-2 space-y-6">
           <div>
-            <label htmlFor="title" className="block text-sm font-medium text-dark-700 mb-1">
-              Course Title *
+            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+              Course Title <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               id="title"
               name="title"
-              defaultValue={crs?.title}
-              className="w-full px-4 py-2 border border-dark-300 rounded-md"
+              value={course.title}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
+              placeholder="Enter course title"
             />
           </div>
 
           <div>
-            <label htmlFor="description" className="block text-sm font-medium text-dark-700 mb-1">
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
               Description
             </label>
             <textarea
               id="description"
               name="description"
-              defaultValue={crs?.description}
-              rows={4}
-              className="w-full px-4 py-2 border border-dark-300 rounded-md"
+              value={course.description}
+              onChange={handleChange}
+              rows={6}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition resize-none"
+              placeholder="Write a brief description about the course..."
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label htmlFor="price" className="block text-sm font-medium text-dark-700 mb-1">
-                Price (USD)
-              </label>
-              <input
-                type="number"
-                id="price"
-                name="price"
-                defaultValue={crs?.price}
-                min="0"
-                step="0.01"
-                className="w-full px-4 py-2 border border-dark-300 rounded-md"
-              />
-            </div>
+          <div>
+            <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">
+              Price (USD)
+            </label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              value={course.price}
+              onChange={handleChange}
+              min="0"
+              step="0.01"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
+              placeholder="0.00"
+            />
+          </div>
 
-            <div>
-              <label htmlFor="thumbnail" className="block text-sm font-medium text-dark-700 mb-1">
-                Thumbnail URL
-              </label>
+          <div className="flex items-center space-x-3">
+            <input
+              type="checkbox"
+              id="isFeatured"
+              name="isFeatured"
+              checked={course.isFeatured}
+              onChange={handleChange}
+              className="h-5 w-5 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+            />
+            <label htmlFor="isFeatured" className="text-sm font-medium text-gray-700 cursor-pointer">
+              Mark as Featured Course
+            </label>
+          </div>
+          <p className="text-xs text-gray-500 ml-8 -mt-2">
+            Featured courses will be highlighted on the homepage and listings.
+          </p>
+        </div>
+
+        {/* Right: Thumbnail Upload & Preview */}
+        <div className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-3">
+              Course Thumbnail
+            </label>
+
+            <div
+              className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all ${
+                isDragOver
+                  ? 'border-primary-500 bg-primary-50'
+                  : 'border-gray-300 hover:border-gray-400 bg-gray-50'
+              }`}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setIsDragOver(true);
+              }}
+              onDragLeave={(e) => {
+                e.preventDefault();
+                setIsDragOver(false);
+              }}
+              onDrop={(e) => {
+                e.preventDefault();
+                setIsDragOver(false);
+                if (e.dataTransfer.files?.[0]) {
+                  handleFileSelect(e.dataTransfer.files[0]);
+                }
+              }}
+            >
               <input
-                type="url"
-                id="thumbnail"
-                name="thumbnail"
-                defaultValue={crs?.thumbnail}
-                className="w-full px-4 py-2 border border-dark-300 rounded-md"
+                type="file"
+                accept="image/*"
+                onChange={(e) => e.target.files?.[0] && handleFileSelect(e.target.files[0])}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               />
+
+              <FaFile className="mx-auto h-28 w-16 text-primary-600/65 mb-4" />
+
+              <p className="text-sm text-gray-600">
+                <span className="font-semibold text-primary-600">Click to upload</span> or drag and drop
+              </p>
+              <p className="text-xs text-gray-500 mt-1">PNG, JPG, WebP (up to 5MB)</p>
             </div>
           </div>
 
-          {crs?.thumbnail && (
+          {thumbnailPreview && (
             <div>
-              <label className="block text-sm font-medium text-dark-700 mb-1">Thumbnail Preview</label>
-              <div className="w-full h-48 bg-dark-100 rounded-md overflow-hidden">
-                <img
-                  src={crs?.thumbnail}
-                  alt="Thumbnail Preview"
-                  className="w-full h-full object-cover"
-                  onError={(e) => ((e.target as HTMLImageElement).style.display = 'none')}
+              <label className="block text-sm font-medium text-gray-700 mb-3">Preview</label>
+              <div className="relative rounded-xl overflow-hidden shadow-lg border border-gray-200">
+                <Image
+                  src={thumbnailPreview}
+                  alt="Course thumbnail preview"
+                  width={400}
+                  height={300}
+                  className="w-full h-80 object-cover"
+                  onError={() => setThumbnailPreview('')}
                 />
+                <button
+                  type="button"
+                  onClick={removeThumbnail}
+                  className="absolute top-3 right-3 bg-red-600 text-white rounded-full p-2.5 hover:bg-red-700 transition shadow-md"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
               </div>
             </div>
           )}
         </div>
+      </div>
 
-        <div className="mt-8 flex justify-end space-x-3">
-          <button type="button" onClick={() => router.push("/dashboard/courses")} className="px-4 py-2 border border-dark-300 rounded-md text-dark-700 hover:bg-dark-50">Cancel</button>
-          <button type="submit" disabled={isSubmitting} className={`px-4 py-2 rounded-md text-white ${isSubmitting ? 'bg-primary-400' : 'bg-primary-600 hover:bg-primary-700'}`}>
-            {isSubmitting ? 'Saving...' : 'Save Course'}
-          </button>
-        </div>
-      </form>
-    </div>
+      <div className="mt-10 flex justify-end space-x-4">
+        <button
+          type="button"
+          onClick={() => router.push('/admin/dashboard/courses')}
+          className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={`px-8 py-3 rounded-lg text-white font-medium transition ${
+            isSubmitting ? 'bg-primary-400 cursor-not-allowed' : 'bg-primary-600 hover:bg-primary-700'
+          }`}
+        >
+          {isSubmitting ? 'Saving...' : 'Update Course'}
+        </button>
+      </div>
+    </form>
   );
 }
