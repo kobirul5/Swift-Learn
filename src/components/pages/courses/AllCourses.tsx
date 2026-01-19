@@ -1,10 +1,7 @@
 'use client'
-
 import { IICourse } from "@/app/(commonLayout)/courses/page";
-import { ICourse } from "@/type/course.interface";
-import { useEffect, useState } from "react";
 import CourseCard from "@/components/pages/home/CourseCard";
-import { useGetCourseQuery } from "@/redux/api/courseApi";
+
 
 interface AllCoursesProps {
     filteredCourses: IICourse[];
@@ -34,6 +31,7 @@ export default function AllCourses({ filteredCourses, activeCategory }: AllCours
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {filteredCourses.map((course, idx) => (
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         <CourseCard key={idx} course={course as any} />
                     ))}
                 </div>

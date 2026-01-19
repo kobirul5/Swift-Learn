@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Search, Play, ChevronDown } from "lucide-react"
 import { cn } from "@/utils/cd"
 import { IModule } from "@/type/module"
@@ -69,7 +69,7 @@ export function LectureSidebar({ modules, currentLectureId, onLectureClick }: Le
                         >
                             <ChevronDown
                                 className={cn(
-                                    "w-5 h-5 text-primary-400 mt-1 transition-transform flex-shrink-0",
+                                    "w-5 h-5 text-primary-400 mt-1 transition-transform shrink-0",
                                     expandedModules.includes(module._id) ? "rotate-0" : "-rotate-90"
                                 )}
                             />
@@ -93,13 +93,13 @@ export function LectureSidebar({ modules, currentLectureId, onLectureClick }: Le
                                             className={cn(
                                                 "w-[calc(100%-32px)] px-4 py-3 mx-4 mb-2 rounded-lg text-left transition-all",
                                                 isActive
-                                                    ? "bg-gradient-to-r from-primary-300 to-primary-500"
+                                                    ? "bg-linear-to-r from-primary-300 to-primary-500"
                                                     : "hover:bg-primary-200"
                                             )}
                                         >
                                             <div className="flex items-start gap-3">
                                                 {/* Icon */}
-                                                <div className="flex-shrink-0 mt-0.5">
+                                                <div className="shrink-0 mt-0.5">
                                                     <Play className={cn("w-5 h-5", isActive ? "text-primary-900" : "text-primary-400")} />
                                                 </div>
 

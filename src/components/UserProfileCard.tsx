@@ -9,6 +9,7 @@ export default function UserProfileCard() {
     <div className="flex items-center">
       <div className="h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center">
         <span className="text-primary-600 font-medium rounded-full w-8 h-8 ">
+           {data?.data?.image && (
           <Image
             src={data?.data?.image}
             alt="logo"
@@ -16,6 +17,7 @@ export default function UserProfileCard() {
             height={32}
             className="w-full h-full object-cover rounded-full"
           />
+           )}
         </span>
       </div>
       <div className="ml-3">

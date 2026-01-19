@@ -21,7 +21,7 @@ export function VideoPlayer({ currentLecture, moduleIndex, lectureIndex }: Video
 
     if (!currentLecture) {
         return (
-            <div className="w-full h-[400px] flex items-center justify-center bg-primary-100 rounded-lg">
+            <div className="w-full h-100 flex items-center justify-center bg-primary-100 rounded-lg">
                 <p className="text-white-800 text-xl font-semibold">Select a lecture to start learning</p>
             </div>
         )
@@ -54,7 +54,7 @@ export function VideoPlayer({ currentLecture, moduleIndex, lectureIndex }: Video
             </h1>
 
             {/* Display Section */}
-            <div className="w-full h-[450px] rounded-lg shadow-md overflow-hidden relative bg-black">
+            <div className="w-full h-112.5 rounded-lg shadow-md overflow-hidden relative bg-black">
                 {activeTab === 'video' && currentLecture.videoUrl ? (
                     <iframe
                         width="100%"

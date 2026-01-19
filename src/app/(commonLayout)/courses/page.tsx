@@ -7,6 +7,7 @@ import { useGetCourseQuery } from "@/redux/api/courseApi";
 import { useEffect, useState } from "react";
 import Pagination from "@/components/Shared/Pagination";
 import Loader from "@/components/Shared/Loader";
+import CoursesCategories from "@/components/pages/courses/CoursesCategories";
 
 
 
@@ -28,10 +29,10 @@ export type IICourse = {
 
 
 export default function CoursesPage() {
-  const [activeCategory] = useState<string>('All');
+  const [activeCategory, setActiveCategory ] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [page, setPage] = useState(1);
-  const limit = 1;
+  const limit = 10;
   const { data, isLoading } = useGetCourseQuery({ page, limit, searchTerm: searchQuery, category: activeCategory });
 
   const totalPages = data?.meta?.totalPage || 1;
@@ -60,7 +61,7 @@ export default function CoursesPage() {
           {/* Featured Course */}
           <FeaturedCourse />
           {/* Categories */}
-          {/* <CoursesCategories activeCategory={activeCategory} setActiveCategory={setActiveCategory} /> */}
+          <CoursesCategories activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
 
           {/* All Courses */}
           < AllCourses filteredCourses={filteredCourses} activeCategory={activeCategory} />
