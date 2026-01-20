@@ -62,7 +62,7 @@ export default function CoursesPage() {
     <>
       <div className="bg-dark-50 min-h-screen">
         {/* Hero Section */}
-        <CoursesHero searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        <CoursesHero />
         {/* Main Content */}
         <div className="container mx-auto px-6 py-12">
           {/* Featured Course */}
