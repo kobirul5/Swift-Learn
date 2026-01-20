@@ -10,7 +10,7 @@ export default function CoursesHero() {
       />
 
       {/* Rich Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-900/90 to-primary-900/40" />
+      <div className="absolute inset-0 bg-linear-to-br from-gray-900 via-gray-900/90 to-primary-900/40" />
 
       {/* Animated Glowing Orbs */}
       <div className="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] bg-primary-500/20 rounded-full blur-[100px] animate-pulse" />
@@ -29,7 +29,7 @@ export default function CoursesHero() {
           {/* Main Heading */}
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-8 tracking-tight leading-tight">
             Explore the Limits of <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-200 via-white to-primary-200 animate-gradient-x">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-primary-200 via-white to-primary-200 animate-gradient-x">
               Human Potential
             </span>
           </h1>
