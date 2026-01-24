@@ -4,13 +4,11 @@ import AllCourses from "@/components/pages/courses/AllCourses";
 import CoursesHero from "@/components/pages/courses/CoursesHero";
 import FeaturedCourse from "@/components/pages/courses/FeaturedCourse";
 import { useGetCourseQuery } from "@/redux/api/courseApi";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Pagination from "@/components/Shared/Pagination";
 import Loader from "@/components/Shared/Loader";
 import CoursesCategories from "@/components/pages/courses/CoursesCategories";
-
-
-
 
 export type IICourse = {
   id: number;
@@ -29,13 +27,22 @@ export type IICourse = {
 
 
 export default function CoursesPage() {
-  const [activeCategory, setActiveCategory ] = useState<string>('All');
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const searchParams = useSearchParams();
+  const searchTermUrl = searchParams.get('searchTerm') || '';
+
+  const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [searchQuery, setSearchQuery] = useState<string>(searchTermUrl);
   const [page, setPage] = useState(1);
   const limit = 10;
+
   const { data, isLoading } = useGetCourseQuery({ page, limit, searchTerm: searchQuery, category: activeCategory });
 
   const totalPages = data?.meta?.totalPage || 1;
+
+  // Sync state with URL param
+  useEffect(() => {
+    setSearchQuery(searchTermUrl);
+  }, [searchTermUrl]);
 
   // Reset page to 1 when search or category changes
   useEffect(() => {
@@ -55,7 +62,7 @@ export default function CoursesPage() {
     <>
       <div className="bg-dark-50 min-h-screen">
         {/* Hero Section */}
-        <CoursesHero searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        <CoursesHero />
         {/* Main Content */}
         <div className="container mx-auto px-6 py-12">
           {/* Featured Course */}

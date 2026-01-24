@@ -8,14 +8,15 @@ export const courseAPI = createApi({
   tagTypes: ['course'],
   endpoints: (builder) => ({
     getCourse: builder.query({
-      query: (params?: { page?: number; limit?: number; searchTerm?: string; category?: string }) => ({
+      query: (params?: { page?: number; limit?: number; searchTerm?: string; category?: string, isFeatured?: boolean }) => ({
         url: `/courses`,
         method: "GET",
         params: {
           page: params?.page || 1,
           limit: params?.limit || 10,
           searchTerm: params?.searchTerm,
-          category: params?.category
+          category: params?.category,
+          isFeatured: params?.isFeatured
         },
       }),
       providesTags: ['course']
