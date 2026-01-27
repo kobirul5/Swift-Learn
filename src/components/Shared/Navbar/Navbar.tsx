@@ -1,7 +1,7 @@
 "use client";
 
 import { useLogoutUserMutation } from "@/redux/api/auth";
-import { useGetUserQuery, userAPI } from "@/redux/api/userApi";
+import { useGetUserQuery } from "@/redux/api/userApi";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
@@ -17,7 +17,7 @@ import {
   FiX,
   FiSearch,
 } from "react-icons/fi";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 
 import { useGetCourseQuery } from "@/redux/api/courseApi";
 import { ICourse } from "@/type/course.interface";
