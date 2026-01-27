@@ -9,7 +9,8 @@ interface StatItem {
   label: string;
 }
 
-const HeroBanner = () => {
+const 
+HeroBanner = () => {
   // Statistics data - easily configurable
   const stats: StatItem[] = [
     { icon: <FiPlay className="text-primary/80" />, value: '1,200+', label: 'Video Courses' },
