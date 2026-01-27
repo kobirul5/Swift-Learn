@@ -5,7 +5,7 @@ import CoursesHero from "@/components/pages/courses/CoursesHero";
 import FeaturedCourse from "@/components/pages/courses/FeaturedCourse";
 import { useGetCourseQuery } from "@/redux/api/courseApi";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Pagination from "@/components/Shared/Pagination";
 import Loader from "@/components/Shared/Loader";
 import CoursesCategories from "@/components/pages/courses/CoursesCategories";
@@ -24,9 +24,7 @@ export type IICourse = {
   featured?: boolean;
 };
 
-
-
-export default function CoursesPage() {
+const CoursesContent = () => {
   const searchParams = useSearchParams();
   const searchTermUrl = searchParams.get('searchTerm') || '';
 
@@ -55,9 +53,6 @@ export default function CoursesPage() {
 
   const filteredCourses = data?.data || [];
 
-
-
-  Todo:
   return (
     <>
       <div className="bg-dark-50 min-h-screen">
@@ -85,4 +80,12 @@ export default function CoursesPage() {
     </>
   );
 };
+
+export default function CoursesPage() {
+  return (
+    <Suspense fallback={<Loader message="Loading courses..." />}>
+      <CoursesContent />
+    </Suspense>
+  );
+}
 
