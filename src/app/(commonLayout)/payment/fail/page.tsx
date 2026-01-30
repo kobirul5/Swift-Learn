@@ -5,7 +5,7 @@ import { FiXCircle } from 'react-icons/fi';
 
 const PaymentFailPage = () => {
     return (
-        <div className="flex flex-col items-center justify-center min-h-[60vh] py-12 px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col items-center justify-center min-h-[60vh] py-32 px-4 sm:px-6 lg:px-8">
             <div className="bg-white p-8 rounded-2xl shadow-lg border border-red-50 max-w-md w-full text-center">
                 <div className="flex justify-center mb-6">
                     <FiXCircle className="w-20 h-20 text-red-500 animate-pulse" />
