@@ -15,16 +15,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <StoreProvider>
-        <body
-          className={`antialiased bg-primary-100/10`}
-        >
+      <body
+        className={`antialiased bg-primary-100/10`}
+        suppressHydrationWarning={true}
+      >
+        <StoreProvider>
           <Toaster />
-          {/*  data-new-gr-c-s-check-loaded="14.1267.0"
-          data-gr-ext-installed="" */}
           {children}
-        </body>
-      </StoreProvider>
+        </StoreProvider>
+      </body>
     </html>
   );
 }
