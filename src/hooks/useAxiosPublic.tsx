@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosPublic = axios.create({
-    baseURL: 'https://swift-learn-server-fnu4.vercel.app'
+    baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1'
 })
 const useAxiosPublic = () => {
     return axiosPublic
