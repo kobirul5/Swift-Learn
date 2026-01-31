@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import CourseSearchBar from "./CourseSearchBar";
 import {
   FiHome,
   FiBook,
@@ -15,10 +16,6 @@ import {
   FiX,
   FiSearch,
 } from "react-icons/fi";
-// import { useDispatch } from "react-redux";
-
-import { useGetCourseQuery } from "@/redux/api/courseApi";
-import { ICourse } from "@/type/course.interface";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,52 +23,9 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [mounted, setMounted] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedTerm, setDebouncedTerm] = useState("");
-  const [showSuggestions, setShowSuggestions] = useState(false);
-
-  const { data: searchData, isFetching } = useGetCourseQuery({ searchTerm: debouncedTerm, limit: 5 }, { skip: !debouncedTerm });
 
   const { data } = useGetUserQuery(undefined);
-  // const dispatch = useDispatch();
-
-  const searchParams = useSearchParams();
-  const router = useRouter();
   const pathname = usePathname();
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedTerm(searchTerm);
-    }, 300);
-    return () => clearTimeout(handler);
-  }, [searchTerm]);
-
-  useEffect(() => {
-    const query = searchParams.get("searchTerm");
-    if (query) {
-      setSearchTerm(query);
-    }
-  }, [searchParams]);
-
-  const handleSearch = (term?: string) => {
-    const query = term || searchTerm;
-    if (query.trim()) {
-      router.push(`/courses?searchTerm=${query}`);
-      setShowSuggestions(false);
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleSearch();
-    }
-  };
-
-  const handleSuggestionClick = (courseId: string) => {
-    router.push(`/courses/details/${courseId}`);
-    setShowSuggestions(false);
-    setSearchTerm("");
-  }
 
   const navLinks = [
     { label: "Home", href: "/", icon: <FiHome /> },
@@ -82,14 +36,8 @@ const Navbar = () => {
       icon: <FiSettings />,
       adminOnly: true,
     },
-    {
-      label: "Profile",
-      href: "/student-profile",
-      icon: <FiUser />,
-      authOnly: true,
-    },
     { label: "My Classes", href: "/student", icon: <FiUser />, authOnly: true },
-    { label: "About", href: "/about", icon: <FiUser />, authOnly: true },
+    { label: "About", href: "/about", icon: <FiUser /> },
   ];
 
   useEffect(() => {
@@ -141,49 +89,7 @@ const Navbar = () => {
         {/* Desktop Nav */}
         <div className="hidden lg:flex items-center space-x-6">
 
-          <div className="relative group">
-            <input
-              type="text"
-              placeholder="Search courses..."
-              value={searchTerm}
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-                setShowSuggestions(true);
-              }}
-              onKeyDown={handleKeyDown}
-              onFocus={() => setShowSuggestions(true)}
-              onBlur={() => setTimeout(() => setShowSuggestions(false), 200)} // Delay to allow click
-              className="pl-10 pr-4 py-2 rounded-full border border-dark-300 focus:outline-none focus:ring-2 focus:ring-primary/80 text-sm w-64 transition-all duration-300"
-            />
-            <FiSearch
-              className="absolute left-3 top-2.5 text-dark-400 cursor-pointer"
-              onClick={() => handleSearch()}
-            />
-
-            {/* Suggestions Dropdown */}
-            {showSuggestions && debouncedTerm && (
-              <div className="absolute top-full left-0 w-full mt-2 bg-white rounded-lg shadow-xl border border-dark-100 overflow-hidden z-50">
-                {isFetching ? (
-                  <div className="p-3 text-center text-sm text-dark-500">Loading...</div>
-                ) : searchData?.data?.length > 0 ? (
-                  <ul>
-                    {searchData.data.map((course: ICourse) => (
-                      <li
-                        key={course._id}
-                        onClick={() => handleSuggestionClick(course._id)}
-                        className="px-4 py-2 hover:bg-dark-50 cursor-pointer flex items-center gap-3 transition-colors"
-                      >
-                        <FiSearch className="text-dark-400 shrink-0" size={14} />
-                        <span className="text-dark-700 text-sm truncate">{course.title}</span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <div className="p-3 text-center text-sm text-dark-500">No courses found</div>
-                )}
-              </div>
-            )}
-          </div>
+          <CourseSearchBar />
           {mounted &&
             navLinks.map(
               ({ label, href, icon, adminOnly, authOnly }) =>
@@ -226,12 +132,6 @@ const Navbar = () => {
                 <FiLogIn />
                 <span>Login</span>
               </Link>
-              <Link
-                href="/register"
-                className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-700 transition-colors"
-              >
-                Sign Up
-              </Link>
             </>
           )}
         </div>
@@ -266,20 +166,7 @@ const Navbar = () => {
                 )
             )}
 
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search courses..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={handleKeyDown}
-              className="pl-10 pr-4 py-2 rounded-full border border-dark-300 focus:outline-none focus:ring-2 focus:ring-primary/80 text-sm w-full"
-            />
-            <FiSearch
-              className="absolute left-3 top-2.5 text-dark-400 cursor-pointer"
-              onClick={() => handleSearch()}
-            />
-          </div>
+          <CourseSearchBar isMobile={true} />
 
           <div className="pt-4 border-t border-dark-200 space-y-2">
             {isLoggedIn ? (
@@ -307,13 +194,6 @@ const Navbar = () => {
                 >
                   <FiLogIn />
                   <span>Login</span>
-                </Link>
-                <Link
-                  href="/register"
-                  onClick={() => setIsOpen(false)}
-                  className="block text-center bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-700"
-                >
-                  Sign Up
                 </Link>
               </>
             )}
