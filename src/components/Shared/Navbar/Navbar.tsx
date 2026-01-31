@@ -1,12 +1,11 @@
 "use client";
 
-import { useLogoutUserMutation } from "@/redux/api/auth";
 import { useGetUserQuery } from "@/redux/api/userApi";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
+import LogoutButton from "../Logout/LogoutButton";
 import {
   FiHome,
   FiBook,
@@ -36,7 +35,6 @@ const Navbar = () => {
   const { data: searchData, isFetching } = useGetCourseQuery({ searchTerm: debouncedTerm, limit: 5 }, { skip: !debouncedTerm });
 
   const { data } = useGetUserQuery(undefined);
-  const [logoutUser] = useLogoutUserMutation();
   // const dispatch = useDispatch();
 
   const searchParams = useSearchParams();
@@ -122,14 +120,9 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleLogout = async () => {
-    await logoutUser(undefined);
-    Cookies.remove("accessToken");
-    Cookies.remove("refreshToken");
-    // dispatch(userAPI.util.resetApiState());
+  const onLogoutSuccess = () => {
     setIsLoggedIn(false);
     setIsAdmin(false);
-    router.push("/");
   };
 
   return (
@@ -215,13 +208,7 @@ const Navbar = () => {
 
 
           {isLoggedIn ? (
-            <button
-              onClick={handleLogout}
-              className="flex items-center space-x-1 text-dark-700 hover:text-primary"
-            >
-              <FiLogOut />
-              <span>Logout</span>
-            </button>
+            <LogoutButton onLogoutSuccess={onLogoutSuccess} />
           ) : (
             <>
               <Link
@@ -288,16 +275,13 @@ const Navbar = () => {
 
           <div className="pt-4 border-t border-dark-200 space-y-2">
             {isLoggedIn ? (
-              <button
-                onClick={() => {
-                  handleLogout();
+              <LogoutButton 
+                onLogoutSuccess={() => {
+                  onLogoutSuccess();
                   setIsOpen(false);
-                }}
+                }} 
                 className="flex items-center space-x-2 text-dark-700 hover:text-primary w-full text-left"
-              >
-                <FiLogOut />
-                <span>Logout</span>
-              </button>
+              />
             ) : (
               <>
                 <Link
