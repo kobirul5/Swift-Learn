@@ -19,20 +19,20 @@ export default function CourseDetailPage() {
   const { id } = useParams();
   const [course, setCourses] = useState<ICourse>();
   const { data, isLoading } = useGetCourseByIdQuery(id);
-  const { data: user } = useGetUserQuery(undefined);
+  const { data: user, isLoading: userLoading } = useGetUserQuery(undefined);
   const [createEnrollment] = useCreateEnrollmentMutation();
 
   const router = useRouter();
 
   useEffect(() => {
-    if (!user) {
+      if (!user && !userLoading) {
       router.push("/login");
       return;
     }
     if (data) {
       setCourses(data.data);
     }
-  }, [data, user, router]);
+  }, [data, user]);
 
   const handleEnrollment = async (courseId: string) => {
     if (!courseId) {
