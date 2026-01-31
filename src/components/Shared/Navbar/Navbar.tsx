@@ -82,7 +82,7 @@ const Navbar = () => {
         <Link
           href="/"
           className="text-2xl font-bold text-primary flex items-center gap-2"
-        >
+          >
           <Image src="/logo/logo.png" alt="logo" width={30} height={30} />
           SwiftLearn
         </Link>
