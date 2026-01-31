@@ -25,14 +25,14 @@ export default function CourseDetailPage() {
   const router = useRouter();
 
   useEffect(() => {
-      if (!user && !userLoading) {
-      router.push("/login");
-      return;
-    }
+    //   if (!user && !userLoading) {
+    //   router.push("/login");
+    //   return;
+    // }
     if (data) {
       setCourses(data.data);
     }
-  }, [data, user]);
+  }, [data]);
 
   const handleEnrollment = async (courseId: string) => {
     if (!courseId) {
@@ -53,7 +53,6 @@ export default function CourseDetailPage() {
 
       console.log(res.data.data.url);
       if (res?.data?.success) {
-        toast.success("Enrollment Successful");
         router.push(res.data.data.url);
       }
 
@@ -66,7 +65,7 @@ export default function CourseDetailPage() {
     }
   };
 
-  if (isLoading) {
+  if (isLoading || userLoading) {
     return (
       <Loader message="Analyzing course content..." minHeight="min-h-screen" />
     );

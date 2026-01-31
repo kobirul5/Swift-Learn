@@ -3,11 +3,11 @@
 
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-// import Cookies from 'js-cookie';
-import { FiMail, FiLock } from 'react-icons/fi';
 import Link from 'next/link';
+import { FiMail, FiLock } from 'react-icons/fi';
 import { useLoginUserMutation } from '@/redux/api/auth';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 interface IUser {
   email: string;
@@ -17,6 +17,8 @@ interface IUser {
 export default function LoginForm() {
   const [loginUser] = useLoginUserMutation();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get('redirect');
   const [userData, setUserData] = useState<IUser>({
     email: '',
     password: '',
@@ -34,11 +36,18 @@ export default function LoginForm() {
       const res: any = await loginUser(userData);
 
       if (res?.data?.success) {
-        localStorage.setItem('accessToken', res.data.token);
-        // Cookies.set('accessToken', res.data.token);
+        Cookies.set('accessToken', res.data.token);
+        if (res.data.refreshToken) {
+            Cookies.set('refreshToken', res.data.refreshToken);
+        }
         toast.success('Login successful');
         setUserData({ email: '', password: '' });
-        router.push('/');
+        
+        if (redirect) {
+            router.push(redirect);
+        } else {
+            router.push('/');
+        }
        
       } else {
         toast.error(res.error.data.message || "Something went wrong");

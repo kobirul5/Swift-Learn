@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 import {
   FiHome,
   FiBook,
@@ -123,7 +124,8 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     await logoutUser(undefined);
-    localStorage.removeItem("accessToken");
+    Cookies.remove("accessToken");
+    Cookies.remove("refreshToken");
     // dispatch(userAPI.util.resetApiState());
     setIsLoggedIn(false);
     setIsAdmin(false);
