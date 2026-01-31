@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import LoginForm from '@/components/pages/auth/LoginForm';
 import Link from 'next/link';
 import AuthIllustration from '@/components/pages/auth/AuthIllustration';
@@ -21,8 +22,6 @@ export default function LoginPage() {
           </svg>
         </div>
       </div>
-
-      {/* Right Side - Login Form  */}
       <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-50 px-6 py-12">
         <div className="max-w-md w-full">
           <div className="text-center mb-10">
@@ -30,7 +29,9 @@ export default function LoginPage() {
             <p className="mt-3 text-lg text-gray-600">Continue your learning journey</p>
           </div>
 
-          <LoginForm />
+          <Suspense fallback={<div>Loading...</div>}>
+            <LoginForm />
+          </Suspense>
 
           <p className="mt-8 text-center text-sm text-gray-600">
             Don&apos;t have an account?{' '}
