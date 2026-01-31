@@ -5,13 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import LogoutButton from "../Logout/LogoutButton";
 import {
   FiHome,
   FiBook,
   FiUser,
   FiLogIn,
-  FiLogOut,
   FiSettings,
   FiMenu,
   FiX,
@@ -208,7 +206,17 @@ const Navbar = () => {
 
 
           {isLoggedIn ? (
-            <LogoutButton onLogoutSuccess={onLogoutSuccess} />
+            <Link
+              href="/student-profile"
+              className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-primary-100 hover:border-primary-500 transition-all duration-300 active:scale-90"
+            >
+              <Image
+                src={data?.data?.image || "/logo/logo.png"}
+                alt="Profile"
+                fill
+                className="object-cover"
+              />
+            </Link>
           ) : (
             <>
               <Link
@@ -275,13 +283,21 @@ const Navbar = () => {
 
           <div className="pt-4 border-t border-dark-200 space-y-2">
             {isLoggedIn ? (
-              <LogoutButton 
-                onLogoutSuccess={() => {
-                  onLogoutSuccess();
-                  setIsOpen(false);
-                }} 
-                className="flex items-center space-x-2 text-dark-700 hover:text-primary w-full text-left"
-              />
+              <Link
+                href="/student-profile"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center space-x-3 py-2 px-3 rounded-md text-dark-700 hover:bg-dark-100 transition-all"
+              >
+                <div className="relative w-8 h-8 rounded-full overflow-hidden border border-dark-200">
+                  <Image
+                    src={data?.data?.image || "/logo/logo.png"}
+                    alt="Profile"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <span className="font-semibold">My Profile</span>
+              </Link>
             ) : (
               <>
                 <Link
