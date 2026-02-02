@@ -1,5 +1,3 @@
-import { Toaster } from "react-hot-toast";
-
 export default function Layout({
   children,
 }: {
@@ -7,7 +5,6 @@ export default function Layout({
 }) {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Toaster></Toaster>
       {children}
     </div>
   );
