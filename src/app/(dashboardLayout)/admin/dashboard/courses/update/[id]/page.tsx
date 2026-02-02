@@ -23,6 +23,7 @@ export default function UpdateCoursePage() {
     description: '',
     price: 0,
     isFeatured: false,
+    category: 'Web Development',
   });
 
   // Thumbnail states
@@ -42,6 +43,7 @@ export default function UpdateCoursePage() {
         description: courseData.description || '',
         price: courseData.price || 0,
         isFeatured: courseData.isFeatured ?? false,
+        category: courseData.category || 'Web Development',
       });
 
       if (courseData.thumbnail) {
@@ -109,6 +111,7 @@ export default function UpdateCoursePage() {
           description: course.description,
           price: course.price,
           isFeatured: course.isFeatured,
+          category: course.category,
           // If user didn't upload new thumbnail → keep old one (optional)
           ...(thumbnailPreview && !thumbnailFile && { thumbnail: courseData?.thumbnail }),
         })
@@ -197,6 +200,27 @@ export default function UpdateCoursePage() {
             />
           </div>
 
+          {/* Category */}
+          <div>
+            <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
+              Category <span className="text-red-500">*</span>
+            </label>
+            <select
+              id="category"
+              name="category"
+              value={course.category}
+              onChange={(e) => setCourse((prev) => ({ ...prev, category: e.target.value }))}
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition bg-white"
+            >
+              <option value="Web Development">Web Development</option>
+              <option value="Data Science">Data Science</option>
+              <option value="Mobile Apps">Mobile Apps</option>
+              <option value="Programming">Programming</option>
+              <option value="Business">Business</option>
+            </select>
+          </div>
+
           <div>
             <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
               Description
@@ -254,12 +278,13 @@ export default function UpdateCoursePage() {
               Course Thumbnail
             </label>
 
+            {/* Drag & Drop Zone */}
             <div
-              className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all ${
+              className={`relative border-2 border-dashed rounded-xl overflow-hidden transition-all ${
                 isDragOver
                   ? 'border-primary-500 bg-primary-50'
                   : 'border-gray-300 hover:border-gray-400 bg-gray-50'
-              }`}
+              } h-64 flex items-center justify-center`}
               onDragOver={(e) => {
                 e.preventDefault();
                 setIsDragOver(true);
@@ -280,42 +305,46 @@ export default function UpdateCoursePage() {
                 type="file"
                 accept="image/*"
                 onChange={(e) => e.target.files?.[0] && handleFileSelect(e.target.files[0])}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
               />
 
-              <FaFile className="mx-auto h-28 w-16 text-primary-600/65 mb-4" />
-
-              <p className="text-sm text-gray-600">
-                <span className="font-semibold text-primary-600">Click to upload</span> or drag and drop
-              </p>
-              <p className="text-xs text-gray-500 mt-1">PNG, JPG, WebP (up to 5MB)</p>
+              {thumbnailPreview ? (
+                <div className="relative w-full h-full">
+                  <Image
+                    src={thumbnailPreview}
+                    alt="Course thumbnail preview"
+                    fill
+                    className="object-cover"
+                    onError={() => setThumbnailPreview('')}
+                  />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <p className="text-white text-sm font-medium">Click or drag to change image</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      removeThumbnail();
+                    }}
+                    className="absolute top-2 right-2 z-20 bg-red-600 text-white rounded-full p-2 hover:bg-red-700 transition shadow-md"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              ) : (
+                <div className="text-center p-8">
+                  <FaFile className="mx-auto h-16 w-12 text-primary-600/65 mb-4" />
+                  <p className="text-sm text-gray-600">
+                    <span className="font-semibold text-primary-600">Click to upload</span> or drag and drop
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">PNG, JPG, WebP (up to 5MB)</p>
+                </div>
+              )}
             </div>
           </div>
-
-          {thumbnailPreview && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">Preview</label>
-              <div className="relative rounded-xl overflow-hidden shadow-lg border border-gray-200">
-                <Image
-                  src={thumbnailPreview}
-                  alt="Course thumbnail preview"
-                  width={400}
-                  height={300}
-                  className="w-full h-80 object-cover"
-                  onError={() => setThumbnailPreview('')}
-                />
-                <button
-                  type="button"
-                  onClick={removeThumbnail}
-                  className="absolute top-3 right-3 bg-red-600 text-white rounded-full p-2.5 hover:bg-red-700 transition shadow-md"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          )}
         </div>
       </div>
 

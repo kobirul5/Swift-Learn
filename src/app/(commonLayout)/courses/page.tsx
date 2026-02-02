@@ -11,17 +11,17 @@ import Loader from "@/components/Shared/Loader";
 import CoursesCategories from "@/components/pages/courses/CoursesCategories";
 
 export type IICourse = {
-  id: number;
+  _id: string;
   title: string;
   instructor: string;
   category: string;
-  level: string
+  level: string;
   duration: string;
   students: number;
   rating: number;
   price: number;
-  image: string;
-  featured?: boolean;
+  thumbnail: string;
+  isFeatured?: boolean;
 };
 
 const CoursesContent = () => {
