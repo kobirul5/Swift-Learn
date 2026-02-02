@@ -18,6 +18,7 @@ export interface ICourse {
   isFeatured?: boolean;
   category: string;
   rating: number;
+  avgRating: number;
   modules: string[];
   createdAt?: string;
   updatedAt?: string;

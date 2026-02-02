@@ -19,6 +19,7 @@ export type IICourse = {
   duration: string;
   students: number;
   rating: number;
+  avgRating: number;
   price: number;
   thumbnail: string;
   isFeatured?: boolean;

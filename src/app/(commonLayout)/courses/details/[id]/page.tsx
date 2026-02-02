@@ -104,7 +104,7 @@ export default function CourseDetailPage() {
               <FiUsers className="mr-1" /> 1200+ Students
             </span>
             <span className="flex items-center">
-              <FiStar className="mr-1 text-yellow-500" /> {course?.rating || 0}
+              <FiStar className="mr-1 text-yellow-500" /> {course?.avgRating || 0}
               /5
             </span>
           </div>
