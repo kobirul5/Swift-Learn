@@ -10,13 +10,14 @@
 // }
 
 export interface ICourse {
-  _id:string
+  _id: string;
   title: string;
   description?: string;
   price: number;
   thumbnail?: string;
   isFeatured?: boolean;
-  rating:number;
+  category: string;
+  rating: number;
   modules: string[];
   createdAt?: string;
   updatedAt?: string;

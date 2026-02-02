@@ -8,6 +8,7 @@ interface Props {
   price: number;
   modulesCount: number;
   isFeatured: boolean;
+  category: string;
   updatedAt: string;
 }
 
@@ -18,6 +19,7 @@ export default function CourseHeader({
   price,
   modulesCount,
   isFeatured,
+  category,
   updatedAt,
 }: Props) {
 
@@ -68,6 +70,10 @@ export default function CourseHeader({
                   year: "numeric",
                 })}
               </p>
+            </div>
+            <div>
+              <p className="text-sm text-dark-500 uppercase tracking-wider">Category</p>
+              <p className="text-lg font-medium text-primary-600 mt-2">{category}</p>
             </div>
           </div>
         </div>

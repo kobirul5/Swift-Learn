@@ -29,8 +29,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
       <div className="p-6">
         <div className="flex justify-between items-start mb-2">
           <span className="px-2 py-1 bg-primary-100 text-primary-800 rounded-full text-xs font-medium">
-            {/* {course?.category} */}
-            Programming
+            {course?.category}
           </span>
           <span className="px-2 py-1 bg-dark-100 text-dark-800 rounded-full text-xs font-medium">
             High

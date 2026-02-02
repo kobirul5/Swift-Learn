@@ -34,6 +34,7 @@ export default function CourseDetailsContent({ courseId }: Props) {
           description={course.description}
           thumbnail={course.thumbnail}
           price={course.price}
+          category={course.category}
           modulesCount={course.modules?.length || 0}
           isFeatured={course.isFeatured}
           updatedAt={course.updatedAt}

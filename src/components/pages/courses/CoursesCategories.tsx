@@ -6,7 +6,7 @@ interface CoursesHeroProps {
 
 export default function CoursesCategories({activeCategory, setActiveCategory}:CoursesHeroProps) {
 
-    const categories = ['All', 'Web Development', 'Data Science', 'Design', 'Marketing', 'Business'];
+    const categories = ['All', 'Web Development', 'Data Science', 'Mobile Apps', 'Programming', 'Business'];
 
     return (
         <div className="flex flex-wrap gap-3 mb-12 justify-center">
