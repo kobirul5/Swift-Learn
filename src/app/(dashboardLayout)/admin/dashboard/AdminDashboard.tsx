@@ -1,3 +1,4 @@
+'use client'
 import ProgressOverview from '@/components/admin/ProgressOverview';
 import {
   BookOpen,
@@ -7,8 +8,19 @@ import {
   Calendar,
 } from 'lucide-react';
 import Link from 'next/link';
+import { useGetAdminStatsQuery } from '@/redux/api/metaApi';
 
 export default function DashboardPage() {
+  const { data: statsData, isLoading } = useGetAdminStatsQuery({});
+  const stats = statsData?.data;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 rounded-2xl">
       <main className="p-4 md:p-6 lg:p-8">
@@ -31,7 +43,7 @@ export default function DashboardPage() {
                 <p className="text-sm font-medium text-gray-500">
                   Total Courses
                 </p>
-                <p className="text-3xl font-bold mt-2 text-primary-700">248</p>
+                <p className="text-3xl font-bold mt-2 text-primary-700">{stats?.totalCourses || 0}</p>
               </div>
               <div className="bg-primary-100 p-4 rounded-xl">
                 <BookOpen className="h-7 w-7 text-primary-600" />
@@ -51,7 +63,7 @@ export default function DashboardPage() {
                 <p className="text-sm font-medium text-gray-500">
                   Active Students
                 </p>
-                <p className="text-3xl font-bold mt-2 text-primary-700">3,472</p>
+                <p className="text-3xl font-bold mt-2 text-primary-700">{stats?.activeStudents || 0}</p>
               </div>
               <div className="bg-primary-100 p-4 rounded-xl">
                 <Users className="h-7 w-7 text-primary-600" />
@@ -71,7 +83,7 @@ export default function DashboardPage() {
                 <p className="text-sm font-medium text-gray-500">
                   New Enrollments
                 </p>
-                <p className="text-3xl font-bold mt-2 text-primary-700">+187</p>
+                <p className="text-3xl font-bold mt-2 text-primary-700">+{stats?.newEnrollments || 0}</p>
               </div>
               <div className="bg-primary-100 p-4 rounded-xl">
                 <Calendar className="h-7 w-7 text-primary-600" />
@@ -89,7 +101,7 @@ export default function DashboardPage() {
                 <p className="text-sm font-medium text-gray-500">
                   Total Revenue
                 </p>
-                <p className="text-3xl font-bold mt-2 text-primary-700">$28,500</p>
+                <p className="text-3xl font-bold mt-2 text-primary-700">${stats?.totalRevenue?.toLocaleString() || 0}</p>
               </div>
               <div className="bg-primary-100 p-4 rounded-xl">
                 <DollarSign className="h-7 w-7 text-primary-600" />
@@ -112,32 +124,31 @@ export default function DashboardPage() {
               Recent Course Activity
             </h2>
             <div className="space-y-5">
-              {[
-                { title: "Complete Web Development Bootcamp 2025", students: 52, date: "Today" },
-                { title: "Advanced Next.js & TypeScript", students: 38, date: "Yesterday" },
-                { title: "UI/UX Design Masterclass", students: 25, date: "2 days ago" },
-              ].map((item, i) => (
+              {(stats?.recentActivity || []).map((enrollment: any, i: number) => (
                 <div
                   key={i}
                   className="flex items-center justify-between py-4 border-b border-primary-100 last:border-0"
                 >
                   <div>
-                    <p className="font-medium text-gray-800">{item.title}</p>
+                    <p className="font-medium text-gray-800">{enrollment.course?.title}</p>
                     <p className="text-sm text-gray-500">
-                      {item.students} new enrollments
+                      Enrolled by {enrollment.student?.name}
                     </p>
                   </div>
                   <span className="text-sm text-primary-600 font-medium">
-                    {item.date}
+                    {new Date(enrollment.createdAt).toLocaleDateString()}
                   </span>
                 </div>
               ))}
+              {(!stats?.recentActivity || stats.recentActivity.length === 0) && (
+                <p className="text-center text-gray-500 py-4">No recent activity</p>
+              )}
             </div>
           </div>
 
           {/* Student Progress Overview */}
           <div className="bg-white rounded-2xl shadow-md border border-primary-100 p-7">
-            <ProgressOverview />
+            <ProgressOverview stats={stats} />
           </div>
         </div>
 

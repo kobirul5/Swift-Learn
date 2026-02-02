@@ -8,6 +8,7 @@ import { instructorApi } from './api/instructorApi'
 
 import { faqAPI } from './api/faqApi'
 import { contactAPI } from './api/contactApi'
+import { metaApi } from './api/metaApi'
 
 export const store = () => {
   return configureStore({
@@ -19,6 +20,7 @@ export const store = () => {
       [instructorApi.reducerPath]: instructorApi.reducer,
       [faqAPI.reducerPath]: faqAPI.reducer,
       [contactAPI.reducerPath]: contactAPI.reducer,
+      [metaApi.reducerPath]: metaApi.reducer,
       // auth: authReducer
     },
     middleware: (getDefaultMiddleware) =>
@@ -29,7 +31,8 @@ export const store = () => {
         testimonialApi.middleware,
         instructorApi.middleware,
         faqAPI.middleware,
-        contactAPI.middleware
+        contactAPI.middleware,
+        metaApi.middleware
       ),
   })
 }

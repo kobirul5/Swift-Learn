@@ -24,6 +24,7 @@ export default function UpdateCoursePage() {
     price: 0,
     isFeatured: false,
     category: 'Web Development',
+    avgRating: 0,
   });
 
   // Thumbnail states
@@ -44,6 +45,7 @@ export default function UpdateCoursePage() {
         price: courseData.price || 0,
         isFeatured: courseData.isFeatured ?? false,
         category: courseData.category || 'Web Development',
+        avgRating: courseData.avgRating || 0,
       });
 
       if (courseData.thumbnail) {
@@ -62,7 +64,7 @@ export default function UpdateCoursePage() {
     } else {
       setCourse((prev) => ({
         ...prev,
-        [name]: name === 'price' ? Number(value) || 0 : value,
+        [name]: (name === 'price' || name === 'avgRating') ? Number(value) || 0 : value,
       }));
     }
   };
@@ -112,6 +114,7 @@ export default function UpdateCoursePage() {
           price: course.price,
           isFeatured: course.isFeatured,
           category: course.category,
+          avgRating: course.avgRating,
           // If user didn't upload new thumbnail → keep old one (optional)
           ...(thumbnailPreview && !thumbnailFile && { thumbnail: courseData?.thumbnail }),
         })
@@ -250,6 +253,24 @@ export default function UpdateCoursePage() {
               step="0.01"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
               placeholder="0.00"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="avgRating" className="block text-sm font-medium text-gray-700 mb-1">
+              Average Rating (0-5)
+            </label>
+            <input
+              type="number"
+              id="avgRating"
+              name="avgRating"
+              value={course.avgRating}
+              onChange={handleChange}
+              min="0"
+              max="5"
+              step="0.1"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
+              placeholder="0.0"
             />
           </div>
 

@@ -6,7 +6,10 @@ const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
 });
 
-export default function ProgressOverview() {
+export default function ProgressOverview({ stats }: { stats?: any }) {
+  const categoryData = stats?.categoryStats?.map((s: any) => s.count) || [320, 245, 180, 210, 135];
+  const categoryLabels = stats?.categoryStats?.map((s: any) => s._id) || ['Web Dev', 'React/Next', 'UI/UX', 'Python', 'Mobile'];
+
   return (
     <div className="">
       <h2 className="text-xl font-semibold mb-6 flex items-center gap-3 text-primary-700">
@@ -23,7 +26,7 @@ export default function ProgressOverview() {
             plotOptions: { bar: { borderRadius: 6, columnWidth: '55%' } },
             dataLabels: { enabled: false },
             xaxis: {
-              categories: ['Web Dev', 'React/Next', 'UI/UX', 'Python', 'Mobile'],
+              categories: categoryLabels,
               labels: { style: { colors: '#6b7280', fontSize: '12px' } },
             },
             yaxis: { title: { text: 'Students' }, labels: { style: { colors: '#6b7280' } } },
@@ -31,7 +34,7 @@ export default function ProgressOverview() {
             tooltip: { y: { formatter: (val: number) => `${val} students` } },
             grid: { borderColor: '#e5e7eb' },
           }}
-          series={[{ name: 'Enrolled Students', data: [320, 245, 180, 210, 135] }]}
+          series={[{ name: 'Number of Courses', data: categoryData }]}
         />
       </div>
 
