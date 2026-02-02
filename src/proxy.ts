@@ -1,4 +1,4 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import { jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
@@ -12,15 +12,23 @@ export async function proxy(request: NextRequest) {
 
     let userRole: UserRole | null = null;
     if (accessToken) {
-        const verifiedToken: JwtPayload | string = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET as string);
+        try {
+            const secret = new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET as string);
+            const { payload } = await jwtVerify(accessToken, secret);
 
-        if (typeof verifiedToken === "string") {
+            if (!payload || typeof payload === "string") {
+                cookieStore.delete("accessToken");
+                cookieStore.delete("refreshToken");
+                return NextResponse.redirect(new URL('/login', request.url));
+            }
+
+            userRole = payload.role as UserRole;
+        } catch (error) {
+            console.error("JWT Verification Error:", error);
             cookieStore.delete("accessToken");
             cookieStore.delete("refreshToken");
             return NextResponse.redirect(new URL('/login', request.url));
         }
-
-        userRole = verifiedToken.role;
     }
 
     const routerOwner = getRouteOwner(pathname);
@@ -45,6 +53,9 @@ export async function proxy(request: NextRequest) {
     }
 
     if (routerOwner === "admin" || routerOwner === "student") {
+        if (userRole === "admin") {
+            return NextResponse.next();
+        }
         if (userRole !== routerOwner) {
             return NextResponse.redirect(new URL(getDefaultDashboardRoute(userRole as UserRole), request.url))
         }
