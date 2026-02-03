@@ -1,6 +1,7 @@
 "use client";
 import { useGetUserQuery } from "@/redux/api/userApi";
 import Image from "next/image";
+import Link from "next/link";
 import { FiBell, FiSearch, FiMenu } from "react-icons/fi";
 
 export default function DashboardHeader() {
@@ -33,7 +34,7 @@ export default function DashboardHeader() {
           </button>
 
           {/* User dropdown */}
-          <div className="relative">
+          <Link href="/student-profile" className="relative">
             <button className="flex items-center space-x-2 focus:outline-none">
               <div className="h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center">
                 <span className="text-primary-600 font-medium rounded-full w-8 h-8 ">
@@ -52,7 +53,7 @@ export default function DashboardHeader() {
                 {data?.data?.name}
               </span>
             </button>
-          </div>
+          </Link>
         </div>
       </div>
     </div>
