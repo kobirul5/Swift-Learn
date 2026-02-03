@@ -14,8 +14,8 @@ export default function StudentSupportPage() {
   if (!currentUser) return null;
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-5xl">
-      <div className="mb-8">
+    <div className="container mx-auto px-4 h-screen flex flex-col pt-24 pb-4 max-w-5xl">
+      <div className="mb-4 shrink-0">
         <h1 className="text-3xl font-bold text-dark-800 flex items-center gap-3">
           <FiHeadphones className="text-primary" />
           Support Center
@@ -25,7 +25,7 @@ export default function StudentSupportPage() {
         </p>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-dark-200 overflow-hidden h-[600px] flex">
+      <div className="bg-white rounded-2xl shadow-sm border border-dark-200 overflow-hidden flex-1 flex min-h-0">
         {/* Left Side: Info */}
         <div className="w-1/3 border-r border-dark-200 p-8 hidden md:flex flex-col">
           <div className="mb-8">

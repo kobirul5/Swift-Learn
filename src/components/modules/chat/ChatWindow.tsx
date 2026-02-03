@@ -66,7 +66,7 @@ export default function ChatWindow({ receiverId, receiverName, receiverImage, cu
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-dark-50/30">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-dark-50/30 min-h-0">
                 {messages.map((msg, idx) => {
                     // Normalize IDs for comparison
                     const currentUserId = currentUser?.id || currentUser?._id;
