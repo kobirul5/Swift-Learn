@@ -8,7 +8,7 @@ export type RouteConfig = {
 export const authRoutes = ["/login", "/register", "/forgot-password", "/reset-password"];
 
 export const commonProtectedRoutes: RouteConfig = {
-    exact: ["/my-profile", "/settings"],
+    exact: ["/profile", "/settings"],
     patterns: [/^\/courses\/details/],
 }
 
@@ -19,7 +19,7 @@ export const adminProtectedRoutes: RouteConfig = {
 
 export const studentProtectedRoutes: RouteConfig = {
     patterns: [/^\/student/, /^\/dashboard/], // Routes starting with /student/* or /dashboard/*
-    exact: ["/student-profile"],
+    exact: [],
 }
 
 export const isAuthRoute = (pathname: string) => {
@@ -51,7 +51,7 @@ export const getDefaultDashboardRoute = (role: UserRole): string => {
         return "/admin/dashboard";
     }
     if (role === "student") {
-        return "/student-profile";
+        return "/profile";
     }
     return "/";
 }

@@ -34,7 +34,7 @@ export default function DashboardHeader() {
           </button>
 
           {/* User dropdown */}
-          <Link href="/student-profile" className="relative">
+          <Link href="/profile" className="relative">
             <button className="flex items-center space-x-2 focus:outline-none">
               <div className="h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center">
                 <span className="text-primary-600 font-medium rounded-full w-8 h-8 ">
