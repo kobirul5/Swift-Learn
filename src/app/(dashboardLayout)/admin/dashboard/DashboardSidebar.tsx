@@ -10,6 +10,7 @@ import {
   FiHelpCircle,
   FiMail,
   FiBriefcase,
+  FiMessageSquare
 } from "react-icons/fi";
 
 interface NavItem {
@@ -30,6 +31,7 @@ const navItems: NavItem[] = [
   },
   { name: "FAQs", href: "/admin/dashboard/faqs", icon: <FiHelpCircle /> },
   { name: "Messages", href: "/admin/dashboard/messages", icon: <FiMail /> },
+  { name: "Support Chat", href: "/admin/dashboard/support-chat", icon: <FiMessageSquare /> },
   { name: "Settings", href: "/admin/dashboard/settings", icon: <FiSettings /> },
 ];
 

@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import Footer from "@/components/Shared/Footer/Footer";
 import Navbar from "@/components/Shared/Navbar/Navbar";
+import FloatingChat from "@/components/modules/chat/FloatingChat";
 
 export default function Layout({
   children,
@@ -15,6 +16,7 @@ export default function Layout({
       <div className="min-h-[calc(100vh-320px)] bg-gray-50">
         {children}
       </div>
+      <FloatingChat />
       <Footer />
     </div>
   );
