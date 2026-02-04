@@ -17,8 +17,10 @@ import {
   FiShield,
   FiEdit2,
   FiLock,
-  FiCalendar
+  FiCalendar,
+  FiHeadphones
 } from 'react-icons/fi';
+import Link from 'next/link';
 
 const ProfilePage: NextPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -75,6 +77,13 @@ const ProfilePage: NextPage = () => {
                   <FiLock className="w-4 h-4" />
                   Security
                 </button>
+                <Link
+                  href="/profile/support"
+                  className="w-full flex items-center justify-center gap-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-bold py-3.5 rounded-2xl transition-all shadow-sm active:scale-95"
+                >
+                  <FiHeadphones className="w-4 h-4" />
+                  Support
+                </Link>
                 <LogoutButton 
                   className="w-full flex items-center justify-center gap-2 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold py-3.5 rounded-2xl transition-all active:scale-95 shadow-sm shadow-rose-100"
                 />

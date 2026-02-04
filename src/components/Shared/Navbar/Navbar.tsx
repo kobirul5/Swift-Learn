@@ -15,6 +15,7 @@ import {
   FiMenu,
   FiX,
   FiSearch,
+  FiMessageSquare,
 } from "react-icons/fi";
 
 const Navbar = () => {
@@ -37,6 +38,7 @@ const Navbar = () => {
       adminOnly: true,
     },
     { label: "My Classes", href: "/student", icon: <FiUser />, authOnly: true },
+    { label: "Support", href: "/profile/support", icon: <FiMessageSquare />, authOnly: true },
     { label: "About", href: "/about", icon: <FiUser /> },
   ];
 
@@ -113,7 +115,7 @@ const Navbar = () => {
 
           {isLoggedIn ? (
             <Link
-              href="/student-profile"
+              href="/profile"
               className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-primary-100 hover:border-primary-500 transition-all duration-300 active:scale-90"
             >
               <Image
@@ -171,7 +173,7 @@ const Navbar = () => {
           <div className="pt-4 border-t border-dark-200 space-y-2">
             {isLoggedIn ? (
               <Link
-                href="/student-profile"
+                href="/profile"
                 onClick={() => setIsOpen(false)}
                 className="flex items-center space-x-3 py-2 px-3 rounded-md text-dark-700 hover:bg-dark-100 transition-all"
               >

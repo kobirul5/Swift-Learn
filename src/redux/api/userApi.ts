@@ -41,9 +41,16 @@ export const userAPI = createApi({
         url: "/users/update-me",
         method: "PATCH",
         data: data,
-        contentType: 'multipart/form-data',
+        contentType: "multipart/form-data",
       }),
-      invalidatesTags: ["user"]
+      invalidatesTags: ["user"],
+    }),
+    getAdmins: builder.query({
+      query: () => ({
+        url: "/users/get-admins",
+        method: "GET",
+      }),
+      providesTags: ["user"],
     }),
   }),
 });
@@ -53,5 +60,6 @@ export const {
   useGetStudentsQuery,
   useLogoutUserMutation,
   useUpdateMeMutation,
-  useGetSingleStudentsQuery
+  useGetSingleStudentsQuery,
+  useGetAdminsQuery,
 } = userAPI;
