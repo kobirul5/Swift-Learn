@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FiMessageSquare, FiX, FiMinus } from "react-icons/fi";
 import { useGetAdminsQuery, useGetUserQuery } from "@/redux/api/userApi";
 import ChatWindow from "./ChatWindow";
@@ -22,7 +22,7 @@ export default function FloatingChat() {
     <div className="fixed bottom-6 right-6 z-9999">
       {isOpen ? (
         <div 
-          className={`flex flex-col bg-white rounded-2xl shadow-2xl border border-dark-200 transition-all duration-300 origin-bottom-right ${
+          className={`flex flex-col bg-white rounded-2xl shadow-2xl  border-dark-200 transition-all duration-300 origin-bottom-right ${
             isMinimized ? "h-14 w-64" : "h-[500px] w-[380px]"
           }`}
         >

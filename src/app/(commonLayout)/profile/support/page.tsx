@@ -25,9 +25,9 @@ export default function StudentSupportPage() {
         </p>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-dark-200 overflow-hidden flex-1 flex min-h-0">
+      <div className="rounded-2xl  border-dark-200 overflow-hidden flex-1 gap-2 flex min-h-0">
         {/* Left Side: Info */}
-        <div className="w-1/3 border-r border-dark-200 p-8 hidden md:flex flex-col">
+        <div className="w-1/3 border border-dark-200 rounded-2xl p-8 hidden md:flex flex-col">
           <div className="mb-8">
             <h3 className="font-bold text-lg text-dark-800 mb-4">How we can help?</h3>
             <ul className="space-y-4 text-sm text-dark-600">
@@ -58,7 +58,7 @@ export default function StudentSupportPage() {
         </div>
 
         {/* Right Side: Chat */}
-        <div className="flex-1 bg-dark-50">
+        <div className="flex-1 border-dark-200 bg-dark-50">
           {admin ? (
             <ChatWindow
               receiverId={admin._id}

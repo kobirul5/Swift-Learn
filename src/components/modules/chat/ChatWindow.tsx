@@ -50,7 +50,7 @@ export default function ChatWindow({
     };
 
     return (
-        <div className="flex flex-col h-full bg-white shadow-xl rounded-lg overflow-hidden border border-dark-200">
+        <div className="flex flex-col h-full bg-white  rounded-lg overflow-hidden border border-dark-200">
             {/* Header */}
             <div className="p-4 bg-primary text-white flex justify-between items-center shrink-0">
                 <div className="flex items-center space-x-3">
