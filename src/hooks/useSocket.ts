@@ -1,24 +1,47 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import Cookies from 'js-cookie';
+const resolveWsUrl = () => {
+    if (process.env.NEXT_PUBLIC_WS_URL) return process.env.NEXT_PUBLIC_WS_URL;
 
-const WS_URL = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:5000";
+    if (process.env.NEXT_PUBLIC_API_URL) {
+        return process.env.NEXT_PUBLIC_API_URL
+            .replace(/\/api\/v1\/?$/, "")
+            .replace(/^http:\/\//, "ws://")
+            .replace(/^https:\/\//, "wss://");
+    }
+
+    return "ws://localhost:5000";
+};
+
+const WS_URL = resolveWsUrl();
 
 export const useSocket = () => {
     const socket = useRef<WebSocket | null>(null);
+    const reconnectTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const shouldReconnect = useRef(true);
     const [isConnected, setIsConnected] = useState(false);
     const [messages, setMessages] = useState<any[]>([]);
     const [messageList, setMessageList] = useState<any[]>([]);
     const [lastEvent, setLastEvent] = useState<{ event: string, data: any } | null>(null);
 
     const connect = useCallback(() => {
-        if (socket.current?.readyState === WebSocket.OPEN) return;
+        if (
+            socket.current?.readyState === WebSocket.OPEN ||
+            socket.current?.readyState === WebSocket.CONNECTING
+        ) {
+            return;
+        }
 
         const ws = new WebSocket(WS_URL);
         socket.current = ws;
 
         ws.onopen = () => {
-            console.log("WebSocket Connected");
+            console.log("WebSocket Connected:", WS_URL);
             setIsConnected(true);
+
+            if (reconnectTimer.current) {
+                clearTimeout(reconnectTimer.current);
+                reconnectTimer.current = null;
+            }
         };
 
         ws.onmessage = (event) => {
@@ -34,21 +57,40 @@ export const useSocket = () => {
             }
         };
 
-        ws.onclose = () => {
-            console.log("WebSocket Disconnected");
+        ws.onclose = (event) => {
+            console.log("WebSocket Disconnected:", {
+                code: event.code,
+                reason: event.reason || "No reason provided",
+                wasClean: event.wasClean,
+                url: WS_URL
+            });
             setIsConnected(false);
+
+            if (!shouldReconnect.current) return;
+
             // Reconnect after 3 seconds
-            setTimeout(connect, 3000);
+            reconnectTimer.current = setTimeout(connect, 3000);
         };
 
-        ws.onerror = (error) => {
-            console.error("WebSocket Error:", error);
+        ws.onerror = (event) => {
+            console.error("WebSocket Error:", {
+                eventType: event.type,
+                readyState: ws.readyState,
+                url: WS_URL
+            });
         };
     }, []);
 
     useEffect(() => {
+        shouldReconnect.current = true;
         connect();
+
         return () => {
+            shouldReconnect.current = false;
+            if (reconnectTimer.current) {
+                clearTimeout(reconnectTimer.current);
+                reconnectTimer.current = null;
+            }
             socket.current?.close();
         };
     }, [connect]);

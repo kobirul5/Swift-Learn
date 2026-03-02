@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useGetSingleStudentsQuery, useGetUserQuery } from "@/redux/api/userApi";
@@ -68,9 +69,17 @@ export default function AdminChatPage() {
               const isActive = selectedRoom?._id === room._id;
 
               return (
-                <button
+                <div
                   key={room._id}
                   onClick={() => setSelectedRoom(room)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setSelectedRoom(room);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
                   className={`w-full p-4 flex items-center space-x-3 transition-colors text-left ${
                     isActive ? "bg-primary-50" : "hover:bg-dark-50"
                   }`}
@@ -112,7 +121,7 @@ export default function AdminChatPage() {
                       {room.lastMessage?.message || "No messages yet"}
                     </p>
                   </div>
-                </button>
+                </div>
               );
             })
           ) : (
