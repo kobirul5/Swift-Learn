@@ -7,23 +7,39 @@ interface ChatWindowProps {
     receiverId: string;
     receiverName: string;
     receiverImage?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     currentUser: any;
     onClose?: () => void;
+    onReceiverNameClick?: () => void;
 }
 
-export default function ChatWindow({ receiverId, receiverName, receiverImage, currentUser, onClose }: ChatWindowProps) {
+export default function ChatWindow({
+    receiverId,
+    receiverName,
+    receiverImage,
+    currentUser,
+    onClose,
+    onReceiverNameClick
+}: ChatWindowProps) {
     const { isConnected, messages, sendMessage, fetchChats } = useSocket();
     const [inputValue, setInputValue] = useState("");
-    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const messagesContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (isConnected && receiverId) {
             fetchChats(receiverId);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isConnected, receiverId]);
 
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        const container = messagesContainerRef.current;
+        if (!container) return;
+
+        container.scrollTo({
+            top: container.scrollHeight,
+            behavior: "smooth",
+        });
     }, [messages]);
 
     const handleSend = () => {
@@ -34,7 +50,7 @@ export default function ChatWindow({ receiverId, receiverName, receiverImage, cu
     };
 
     return (
-        <div className="flex flex-col h-full bg-white shadow-xl rounded-lg overflow-hidden border border-dark-200">
+        <div className="flex flex-col h-full bg-white  rounded-lg overflow-hidden border border-dark-200">
             {/* Header */}
             <div className="p-4 bg-primary text-white flex justify-between items-center shrink-0">
                 <div className="flex items-center space-x-3">
@@ -47,7 +63,13 @@ export default function ChatWindow({ receiverId, receiverName, receiverImage, cu
                         />
                     </div>
                     <div>
-                        <h3 className="font-semibold text-sm">{receiverName}</h3>
+                        <button
+                            type="button"
+                            onClick={onReceiverNameClick}
+                            className={`font-semibold text-sm text-left ${onReceiverNameClick ? "hover:underline cursor-pointer" : "cursor-default"}`}
+                        >
+                            {receiverName}
+                        </button>
                         <p className="text-[10px] text-white/80">
                             {isConnected ? "Online" : "Connecting..."}
                         </p>
@@ -66,7 +88,10 @@ export default function ChatWindow({ receiverId, receiverName, receiverImage, cu
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-dark-50/30 min-h-0">
+            <div
+                ref={messagesContainerRef}
+                className="flex-1 overflow-y-auto p-4 space-y-4 bg-dark-50/30 min-h-0"
+            >
                 {messages.map((msg, idx) => {
                     // Normalize IDs for comparison
                     const currentUserId = currentUser?.id || currentUser?._id;
@@ -94,7 +119,6 @@ export default function ChatWindow({ receiverId, receiverName, receiverImage, cu
                         </div>
                     );
                 })}
-                <div ref={messagesEndRef} />
             </div>
 
             {/* Input Area */}
