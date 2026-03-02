@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import { FiUser, FiMail, FiLock } from 'react-icons/fi';
+import { FiUser, FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
 import { useCreateUserMutation } from '@/redux/api/auth';
@@ -27,6 +27,8 @@ export default function SignupForm() {
   });
 
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -117,16 +119,23 @@ export default function SignupForm() {
             <input
               id="password"
               name="password"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               required
               minLength={8}
               value={userData.password}
               onChange={handleChange}
               placeholder="••••••••"
-              className="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl
+              className="w-full pl-12 pr-12 py-3.5 border border-gray-300 rounded-xl
                          focus:outline-none focus:ring-2 focus:ring-primary-500
                          focus:border-primary-500 transition"
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600 focus:outline-none"
+            >
+              {showPassword ? <FiEyeOff className="w-5 h-5" /> : <FiEye className="w-5 h-5" />}
+            </button>
           </div>
         </div>
 
@@ -142,16 +151,23 @@ export default function SignupForm() {
             <FiLock className="absolute left-4 top-3.5 text-gray-400 w-5 h-5" />
             <input
               id="confirmPassword"
-              type="password"
+              type={showConfirmPassword ? 'text' : 'password'}
               required
               minLength={8}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl
+              className="w-full pl-12 pr-12 py-3.5 border border-gray-300 rounded-xl
                          focus:outline-none focus:ring-2 focus:ring-primary-500
                          focus:border-primary-500 transition"
             />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600 focus:outline-none"
+            >
+              {showConfirmPassword ? <FiEyeOff className="w-5 h-5" /> : <FiEye className="w-5 h-5" />}
+            </button>
           </div>
         </div>
 
