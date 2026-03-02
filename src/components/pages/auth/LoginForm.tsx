@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
-import { FiMail, FiLock } from 'react-icons/fi';
+import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
 import { useLoginUserMutation } from '@/redux/api/auth';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Cookies from 'js-cookie';
@@ -23,6 +23,7 @@ export default function LoginForm() {
     email: '',
     password: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -42,13 +43,13 @@ export default function LoginForm() {
         }
         toast.success('Login successful');
         setUserData({ email: '', password: '' });
-        
+
         if (redirect) {
             router.push(redirect);
         } else {
             router.push('/');
         }
-       
+
       } else {
         toast.error(res.error.data.message || "Something went wrong");
         if(res.error.data.message === "Please verify your email!") {
@@ -58,6 +59,21 @@ export default function LoginForm() {
     } catch (err:any) {
       toast.error(err.message || "Something went wrong");
     }
+  };
+
+  const handleQuickLogin = (type: 'user' | 'admin') => {
+    if (type === 'user') {
+      setUserData({
+        email: 'kobirul7k@gmail.com',
+        password: '12345678',
+      });
+    } else if (type === 'admin') {
+      setUserData({
+        email: 'admin@gmail.com',
+        password: '12345678',
+      });
+    }
+    toast.success(`${type === 'user' ? 'User' : 'Admin'} credentials filled!`);
   };
 
   return (
@@ -93,14 +109,21 @@ export default function LoginForm() {
             <input
               id="password"
               name="password"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               required
               minLength={8}
               value={userData.password}
               onChange={handleChange}
               placeholder="••••••••"
-              className="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
+              className="w-full pl-12 pr-12 py-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600 focus:outline-none"
+            >
+              {showPassword ? <FiEyeOff className="w-5 h-5" /> : <FiEye className="w-5 h-5" />}
+            </button>
           </div>
 
           <div className="mt-3 text-right">
@@ -111,6 +134,24 @@ export default function LoginForm() {
               Forgot Password?
             </Link>
           </div>
+        </div>
+
+        {/* Quick Login Buttons */}
+        <div className="grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            onClick={() => handleQuickLogin('user')}
+            className="w-full py-3 rounded-xl text-white font-semibold bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 transition shadow-lg"
+          >
+            👤 User Login
+          </button>
+          <button
+            type="button"
+            onClick={() => handleQuickLogin('admin')}
+            className="w-full py-3 rounded-xl text-white font-semibold bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-300 transition shadow-lg"
+          >
+            🔐 Admin Login
+          </button>
         </div>
 
         {/* Submit Button */}
