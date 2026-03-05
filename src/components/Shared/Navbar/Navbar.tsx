@@ -1,3 +1,6 @@
+"use client";
+
+import { useGetUserQuery } from "@/redux/api/userApi";
 import { useResendOtpMutation } from "@/redux/api/auth";
 import Image from "next/image";
 import Link from "next/link";
