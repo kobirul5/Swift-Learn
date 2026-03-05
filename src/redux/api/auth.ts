@@ -13,7 +13,7 @@ export const authApi = createApi({
         method: "POST",
         data: courseData,
       }),
-      invalidatesTags: ["auth"]
+      invalidatesTags: ["auth", "user" as any]
     }),
     loginUser: builder.mutation({
       query: (data) => ({
@@ -21,7 +21,7 @@ export const authApi = createApi({
         method: "POST",
         data: data,
       }),
-      invalidatesTags: ["auth"]
+      invalidatesTags: ["auth", "user" as any]
     }),
     verifyOtp: builder.mutation({
       query: (data) => ({
@@ -29,7 +29,7 @@ export const authApi = createApi({
         method: "POST",
         data: data,
       }),
-      invalidatesTags: ["auth"]
+      invalidatesTags: ["auth", "user" as any]
     }),
     forgotPassword: builder.mutation({
       query: (data) => ({
@@ -52,7 +52,7 @@ export const authApi = createApi({
         url: "/auth/logout",
         method: "POST",
       }),
-      invalidatesTags: ["auth"]
+      invalidatesTags: ["auth", "user" as any]
     }),
     resendOtp: builder.mutation({
       query: (data) => ({

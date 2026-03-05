@@ -4,6 +4,8 @@ import { authApi } from '@/redux/api/auth'
 import { userAPI } from './api/userApi'
 import { courseAPI } from './api/courseApi'
 import { testimonialApi } from './api/testimonialApi'
+import { instructorApi } from './api/instructorApi'
+import { metaApi } from './api/metaApi'
 
 import { faqAPI } from './api/faqApi'
 import { contactAPI } from './api/contactApi'
@@ -17,6 +19,8 @@ export const store = () => {
       [testimonialApi.reducerPath]: testimonialApi.reducer,
       [faqAPI.reducerPath]: faqAPI.reducer,
       [contactAPI.reducerPath]: contactAPI.reducer,
+      [instructorApi.reducerPath]: instructorApi.reducer,
+      [metaApi.reducerPath]: metaApi.reducer,
       // auth: authReducer
     },
     middleware: (getDefaultMiddleware) =>
@@ -26,7 +30,9 @@ export const store = () => {
         authApi.middleware,
         testimonialApi.middleware,
         faqAPI.middleware,
-        contactAPI.middleware
+        contactAPI.middleware,
+        instructorApi.middleware,
+        metaApi.middleware
       ),
   })
 }

@@ -14,12 +14,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" >
       <StoreProvider>
         <body
           className={`antialiased bg-primary-100/10`}
-        // data-new-gr-c-s-check-loaded="14.1267.0"
-        // data-gr-ext-installed=""
+
         >
           <Toaster />
 

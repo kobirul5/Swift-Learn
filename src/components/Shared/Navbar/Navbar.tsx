@@ -23,13 +23,15 @@ const Navbar = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [mounted, setMounted] = useState(false);
 
   const { data, isLoading, error } = useGetUserQuery(undefined);
   const [resendOtp] = useResendOtpMutation();
   const pathname = usePathname();
+
+  const user = data?.data;
+  const isLoggedIn = !!user;
+  const isAdmin = user?.role === "admin";
 
   useEffect(() => {
     const handleUnverifiedUser = async () => {
@@ -68,20 +70,6 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    if (!data) return;
-
-    if (data?.data?.role === "admin") {
-      setIsAdmin(true);
-      setIsLoggedIn(true);
-    } else if (data?.data?.role === "student") {
-      setIsLoggedIn(true);
-    } else {
-      setIsAdmin(false);
-      setIsLoggedIn(false);
-    }
-  }, [data]);
-
-  useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
@@ -90,8 +78,6 @@ const Navbar = () => {
   }, []);
 
   const onLogoutSuccess = () => {
-    setIsLoggedIn(false);
-    setIsAdmin(false);
   };
 
 
