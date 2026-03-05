@@ -1,6 +1,4 @@
-"use client";
-
-import { useGetUserQuery } from "@/redux/api/userApi";
+import { useResendOtpMutation } from "@/redux/api/auth";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
@@ -19,14 +17,34 @@ import {
 } from "react-icons/fi";
 
 const Navbar = () => {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [mounted, setMounted] = useState(false);
 
-  const { data } = useGetUserQuery(undefined);
+  const { data, isLoading, error } = useGetUserQuery(undefined);
+  const [resendOtp] = useResendOtpMutation();
   const pathname = usePathname();
+
+  useEffect(() => {
+    const handleUnverifiedUser = async () => {
+      if (error && (error as any)?.data?.message === "Please verify your email!") {
+        const email = (error as any)?.data?.data?.email;
+        if (email) {
+          try {
+            await resendOtp({ email, type: "registration" });
+            router.push(`/verify-otp?email=${email}`);
+          } catch (err) {
+            console.error("Failed to resend OTP from Navbar", err);
+          }
+        }
+      }
+    };
+
+    handleUnverifiedUser();
+  }, [error, resendOtp, router]);
 
   const navLinks = [
     { label: "Home", href: "/", icon: <FiHome /> },
@@ -73,6 +91,8 @@ const Navbar = () => {
     setIsAdmin(false);
   };
 
+
+
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${isScrolled
@@ -84,7 +104,7 @@ const Navbar = () => {
         <Link
           href="/"
           className="text-2xl font-bold text-primary flex items-center gap-2"
-          >
+        >
           <Image src="/logo/logo.png" alt="logo" width={30} height={30} />
           SwiftLearn
         </Link>
