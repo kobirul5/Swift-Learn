@@ -18,7 +18,7 @@ export const loginPatient = async (_currentState: any, formData: FormData): Prom
             email: formData.get("email"),
             password: formData.get("password"),
         }
-console.log(loginData,"loginData");    
+
         const validatedField = loginValidationZodSchema.safeParse(loginData);
         if (!validatedField.success) {
             return {
@@ -32,7 +32,13 @@ console.log(loginData,"loginData");
             }
         }
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login`, {
+        const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+        // Ensure we don't have duplicate /api/v1/ if it's already in NEXT_PUBLIC_API_URL
+        const loginUrl = API_BASE.endsWith('/api/v1')
+            ? `${API_BASE}/auth/login`
+            : `${API_BASE}/api/v1/auth/login`;
+
+        const res = await fetch(loginUrl, {
             method: "POST",
             body: JSON.stringify(loginData),
             headers: {
@@ -54,13 +60,15 @@ console.log(loginData,"loginData");
         if (result.success) {
             const cookieStore = await cookies();
 
-            // Try to get tokens from the response body if headers are not set (local dev issues sometimes)
+            // Backend returns tokens inside result.data
             const accessToken = result.data?.accessToken;
             const refreshToken = result.data?.refreshToken;
 
             if (accessToken) {
+                // httpOnly must be false for accessToken because axiosInstance.interceptors
+                // in utils/axios.ts needs to read it from client-side JS using js-cookie
                 cookieStore.set("accessToken", accessToken, {
-                    httpOnly: true,
+                    httpOnly: false,
                     secure: process.env.NODE_ENV === 'production',
                     sameSite: 'lax',
                     path: '/',
@@ -69,6 +77,7 @@ console.log(loginData,"loginData");
             }
 
             if (refreshToken) {
+                // refreshToken can stay httpOnly for better security
                 cookieStore.set("refreshToken", refreshToken, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === 'production',
@@ -91,7 +100,7 @@ console.log(loginData,"loginData");
         }
 
     } catch (error: any) {
-        console.error(error, "Login Failed");
+        console.error("Login Error:", error.message);
         return {
             success: false,
             message: error.message || "Internal server error"
