@@ -45,10 +45,10 @@ export default function LoginForm() {
           path: '/',
         };
 
-        Cookies.set('accessToken', res.data.token, cookieOptions);
-        if (res.data.refreshToken) {
-          Cookies.set('refreshToken', res.data.refreshToken, cookieOptions);
-        }
+        // Cookies.set('accessToken', res.data.token, cookieOptions);
+        // if (res.data.refreshToken) {
+        //   Cookies.set('refreshToken', res.data.refreshToken, cookieOptions);
+        // }
         toast.success('Login successful');
         setUserData({ email: '', password: '' });
 
