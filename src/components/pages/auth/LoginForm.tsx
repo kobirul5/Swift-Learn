@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
 import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
-import { useLoginUserMutation } from '@/redux/api/auth';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Cookies from 'js-cookie';
+import { loginPatient } from '@/services/auth/login';
 
 interface IUser {
   email: string;
@@ -15,7 +14,6 @@ interface IUser {
 }
 
 export default function LoginForm() {
-  const [loginUser] = useLoginUserMutation();
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get('redirect');
@@ -25,31 +23,12 @@ export default function LoginForm() {
   });
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUserData((prev) => ({ ...prev, [name]: value }));
-  };
+  const [state, formAction, isPending] = useActionState(loginPatient, null);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    try {
-      const res: any = await loginUser(userData);
-
-      if (res?.data?.success) {
-        const isProduction = process.env.NODE_ENV === 'production';
-        const cookieOptions = {
-          expires: 7, // 7 days
-          secure: isProduction,
-          sameSite: (isProduction ? 'none' : 'lax') as 'none' | 'lax',
-          path: '/',
-        };
-
-        // Cookies.set('accessToken', res.data.token, cookieOptions);
-        // if (res.data.refreshToken) {
-        //   Cookies.set('refreshToken', res.data.refreshToken, cookieOptions);
-        // }
-        toast.success('Login successful');
+  useEffect(() => {
+    if (state && !isPending) {
+      if (state.success) {
+        toast.success(state.message || 'Login successful');
         setUserData({ email: '', password: '' });
 
         if (redirect) {
@@ -57,16 +36,31 @@ export default function LoginForm() {
         } else {
           router.push('/');
         }
-
       } else {
-        toast.error(res.error.data.message || "Something went wrong");
-        if (res.error.data.message === "Please verify your email!") {
+        if (state.message) {
+          toast.error(state.message);
+        }
+
+        if (state.message === "Please verify your email!") {
           router.push(`/verify-otp?email=${userData.email}`);
         }
       }
-    } catch (err: any) {
-      toast.error(err.message || "Something went wrong");
     }
+  }, [state, isPending, router, redirect, userData.email]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUserData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const getFieldError = (fieldName: string) => {
+    if (!state?.errors) return null;
+
+    const fieldError = state.errors.find(
+      (err: any) => err.field === fieldName
+    );
+
+    return fieldError?.message ?? null;
   };
 
   const handleQuickLogin = (type: 'user' | 'admin') => {
@@ -86,7 +80,7 @@ export default function LoginForm() {
 
   return (
     <div className="bg-white p-8 md:p-10 rounded-2xl shadow-2xl border border-gray-100">
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form action={formAction} className="space-y-6">
         {/* Email */}
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
@@ -102,9 +96,15 @@ export default function LoginForm() {
               value={userData.email}
               onChange={handleChange}
               placeholder="you@example.com"
-              className="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
+              className={`w-full pl-12 pr-4 py-3.5 border rounded-xl focus:outline-none focus:ring-2 transition ${getFieldError('email')
+                  ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                  : 'border-gray-300 focus:ring-primary-500 focus:border-primary-500'
+                }`}
             />
           </div>
+          {getFieldError('email') && (
+            <p className="mt-1 text-xs text-red-500">{getFieldError('email')}</p>
+          )}
         </div>
 
         {/* Password */}
@@ -119,11 +119,14 @@ export default function LoginForm() {
               name="password"
               type={showPassword ? 'text' : 'password'}
               required
-              minLength={8}
+              minLength={6}
               value={userData.password}
               onChange={handleChange}
               placeholder="••••••••"
-              className="w-full pl-12 pr-12 py-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
+              className={`w-full pl-12 pr-12 py-3.5 border rounded-xl focus:outline-none focus:ring-2 transition ${getFieldError('password')
+                  ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                  : 'border-gray-300 focus:ring-primary-500 focus:border-primary-500'
+                }`}
             />
             <button
               type="button"
@@ -133,6 +136,9 @@ export default function LoginForm() {
               {showPassword ? <FiEyeOff className="w-5 h-5" /> : <FiEye className="w-5 h-5" />}
             </button>
           </div>
+          {getFieldError('password') && (
+            <p className="mt-1 text-xs text-red-500">{getFieldError('password')}</p>
+          )}
 
           <div className="mt-3 text-right">
             <Link
@@ -148,15 +154,17 @@ export default function LoginForm() {
         <div className="grid grid-cols-2 gap-3">
           <button
             type="button"
+            disabled={isPending}
             onClick={() => handleQuickLogin('user')}
-            className="w-full py-3 rounded-xl text-white font-semibold bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 transition shadow-lg"
+            className="w-full py-3 rounded-xl text-white font-semibold bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
             👤 User Login
           </button>
           <button
             type="button"
+            disabled={isPending}
             onClick={() => handleQuickLogin('admin')}
-            className="w-full py-3 rounded-xl text-white font-semibold bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-300 transition shadow-lg"
+            className="w-full py-3 rounded-xl text-white font-semibold bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-300 transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
             🔐 Admin Login
           </button>
@@ -165,9 +173,20 @@ export default function LoginForm() {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full py-4 rounded-xl text-white font-semibold bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 transition shadow-lg"
+          disabled={isPending}
+          className="w-full py-4 rounded-xl text-white font-semibold bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
         >
-          Login
+          {isPending ? (
+            <>
+              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Logging in...
+            </>
+          ) : (
+            'Login'
+          )}
         </button>
       </form>
     </div>
