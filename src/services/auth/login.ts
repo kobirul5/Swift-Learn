@@ -32,13 +32,7 @@ export const loginPatient = async (_currentState: any, formData: FormData): Prom
             }
         }
 
-        const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
-        // Ensure we don't have duplicate /api/v1/ if it's already in NEXT_PUBLIC_API_URL
-        const loginUrl = API_BASE.endsWith('/api/v1')
-            ? `${API_BASE}/auth/login`
-            : `${API_BASE}/api/v1/auth/login`;
-
-        const res = await fetch(loginUrl, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
             method: "POST",
             body: JSON.stringify(loginData),
             headers: {
@@ -60,15 +54,27 @@ export const loginPatient = async (_currentState: any, formData: FormData): Prom
         if (result.success) {
             const cookieStore = await cookies();
 
-            // Backend returns tokens inside result.data
-            const accessToken = result.data?.accessToken;
-            const refreshToken = result.data?.refreshToken;
+            // Extract tokens from Set-Cookie headers as requested
+            const setCookieHeaders = res.headers.getSetCookie();
+
+            let accessToken = "";
+            let refreshToken = "";
+
+            if (setCookieHeaders.length > 0) {
+                setCookieHeaders.forEach(cookieStr => {
+                    const parsed = parse(cookieStr);
+                    if (parsed.accessToken) accessToken = parsed.accessToken;
+                    if (parsed.refreshToken) refreshToken = parsed.refreshToken;
+                });
+            }
+            console.log(accessToken, refreshToken);
+            // Fallback to data if cookies were not found in headers (optional, but safer)
+            if (!accessToken) accessToken = result.data?.accessToken;
+            if (!refreshToken) refreshToken = result.data?.refreshToken;
 
             if (accessToken) {
-                // httpOnly must be false for accessToken because axiosInstance.interceptors
-                // in utils/axios.ts needs to read it from client-side JS using js-cookie
                 cookieStore.set("accessToken", accessToken, {
-                    httpOnly: false,
+                    httpOnly: true,
                     secure: process.env.NODE_ENV === 'production',
                     sameSite: 'lax',
                     path: '/',
@@ -77,7 +83,6 @@ export const loginPatient = async (_currentState: any, formData: FormData): Prom
             }
 
             if (refreshToken) {
-                // refreshToken can stay httpOnly for better security
                 cookieStore.set("refreshToken", refreshToken, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === 'production',
@@ -100,7 +105,7 @@ export const loginPatient = async (_currentState: any, formData: FormData): Prom
         }
 
     } catch (error: any) {
-        console.error("Login Error:", error.message);
+        console.error(error, "Login Failed");
         return {
             success: false,
             message: error.message || "Internal server error"

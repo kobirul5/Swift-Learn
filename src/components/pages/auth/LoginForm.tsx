@@ -27,6 +27,7 @@ export default function LoginForm() {
 
   useEffect(() => {
     if (state && !isPending) {
+      console.log(state);
       if (state.success) {
         toast.success(state.message || 'Login successful');
         setUserData({ email: '', password: '' });
