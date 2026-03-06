@@ -30,7 +30,8 @@
     "react-lottie-player": "^2.1.0",
     "react-redux": "^9.2.0",
     "sweetalert2": "^11.22.2",
-    "swiper": "^11.2.10"
+    "swiper": "^11.2.10",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
