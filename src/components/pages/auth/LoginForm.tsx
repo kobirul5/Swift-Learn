@@ -97,8 +97,8 @@ export default function LoginForm() {
               onChange={handleChange}
               placeholder="you@example.com"
               className={`w-full pl-12 pr-4 py-3.5 border rounded-xl focus:outline-none focus:ring-2 transition ${getFieldError('email')
-                  ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-                  : 'border-gray-300 focus:ring-primary-500 focus:border-primary-500'
+                ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                : 'border-gray-300 focus:ring-primary-500 focus:border-primary-500'
                 }`}
             />
           </div>
@@ -124,8 +124,8 @@ export default function LoginForm() {
               onChange={handleChange}
               placeholder="••••••••"
               className={`w-full pl-12 pr-12 py-3.5 border rounded-xl focus:outline-none focus:ring-2 transition ${getFieldError('password')
-                  ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-                  : 'border-gray-300 focus:ring-primary-500 focus:border-primary-500'
+                ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                : 'border-gray-300 focus:ring-primary-500 focus:border-primary-500'
                 }`}
             />
             <button
