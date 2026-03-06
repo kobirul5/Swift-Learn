@@ -24,7 +24,10 @@ export async function proxy(request: NextRequest) {
 
             userRole = payload.role as UserRole;
         } catch (error) {
-            console.error("JWT Verification Error:", error);
+            console.error("JWT Verification Error:", error instanceof Error ? error.message : error);
+            if (!process.env.ACCESS_TOKEN_SECRET) {
+                console.error("CRITICAL: ACCESS_TOKEN_SECRET is not defined in environment variables!");
+            }
             cookieStore.delete("accessToken");
             cookieStore.delete("refreshToken");
             return NextResponse.redirect(new URL('/login', request.url));

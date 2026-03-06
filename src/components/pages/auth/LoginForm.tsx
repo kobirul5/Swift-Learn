@@ -37,26 +37,34 @@ export default function LoginForm() {
       const res: any = await loginUser(userData);
 
       if (res?.data?.success) {
-        Cookies.set('accessToken', res.data.token);
+        const isProduction = process.env.NODE_ENV === 'production';
+        const cookieOptions = {
+          expires: 7, // 7 days
+          secure: isProduction,
+          sameSite: (isProduction ? 'none' : 'lax') as 'none' | 'lax',
+          path: '/',
+        };
+
+        Cookies.set('accessToken', res.data.token, cookieOptions);
         if (res.data.refreshToken) {
-            Cookies.set('refreshToken', res.data.refreshToken);
+          Cookies.set('refreshToken', res.data.refreshToken, cookieOptions);
         }
         toast.success('Login successful');
         setUserData({ email: '', password: '' });
 
         if (redirect) {
-            router.push(redirect);
+          router.push(redirect);
         } else {
-            router.push('/');
+          router.push('/');
         }
 
       } else {
         toast.error(res.error.data.message || "Something went wrong");
-        if(res.error.data.message === "Please verify your email!") {
+        if (res.error.data.message === "Please verify your email!") {
           router.push(`/verify-otp?email=${userData.email}`);
         }
       }
-    } catch (err:any) {
+    } catch (err: any) {
       toast.error(err.message || "Something went wrong");
     }
   };
