@@ -5,10 +5,10 @@ import { userAPI } from './api/userApi'
 import { courseAPI } from './api/courseApi'
 import { testimonialApi } from './api/testimonialApi'
 import { instructorApi } from './api/instructorApi'
+import { metaApi } from './api/metaApi'
 
 import { faqAPI } from './api/faqApi'
 import { contactAPI } from './api/contactApi'
-import { metaApi } from './api/metaApi'
 
 export const store = () => {
   return configureStore({
@@ -17,9 +17,9 @@ export const store = () => {
       [courseAPI.reducerPath]: courseAPI.reducer,
       [authApi.reducerPath]: authApi.reducer,
       [testimonialApi.reducerPath]: testimonialApi.reducer,
-      [instructorApi.reducerPath]: instructorApi.reducer,
       [faqAPI.reducerPath]: faqAPI.reducer,
       [contactAPI.reducerPath]: contactAPI.reducer,
+      [instructorApi.reducerPath]: instructorApi.reducer,
       [metaApi.reducerPath]: metaApi.reducer,
       // auth: authReducer
     },
@@ -29,9 +29,9 @@ export const store = () => {
         courseAPI.middleware,
         authApi.middleware,
         testimonialApi.middleware,
-        instructorApi.middleware,
         faqAPI.middleware,
         contactAPI.middleware,
+        instructorApi.middleware,
         metaApi.middleware
       ),
   })

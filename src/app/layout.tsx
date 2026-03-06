@@ -14,16 +14,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`antialiased bg-primary-100/10`}
-        suppressHydrationWarning={true}
-      >
-        <StoreProvider>
+    <html lang="en" >
+      <StoreProvider>
+        <body
+          className={`antialiased bg-primary-100/10`}
+
+        >
           <Toaster />
+
           {children}
-        </StoreProvider>
-      </body>
+        </body>
+      </StoreProvider>
     </html>
   );
 }
