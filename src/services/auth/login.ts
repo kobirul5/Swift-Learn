@@ -18,7 +18,7 @@ export const loginPatient = async (_currentState: any, formData: FormData): Prom
             email: formData.get("email"),
             password: formData.get("password"),
         }
-
+console.log(loginData,"loginData");    
         const validatedField = loginValidationZodSchema.safeParse(loginData);
         if (!validatedField.success) {
             return {
@@ -32,7 +32,7 @@ export const loginPatient = async (_currentState: any, formData: FormData): Prom
             }
         }
 
-        const res = await fetch("http://localhost:5000/api/v1/auth/login", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login`, {
             method: "POST",
             body: JSON.stringify(loginData),
             headers: {
