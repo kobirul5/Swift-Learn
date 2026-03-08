@@ -26,12 +26,11 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  const authUser = useAppSelector((state) => state.auth.user);
   const { data, isLoading, error } = useGetUserQuery(undefined);
   const [resendOtp] = useResendOtpMutation();
   const pathname = usePathname();
 
-  const user = authUser || data?.data;
+  const user = data?.data;
   const isLoggedIn = !!user;
   const isAdmin = user?.role === "admin";
 
