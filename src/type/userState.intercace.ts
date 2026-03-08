@@ -5,4 +5,5 @@ export interface UserState {
     role: string;
   } | null;
   token: string | null;
+  refreshToken: string | null;
 }
