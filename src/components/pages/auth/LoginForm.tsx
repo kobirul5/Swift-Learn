@@ -7,8 +7,6 @@ import Link from 'next/link';
 import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useLoginUserMutation } from '@/redux/api/auth';
-import { useAppDispatch } from '@/redux/hooks';
-import { setUser } from '@/redux/features/authSlice';
 
 interface IUser {
   email: string;
@@ -18,7 +16,6 @@ interface IUser {
 export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const dispatch = useAppDispatch();
   const redirect = searchParams.get('redirect');
   const [userData, setUserData] = useState<IUser>({
     email: '',
