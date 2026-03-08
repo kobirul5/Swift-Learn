@@ -29,11 +29,14 @@ const Navbar = () => {
   const [resendOtp] = useResendOtpMutation();
   const pathname = usePathname();
 
-  const user = data?.data;
-  const isLoggedIn = !!user;
-  const isAdmin = user?.role === "admin";
-
+  let user = data?.data;
+  let isLoggedIn = !!user;
+  let isAdmin = user?.role === "admin";
+console.log(data)
   useEffect(() => {
+    // user = data?.data;
+    // isLoggedIn = !!user;
+    // isAdmin = user?.role === "admin";
     const handleUnverifiedUser = async () => {
       if (error && (error as any)?.data?.message === "Please verify your email!") {
         const email = (error as any)?.data?.data?.email;
@@ -49,7 +52,7 @@ const Navbar = () => {
     };
 
     handleUnverifiedUser();
-  }, [error, resendOtp, router]);
+  }, [error, resendOtp, router, data]);
 
   const navLinks = [
     { label: "Home", href: "/", icon: <FiHome /> },
