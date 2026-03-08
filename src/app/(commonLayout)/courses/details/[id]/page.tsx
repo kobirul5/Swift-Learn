@@ -75,6 +75,8 @@ export default function CourseDetailPage() {
     return <div className="text-center py-32">Course not found</div>;
   }
 
+  console.log(course,"--------------"); 
+
   return (
     <section className="container mx-auto px-4 py-12 pt-28">
       <div className="grid lg:grid-cols-2 gap-10">
