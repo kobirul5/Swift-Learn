@@ -5,7 +5,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: axiosBaseQuery(),
-  tagTypes: ['auth'],
+  tagTypes: ['auth', 'user'],
   endpoints: (builder) => ({
     createUser: builder.mutation({
       query: (courseData) => ({
@@ -13,7 +13,7 @@ export const authApi = createApi({
         method: "POST",
         data: courseData,
       }),
-      invalidatesTags: ["auth", "user" as any]
+      invalidatesTags: ["auth", "user"]
     }),
     loginUser: builder.mutation({
       query: (data) => ({
@@ -21,7 +21,7 @@ export const authApi = createApi({
         method: "POST",
         data: data,
       }),
-      invalidatesTags: ["auth", "user" as any]
+      invalidatesTags: ["auth", "user"]
     }),
     verifyOtp: builder.mutation({
       query: (data) => ({
@@ -29,7 +29,7 @@ export const authApi = createApi({
         method: "POST",
         data: data,
       }),
-      invalidatesTags: ["auth", "user" as any]
+      invalidatesTags: ["auth", "user"]
     }),
     forgotPassword: builder.mutation({
       query: (data) => ({
@@ -52,7 +52,7 @@ export const authApi = createApi({
         url: "/auth/logout",
         method: "POST",
       }),
-      invalidatesTags: ["auth", "user" as any]
+      invalidatesTags: ["auth", "user"]
     }),
     resendOtp: builder.mutation({
       query: (data) => ({
