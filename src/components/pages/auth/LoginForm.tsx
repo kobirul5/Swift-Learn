@@ -35,13 +35,6 @@ export default function LoginForm() {
       if (res.success) {
         toast.success(res.message || 'Login successful');
 
-        // Dispatch to Redux (handles localStorage internally in authSlice)
-        dispatch(setUser({
-          user: res.data.user,
-          accessToken: res.data.accessToken,
-          refreshToken: res.data.refreshToken
-        }));
-
         setUserData({ email: '', password: '' });
 
         if (redirect) {

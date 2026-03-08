@@ -1,8 +1,6 @@
 "use client";
 
 import { useLogoutUserMutation } from "@/redux/api/auth";
-import { useAppDispatch } from "@/redux/hooks";
-import { logout } from "@/redux/features/authSlice";
 import { useRouter } from "next/navigation";
 import { FiLogOut, FiLoader } from "react-icons/fi";
 import toast from "react-hot-toast";
@@ -21,30 +19,29 @@ const LogoutButton = ({
     text = "Logout"
 }: LogoutButtonProps) => {
     const [logoutUser, { isLoading }] = useLogoutUserMutation();
-    const dispatch = useAppDispatch();
     const router = useRouter();
 
     const handleLogout = async () => {
         try {
-            await logoutUser(undefined).unwrap();
+            const res = await logoutUser(undefined).unwrap();
 
-            // Clear global state (handles localStorage and Cookies)
-            dispatch(logout());
-
-            toast.success("Successfully logged out");
+            if (res.success) {
+                toast.success(res.message || "Successfully logged out");
+            }
 
             // Execute callback if provided
             if (onLogoutSuccess) {
                 onLogoutSuccess();
             }
 
-            // Redirect to home
+            // Redirect to home and refresh
             router.push("/");
-            router.refresh(); // Ensure server components re-evaluate
-        } catch (error) {
+            router.refresh();
+        } catch (error: any) {
             console.error("Logout failed:", error);
-            // Even if the server call fails, we should clear global state
-            dispatch(logout());
+            toast.error(error?.data?.message || "Logout failed");
+
+            // Still clear local session and redirect
             router.push("/");
             router.refresh();
         }

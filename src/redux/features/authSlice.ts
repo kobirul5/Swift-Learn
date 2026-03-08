@@ -1,5 +1,6 @@
 import { UserState } from '@/type/userState.intercace';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import Cookies from 'js-cookie';
 
 const getUserFromStorage = () => {
     if (typeof window === 'undefined') return null;
@@ -43,6 +44,10 @@ const authSlice = createSlice({
                 localStorage.setItem('user', JSON.stringify(user));
                 localStorage.setItem('accessToken', accessToken);
                 localStorage.setItem('refreshToken', refreshToken);
+
+                // Also set cookies for Next.js middleware (proxy.ts)
+                Cookies.set('accessToken', accessToken, { expires: 7 });
+                Cookies.set('refreshToken', refreshToken, { expires: 30 });
             }
         },
         logout: (state) => {
@@ -54,6 +59,10 @@ const authSlice = createSlice({
                 localStorage.removeItem('user');
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('refreshToken');
+
+                // Clear cookies
+                Cookies.remove('accessToken');
+                Cookies.remove('refreshToken');
             }
         }
     }
