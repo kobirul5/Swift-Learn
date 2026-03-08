@@ -1,7 +1,8 @@
 export interface UserState {
   user: {
-    name: string
-    email: string
-    role: string
-  } | null
+    name: string;
+    email: string;
+    role: string;
+  } | null;
+  token: string | null;
 }

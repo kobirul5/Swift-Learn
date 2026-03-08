@@ -2,6 +2,7 @@
 
 import { useGetUserQuery } from "@/redux/api/userApi";
 import { useResendOtpMutation } from "@/redux/api/auth";
+import { useAppSelector } from "@/redux/hooks";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
@@ -25,11 +26,12 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
 
+  const authUser = useAppSelector((state) => state.auth.user);
   const { data, isLoading, error } = useGetUserQuery(undefined);
   const [resendOtp] = useResendOtpMutation();
   const pathname = usePathname();
 
-  const user = data?.data;
+  const user = authUser || data?.data;
   const isLoggedIn = !!user;
   const isAdmin = user?.role === "admin";
 

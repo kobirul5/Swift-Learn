@@ -1,7 +1,8 @@
 "use client";
 
 import { useLogoutUserMutation } from "@/redux/api/auth";
-import Cookies from "js-cookie";
+import { useAppDispatch } from "@/redux/hooks";
+import { logout } from "@/redux/features/authSlice";
 import { useRouter } from "next/navigation";
 import { FiLogOut, FiLoader } from "react-icons/fi";
 import toast from "react-hot-toast";
@@ -13,22 +14,22 @@ interface LogoutButtonProps {
     text?: string;
 }
 
-const LogoutButton = ({ 
-    onLogoutSuccess, 
-    className = "flex items-center space-x-1 text-dark-700 hover:text-primary transition-colors", 
+const LogoutButton = ({
+    onLogoutSuccess,
+    className = "flex items-center space-x-1 text-dark-700 hover:text-primary transition-colors",
     showIcon = true,
     text = "Logout"
 }: LogoutButtonProps) => {
     const [logoutUser, { isLoading }] = useLogoutUserMutation();
+    const dispatch = useAppDispatch();
     const router = useRouter();
 
     const handleLogout = async () => {
         try {
             await logoutUser(undefined).unwrap();
-            
-            // Clear tokens
-            Cookies.remove("accessToken");
-            Cookies.remove("refreshToken");
+
+            // Clear global state (handles localStorage and Cookies)
+            dispatch(logout());
 
             toast.success("Successfully logged out");
 
@@ -42,9 +43,8 @@ const LogoutButton = ({
             router.refresh(); // Ensure server components re-evaluate
         } catch (error) {
             console.error("Logout failed:", error);
-            // Even if the server call fails, we should probably clear local tokens
-            Cookies.remove("accessToken");
-            Cookies.remove("refreshToken");
+            // Even if the server call fails, we should clear global state
+            dispatch(logout());
             router.push("/");
             router.refresh();
         }

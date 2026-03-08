@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useActionState, useEffect, useState } from 'react';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
 import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { loginPatient } from '@/services/auth/login';
+import { useLoginUserMutation } from '@/redux/api/auth';
+import { useAppDispatch } from '@/redux/hooks';
+import { setUser } from '@/redux/features/authSlice';
 
 interface IUser {
   email: string;
@@ -16,6 +18,7 @@ interface IUser {
 export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const dispatch = useAppDispatch();
   const redirect = searchParams.get('redirect');
   const [userData, setUserData] = useState<IUser>({
     email: '',
@@ -23,13 +26,21 @@ export default function LoginForm() {
   });
   const [showPassword, setShowPassword] = useState(false);
 
-  const [state, formAction, isPending] = useActionState(loginPatient, null);
+  const [loginUser, { isLoading: isPending, error: loginError }] = useLoginUserMutation();
 
-  useEffect(() => {
-    if (state && !isPending) {
-      console.log(state);
-      if (state.success) {
-        toast.success(state.message || 'Login successful');
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const res = await loginUser(userData).unwrap();
+      if (res.success) {
+        toast.success(res.message || 'Login successful');
+
+        // Dispatch to Redux (handles localStorage and Cookies internally in authSlice)
+        dispatch(setUser({
+          user: res.data.user,
+          accessToken: res.data.accessToken
+        }));
+
         setUserData({ email: '', password: '' });
 
         if (redirect) {
@@ -38,16 +49,17 @@ export default function LoginForm() {
           router.push('/');
         }
       } else {
-        if (state.message) {
-          toast.error(state.message);
-        }
+        toast.error(res.message || 'Login failed');
+      }
+    } catch (err: any) {
+      const errorMessage = err.data?.message || err.message || 'Login failed';
+      toast.error(errorMessage);
 
-        if (state.message === "Please verify your email!") {
-          router.push(`/verify-otp?email=${userData.email}`);
-        }
+      if (errorMessage === "Please verify your email!") {
+        router.push(`/verify-otp?email=${userData.email}`);
       }
     }
-  }, [state, isPending, router, redirect, userData.email]);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -55,9 +67,10 @@ export default function LoginForm() {
   };
 
   const getFieldError = (fieldName: string) => {
-    if (!state?.errors) return null;
+    const errorData = (loginError as any)?.data;
+    if (!errorData?.errors) return null;
 
-    const fieldError = state.errors.find(
+    const fieldError = errorData.errors.find(
       (err: any) => err.field === fieldName
     );
 
@@ -81,7 +94,7 @@ export default function LoginForm() {
 
   return (
     <div className="bg-white p-8 md:p-10 rounded-2xl shadow-2xl border border-gray-100">
-      <form action={formAction} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Email */}
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">

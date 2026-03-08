@@ -1,114 +1,115 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-"use server"
+// DEPRECATED: This server action is no longer used. Login is handled via Redux (RTK Query).
+// /* eslint-disable @typescript-eslint/no-explicit-any */
+// "use server"
 
-import z from "zod";
-import { parse } from "cookie";
-import { cookies } from "next/headers";
+// import z from "zod";
+// import { parse } from "cookie";
+// import { cookies } from "next/headers";
 
-const loginValidationZodSchema = z.object({
-    email: z.string().email({
-        message: "Invalid email address",
-    }),
-    password: z.string().min(6, "Password must be at least 6 characters").max(32, "Password must be at most 32 characters"),
-})
+// const loginValidationZodSchema = z.object({
+//     email: z.string().email({
+//         message: "Invalid email address",
+//     }),
+//     password: z.string().min(6, "Password must be at least 6 characters").max(32, "Password must be at most 32 characters"),
+// })
 
-export const loginPatient = async (_currentState: any, formData: FormData): Promise<any> => {
-    try {
-        const loginData = {
-            email: formData.get("email"),
-            password: formData.get("password"),
-        }
+// export const loginPatient = async (_currentState: any, formData: FormData): Promise<any> => {
+//     try {
+//         const loginData = {
+//             email: formData.get("email"),
+//             password: formData.get("password"),
+//         }
 
-        const validatedField = loginValidationZodSchema.safeParse(loginData);
-        if (!validatedField.success) {
-            return {
-                success: false,
-                errors: validatedField.error.issues.map((issue) => {
-                    return {
-                        field: issue.path[0],
-                        message: issue.message
-                    }
-                }),
-            }
-        }
+//         const validatedField = loginValidationZodSchema.safeParse(loginData);
+//         if (!validatedField.success) {
+//             return {
+//                 success: false,
+//                 errors: validatedField.error.issues.map((issue) => {
+//                     return {
+//                         field: issue.path[0],
+//                         message: issue.message
+//                     }
+//                 }),
+//             }
+//         }
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
-            method: "POST",
-            body: JSON.stringify(loginData),
-            headers: {
-                "Content-Type": "application/json",
-            },
-            cache: 'no-store'
-        })
+//         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+//             method: "POST",
+//             body: JSON.stringify(loginData),
+//             headers: {
+//                 "Content-Type": "application/json",
+//             },
+//             cache: 'no-store'
+//         })
 
-        const result = await res.json()
+//         const result = await res.json()
 
-        if (!res.ok) {
-            return {
-                success: false,
-                message: result.message || "Login failed",
-                errors: result.errors || []
-            }
-        }
+//         if (!res.ok) {
+//             return {
+//                 success: false,
+//                 message: result.message || "Login failed",
+//                 errors: result.errors || []
+//             }
+//         }
 
-        if (result.success) {
-            const cookieStore = await cookies();
+//         if (result.success) {
+//             const cookieStore = await cookies();
 
-            // Extract tokens from Set-Cookie headers as requested
-            const setCookieHeaders = res.headers.getSetCookie();
+//             // Extract tokens from Set-Cookie headers as requested
+//             const setCookieHeaders = res.headers.getSetCookie();
 
-            let accessToken = "";
-            let refreshToken = "";
+//             let accessToken = "";
+//             let refreshToken = "";
 
-            if (setCookieHeaders.length > 0) {
-                setCookieHeaders.forEach(cookieStr => {
-                    const parsed = parse(cookieStr);
-                    if (parsed.accessToken) accessToken = parsed.accessToken;
-                    if (parsed.refreshToken) refreshToken = parsed.refreshToken;
-                });
-            }
-            console.log(accessToken, refreshToken);
-            // Fallback to data if cookies were not found in headers (optional, but safer)
-            if (!accessToken) accessToken = result.data?.accessToken;
-            if (!refreshToken) refreshToken = result.data?.refreshToken;
+//             if (setCookieHeaders.length > 0) {
+//                 setCookieHeaders.forEach(cookieStr => {
+//                     const parsed = parse(cookieStr);
+//                     if (parsed.accessToken) accessToken = parsed.accessToken;
+//                     if (parsed.refreshToken) refreshToken = parsed.refreshToken;
+//                 });
+//             }
+//             console.log(accessToken, refreshToken);
+//             // Fallback to data if cookies were not found in headers (optional, but safer)
+//             if (!accessToken) accessToken = result.data?.accessToken;
+//             if (!refreshToken) refreshToken = result.data?.refreshToken;
 
-            if (accessToken) {
-                cookieStore.set("accessToken", accessToken, {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === 'production',
-                    sameSite: 'lax',
-                    path: '/',
-                    maxAge: 7 * 24 * 60 * 60 // 7 days
-                });
-            }
+//             if (accessToken) {
+//                 cookieStore.set("accessToken", accessToken, {
+//                     httpOnly: true,
+//                     secure: true,
+//                     sameSite: 'lax',
+//                     path: '/',
+//                     maxAge: 7 * 24 * 60 * 60 // 7 days
+//                 });
+//             }
 
-            if (refreshToken) {
-                cookieStore.set("refreshToken", refreshToken, {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === 'production',
-                    sameSite: 'lax',
-                    path: '/',
-                    maxAge: 30 * 24 * 60 * 60 // 30 days
-                });
-            }
+//             if (refreshToken) {
+//                 cookieStore.set("refreshToken", refreshToken, {
+//                     httpOnly: true,
+//                     secure: true,
+//                     sameSite: 'lax',
+//                     path: '/',
+//                     maxAge: 30 * 24 * 60 * 60 // 30 days
+//                 });
+//             }
 
-            return {
-                success: true,
-                message: result.message,
-                data: result.data
-            }
-        }
+//             return {
+//                 success: true,
+//                 message: result.message,
+//                 data: result.data
+//             }
+//         }
 
-        return {
-            success: false,
-            message: result.message || "Something went wrong"
-        }
+//         return {
+//             success: false,
+//             message: result.message || "Something went wrong"
+//         }
 
-    } catch (error: any) {
-        console.error(error, "Login Failed");
-        return {
-            success: false,
-            message: error.message || "Internal server error"
-        }
-    }
-}
+//     } catch (error: any) {
+//         console.error(error, "Login Failed");
+//         return {
+//             success: false,
+//             message: error.message || "Internal server error"
+//         }
+//     }
+// }

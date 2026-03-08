@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-// import authReducer from "@/redux/features/authSlice"
+import authReducer from "@/redux/features/authSlice"
 import { authApi } from '@/redux/api/auth'
 import { userAPI } from './api/userApi'
 import { courseAPI } from './api/courseApi'
@@ -21,7 +21,7 @@ export const store = () => {
       [contactAPI.reducerPath]: contactAPI.reducer,
       [instructorApi.reducerPath]: instructorApi.reducer,
       [metaApi.reducerPath]: metaApi.reducer,
-      // auth: authReducer
+      auth: authReducer
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(
