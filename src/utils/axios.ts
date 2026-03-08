@@ -6,7 +6,6 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://swift-learn.onrende
 
 export const axiosInstance = axios.create({
   baseURL: API_BASE,
-  withCredentials: true,
 });
 
 // Add a request interceptor
