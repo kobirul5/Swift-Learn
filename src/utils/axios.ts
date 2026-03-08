@@ -7,6 +7,7 @@ const API_BASE = "https://swift-learn.onrender.com/api/v1";
 
 export const axiosInstance = axios.create({
   baseURL: API_BASE,
+  withCredentials: true,
 });
 
 // Add a request interceptor

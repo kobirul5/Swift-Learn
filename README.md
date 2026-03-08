@@ -5,7 +5,7 @@ A modern and responsive **Learning Management System (LMS)** frontend built with
 
 ## 🚀 Live Demo
 
-- **Frontend**: [https://swift-learn-nu.vercel.app/](https://swift-learn-nu.vercel.app/)
+- **Frontend**: [https://swift-learn.onrender.com/](https://swift-learn.onrender.com/)
 
 ---
 
