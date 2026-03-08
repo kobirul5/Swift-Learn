@@ -1,18 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-const resolveWsUrl = () => {
-    if (process.env.NEXT_PUBLIC_WS_URL) return process.env.NEXT_PUBLIC_WS_URL;
-
-    if (process.env.NEXT_PUBLIC_API_URL) {
-        return process.env.NEXT_PUBLIC_API_URL
-            .replace(/\/api\/v1\/?$/, "")
-            .replace(/^http:\/\//, "ws://")
-            .replace(/^https:\/\//, "wss://");
-    }
-
-    return "ws://localhost:5000";
-};
-
-const WS_URL = resolveWsUrl();
+const WS_URL = "wss://swift-learn.onrender.com";
 
 export const useSocket = () => {
     const socket = useRef<WebSocket | null>(null);
@@ -41,6 +28,12 @@ export const useSocket = () => {
             if (reconnectTimer.current) {
                 clearTimeout(reconnectTimer.current);
                 reconnectTimer.current = null;
+            }
+
+            // Authenticate using token from localStorage
+            const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+            if (token) {
+                ws.send(JSON.stringify({ event: 'authenticate', token }));
             }
         };
 
