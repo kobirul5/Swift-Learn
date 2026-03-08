@@ -2,7 +2,7 @@
 
 import axios from "axios";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://swiftlearn-server.vercel.app/api/v1";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://swift-learn.onrender.com/api/v1";
 
 export const axiosInstance = axios.create({
   baseURL: API_BASE,

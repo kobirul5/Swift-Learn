@@ -2,7 +2,6 @@
 
 import { useGetUserQuery } from "@/redux/api/userApi";
 import { useResendOtpMutation } from "@/redux/api/auth";
-import { useAppSelector } from "@/redux/hooks";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
