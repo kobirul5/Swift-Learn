@@ -110,7 +110,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link
             href="/"
-            className="text-2xl font-extrabold bg-gradient-to-r from-primary to-primary-600 bg-clip-text text-transparent flex items-center gap-2 group transition-all duration-300"
+            className="text-2xl font-extrabold bg-linear-to-r from-primary to-primary-600 bg-clip-text text-transparent flex items-center gap-2 group transition-all duration-300"
           >
             <div className="relative w-10 h-10 transform group-hover:rotate-12 transition-transform duration-300">
               <Image src="/logo/logo.png" alt="logo" fill className="object-contain" />
