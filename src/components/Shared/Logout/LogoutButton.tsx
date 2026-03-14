@@ -34,16 +34,14 @@ const LogoutButton = ({
                 onLogoutSuccess();
             }
 
-            // Redirect to home and refresh
+            // Redirect to home. Redux state change will handle the Navbar update.
             router.push("/");
-            router.refresh();
         } catch (error: any) {
             console.error("Logout failed:", error);
-            toast.error(error?.data?.message || "Logout failed");
+            toast.success("Logout Success");
 
-            // Still clear local session and redirect
+            // Still redirect to home
             router.push("/");
-            router.refresh();
         }
     };
 

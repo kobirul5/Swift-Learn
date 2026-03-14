@@ -92,11 +92,12 @@ export default function StudentsPage() {
                           <Image
                             src={student.image}
                             alt={student.name}
-                            fill
-                            className="w-full h-full object-cover"
+                            width={40}
+                            height={40}
+                            className="w-10 h-10 object-cover"
                           />
                         ) : (
-                          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                          <div className="w-10 h-10 bg-gray-200 flex items-center justify-center">
                             <span className="text-gray-500 text-sm">
                               {student.name.charAt(0).toUpperCase()}
                             </span>

@@ -90,7 +90,7 @@ export default function AdminChatPage() {
                         src={otherUser?.image || "/logo/logo.png"}
                         alt={otherUser?.name}
                         fill
-                        className="object-cover"
+                        className="object-cover rounded-full"
                       />
                     </div>
                   </div>

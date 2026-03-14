@@ -7,7 +7,6 @@ import Instructor from "@/components/pages/home/Instructors";
 import Testimonials from "@/components/pages/home/Testimonials";
 
 
-
 export default function Home() {
   return (
     <div>

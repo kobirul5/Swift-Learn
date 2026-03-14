@@ -1,12 +1,12 @@
 import axiosBaseQuery from "@/utils/axiosBaseQuery";
 import { createApi } from "@reduxjs/toolkit/query/react";
-import Cookies from 'js-cookie';
-
+import Cookies from "js-cookie";
+import { userAPI } from "./userApi";
 
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: axiosBaseQuery(),
-  tagTypes: ['auth', 'user'],
+  tagTypes: ["auth", "user"],
   endpoints: (builder) => ({
     createUser: builder.mutation({
       query: (courseData) => ({
@@ -15,20 +15,23 @@ export const authApi = createApi({
         data: courseData,
       }),
       invalidatesTags: ["auth", "user"],
-      async onQueryStarted(arg, { queryFulfilled }) {
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const { data } = await queryFulfilled;
           if (data.success) {
-            localStorage.setItem('user', JSON.stringify(data.data.user));
-            localStorage.setItem('accessToken', data.data.accessToken);
-            localStorage.setItem('refreshToken', data.data.refreshToken);
-            Cookies.set('accessToken', data.data.accessToken, { expires: 7 });
-            Cookies.set('refreshToken', data.data.refreshToken, { expires: 30 });
+            localStorage.setItem("user", JSON.stringify(data.data.user));
+            localStorage.setItem("accessToken", data.data.accessToken);
+            localStorage.setItem("refreshToken", data.data.refreshToken);
+            Cookies.set("accessToken", data.data.accessToken, { expires: 7 });
+            Cookies.set("refreshToken", data.data.refreshToken, {
+              expires: 30,
+            });
+            dispatch(userAPI.util.invalidateTags(["user"]));
           }
         } catch (error) {
           // Handle error
         }
-      }
+      },
     }),
     loginUser: builder.mutation({
       query: (data) => ({
@@ -37,20 +40,23 @@ export const authApi = createApi({
         data: data,
       }),
       invalidatesTags: ["auth", "user"],
-      async onQueryStarted(arg, { queryFulfilled }) {
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const { data } = await queryFulfilled;
           if (data.success) {
-            localStorage.setItem('user', JSON.stringify(data.data.user));
-            localStorage.setItem('accessToken', data.data.accessToken);
-            localStorage.setItem('refreshToken', data.data.refreshToken);
-            Cookies.set('accessToken', data.data.accessToken, { expires: 7 });
-            Cookies.set('refreshToken', data.data.refreshToken, { expires: 30 });
+            localStorage.setItem("user", JSON.stringify(data.data.user));
+            localStorage.setItem("accessToken", data.data.accessToken);
+            localStorage.setItem("refreshToken", data.data.refreshToken);
+            Cookies.set("accessToken", data.data.accessToken, { expires: 7 });
+            Cookies.set("refreshToken", data.data.refreshToken, {
+              expires: 30,
+            });
+            dispatch(userAPI.util.invalidateTags(["user"]));
           }
         } catch (error) {
           // Handle error
         }
-      }
+      },
     }),
     verifyOtp: builder.mutation({
       query: (data) => ({
@@ -59,20 +65,23 @@ export const authApi = createApi({
         data: data,
       }),
       invalidatesTags: ["auth", "user"],
-      async onQueryStarted(arg, { queryFulfilled }) {
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const { data } = await queryFulfilled;
           if (data.success) {
-            localStorage.setItem('user', JSON.stringify(data.data.user));
-            localStorage.setItem('accessToken', data.data.accessToken);
-            localStorage.setItem('refreshToken', data.data.refreshToken);
-            Cookies.set('accessToken', data.data.accessToken, { expires: 7 });
-            Cookies.set('refreshToken', data.data.refreshToken, { expires: 30 });
+            localStorage.setItem("user", JSON.stringify(data.data.user));
+            localStorage.setItem("accessToken", data.data.accessToken);
+            localStorage.setItem("refreshToken", data.data.refreshToken);
+            Cookies.set("accessToken", data.data.accessToken, { expires: 7 });
+            Cookies.set("refreshToken", data.data.refreshToken, {
+              expires: 30,
+            });
+            dispatch(userAPI.util.invalidateTags(["user"]));
           }
         } catch (error) {
           // Handle error
         }
-      }
+      },
     }),
     forgotPassword: builder.mutation({
       query: (data) => ({
@@ -80,7 +89,7 @@ export const authApi = createApi({
         method: "POST",
         data: data,
       }),
-      invalidatesTags: ["auth"]
+      invalidatesTags: ["auth"],
     }),
     resetPassword: builder.mutation({
       query: (data) => ({
@@ -88,7 +97,7 @@ export const authApi = createApi({
         method: "POST",
         data: data,
       }),
-      invalidatesTags: ["auth"]
+      invalidatesTags: ["auth"],
     }),
     logoutUser: builder.mutation({
       query: () => ({
@@ -97,22 +106,21 @@ export const authApi = createApi({
       }),
       invalidatesTags: ["auth", "user"],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        // Optimistically clear all authentication data and API state
+        localStorage.removeItem("user");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        Cookies.remove("accessToken");
+        Cookies.remove("refreshToken");
+        dispatch(userAPI.util.resetApiState());
+
         try {
           await queryFulfilled;
-          localStorage.removeItem('user');
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
-          Cookies.remove('accessToken');
-          Cookies.remove('refreshToken');
         } catch (error) {
-          // Still clear local storage even if API fails
-          localStorage.removeItem('user');
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
-          Cookies.remove('accessToken');
-          Cookies.remove('refreshToken');
+          // Even if server call fails, we've already cleared everything locally
+          console.error("Logout server error:", error);
         }
-      }
+      },
     }),
     resendOtp: builder.mutation({
       query: (data) => ({
@@ -120,7 +128,7 @@ export const authApi = createApi({
         method: "POST",
         data: data,
       }),
-      invalidatesTags: ["auth"]
+      invalidatesTags: ["auth"],
     }),
     changePassword: builder.mutation({
       query: (data) => ({
@@ -128,7 +136,7 @@ export const authApi = createApi({
         method: "PUT",
         data: data,
       }),
-      invalidatesTags: ["auth"]
+      invalidatesTags: ["auth"],
     }),
   }),
 });
@@ -141,5 +149,5 @@ export const {
   useResetPasswordMutation,
   useLogoutUserMutation,
   useResendOtpMutation,
-  useChangePasswordMutation
+  useChangePasswordMutation,
 } = authApi;

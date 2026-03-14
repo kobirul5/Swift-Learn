@@ -49,7 +49,7 @@ export default function FeaturedCourse() {
                                 <div className="md:w-1/2 relative h-64 md:h-auto overflow-hidden">
                                     <Image
                                         alt={course.title}
-                                        src={course.thumbnail || '/placeholder.png'}
+                                        src={course.thumbnail || '/assets/courses-banner.jpg'}
                                         fill
                                         className="object-cover transition-transform duration-700 group-hover:scale-110"
                                         priority

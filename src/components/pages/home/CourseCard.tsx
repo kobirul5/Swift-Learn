@@ -20,7 +20,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
           width={600}
           height={400}
           alt={course.title}
-          src={course.thumbnail || '/courses/react-dev.png'}
+          src={course.thumbnail || '/assets/courses-banner.jpg'}
           className="object-cover w-full h-full"
           priority
         />

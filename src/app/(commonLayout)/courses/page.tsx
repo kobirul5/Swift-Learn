@@ -9,6 +9,7 @@ import { Suspense, useEffect, useState } from "react";
 import Pagination from "@/components/Shared/Pagination";
 import Loader from "@/components/Shared/Loader";
 import CoursesCategories from "@/components/pages/courses/CoursesCategories";
+import SubmitTestimonial from "@/components/pages/home/SubmitTestimonial";
 
 export type IICourse = {
   _id: string;
@@ -77,6 +78,7 @@ const CoursesContent = () => {
             variant="public"
           />
         </div>
+        <SubmitTestimonial />
       </div>
     </>
   );

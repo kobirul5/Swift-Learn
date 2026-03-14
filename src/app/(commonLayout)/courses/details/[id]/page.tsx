@@ -17,22 +17,14 @@ import Loader from "@/components/Shared/Loader";
 
 export default function CourseDetailPage() {
   const { id } = useParams();
-  const [course, setCourses] = useState<ICourse>();
   const { data, isLoading } = useGetCourseByIdQuery(id);
   const { data: user, isLoading: userLoading } = useGetUserQuery(undefined);
   const [createEnrollment] = useCreateEnrollmentMutation();
 
   const router = useRouter();
 
-  useEffect(() => {
-    //   if (!user && !userLoading) {
-    //   router.push("/login");
-    //   return;
-    // }
-    if (data) {
-      setCourses(data.data);
-    }
-  }, [data]);
+  const course = data?.data;
+
 
   const handleEnrollment = async (courseId: string) => {
     if (!courseId) {
@@ -49,11 +41,11 @@ export default function CourseDetailPage() {
       course: courseId,
     };
     try {
-      const res = await createEnrollment(enrolmentData);
+      const res = await createEnrollment(enrolmentData).unwrap();
 
-      console.log(res.data.data.url);
-      if (res?.data?.success) {
-        router.push(res.data.data.url);
+      console.log(res.data.url);
+      if (res?.success) {
+        router.push(res.data.url);
       }
 
       // if (res?.error?.data?.message) {
@@ -75,7 +67,12 @@ export default function CourseDetailPage() {
     return <div className="text-center py-32">Course not found</div>;
   }
 
-  console.log(course,"--------------"); 
+  // Format thumbnail URL (ensure leading slash for relative paths)
+  const getThumbnailSrc = (src?: string) => {
+    if (!src) return "/assets/courses-banner.jpg";
+    if (src.startsWith("http") || src.startsWith("/")) return src;
+    return `/${src}`;
+  };
 
   return (
     <section className="container mx-auto px-4 py-12 pt-28">
@@ -83,7 +80,7 @@ export default function CourseDetailPage() {
         {/* Thumbnail */}
         <div className="relative w-full h-80 lg:h-full rounded-xl overflow-hidden shadow-md">
           <Image
-            src={course.thumbnail || "/fallback.png"}
+            src={getThumbnailSrc(course.thumbnail)}
             alt={course.title}
             fill
             className="object-cover"
