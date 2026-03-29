@@ -1,6 +1,7 @@
 import { Play, FileText, ChevronDown } from "lucide-react";
 import { cn } from "@/utils/cd";
 import { useState } from "react";
+import { getEmbedUrl } from "@/utils/video";
 
 interface Props {
   title: string;
@@ -50,7 +51,20 @@ export default function LectureItem({
       {/* Details Panel */}
       {isOpen && (
         <div className="px-4 py-3 bg-primary-50 border-t border-primary-100 text-xs">
-          <div className="space-y-2">
+          <div className="space-y-4">
+            {videoUrl && (
+              <div className="aspect-video w-full rounded-lg overflow-hidden bg-black shadow-inner">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src={getEmbedUrl(videoUrl)}
+                  title="Lecture Video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full border-0"
+                ></iframe>
+              </div>
+            )}
             <div className="flex flex-col gap-1">
               <span className="font-semibold text-primary-700">Video URL:</span>
               <a

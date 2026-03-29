@@ -57,7 +57,7 @@ const CoursesContent = () => {
 
   return (
     <>
-      <div className="bg-dark-50 min-h-screen">
+      <div className="bg-dark-50 min-h-screen ">
         {/* Hero Section */}
         <CoursesHero />
         {/* Main Content */}

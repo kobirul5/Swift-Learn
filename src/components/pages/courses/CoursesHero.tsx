@@ -2,7 +2,7 @@ import { FiAward, FiUsers, FiClock } from "react-icons/fi";
 
 export default function CoursesHero() {
   return (
-    <div className="relative bg-dark-900 overflow-hidden min-h-[500px] flex items-center">
+    <div className="relative bg-dark-900  overflow-hidden min-h-[500px] py-30 flex items-center">
       {/* Background Image with Overlay */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-30"

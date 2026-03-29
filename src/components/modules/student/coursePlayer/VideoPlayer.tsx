@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { ILecture } from "@/type/module"
 import NoContentAvilable from "@/components/NoContentAvailable"
+import { getEmbedUrl } from "@/utils/video"
 
 interface VideoPlayerProps {
     currentLecture: ILecture | null;
@@ -26,24 +27,6 @@ export function VideoPlayer({ currentLecture, moduleIndex, lectureIndex }: Video
             </div>
         )
     }
-
-    const getEmbedUrl = (url: string) => {
-        if (!url) return "";
-
-        // YouTube
-        const ytMatch = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
-        if (ytMatch) {
-            return `https://www.youtube.com/embed/${ytMatch[1]}`;
-        }
-
-        // Vimeo
-        const vimeoMatch = url.match(/(?:https?:\/\/)?(?:www\.)?(?:vimeo\.com\/|player\.vimeo\.com\/video\/)(\d+)/);
-        if (vimeoMatch) {
-            return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
-        }
-
-        return url;
-    };
 
     return (
         <div className="space-y-6">
