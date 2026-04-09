@@ -1,22 +1,34 @@
 'use client';
 
-import { useCreateLectureMutation } from '@/redux/api/courseApi';
-import { useState, useCallback } from 'react';
+import { useCreateLectureMutation, useUpdateLectureMutation } from '@/redux/api/courseApi';
+import { ILecture } from '@/type/module';
+import { useState, useCallback, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { FiX, FiPlus, FiTrash, FiLoader, FiUpload, FiFileText, FiCheckCircle, FiVideo } from 'react-icons/fi';
 
 interface VideoModalProps {
   moduleId: string;
   toggleModalLecture: () => void;
+  lecture?: ILecture | null;
 }
 
-export default function LectureModal({ moduleId, toggleModalLecture }: VideoModalProps) {
+export default function LectureModal({ moduleId, toggleModalLecture, lecture = null }: VideoModalProps) {
+  const isEditMode = Boolean(lecture);
   const [title, setTitle] = useState('');
   const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [videoUrl, setVideoUrl] = useState('');
   const [notes, setNotes] = useState<string[]>(['']);
   const [isDragging, setIsDragging] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [createLecture] = useCreateLectureMutation();
+  const [updateLecture] = useUpdateLectureMutation();
+
+  useEffect(() => {
+    setTitle(lecture?.title ?? '');
+    setVideoFile(null);
+    setVideoUrl(lecture?.videoUrl ?? '');
+    setNotes(lecture?.notes?.length ? lecture.notes : ['']);
+  }, [lecture]);
 
   const handleNoteChange = (value: string, index: number) => {
     const updatedNotes = [...notes];
@@ -62,8 +74,12 @@ export default function LectureModal({ moduleId, toggleModalLecture }: VideoModa
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!videoFile) {
-      return toast.error('Please select a video file!');
+    if (!title.trim()) {
+      return toast.error('Please enter a lecture title!');
+    }
+
+    if (!videoFile && !videoUrl.trim()) {
+      return toast.error('Please select a video file or provide a video URL!');
     }
 
     setIsLoading(true);
@@ -71,20 +87,25 @@ export default function LectureModal({ moduleId, toggleModalLecture }: VideoModa
     const formData = new FormData();
     const data = {
       module: moduleId,
-      title,
+      title: title.trim(),
       notes: notes.filter(note => note.trim() !== ''),
+      videoUrl: videoUrl.trim(),
     };
 
     formData.append('data', JSON.stringify(data));
-    formData.append('file', videoFile);
+    if (videoFile) {
+      formData.append('file', videoFile);
+    }
 
     try {
-      const res = await createLecture(formData).unwrap();
+      const res = isEditMode && lecture
+        ? await updateLecture({ id: lecture._id, data: formData }).unwrap()
+        : await createLecture(formData).unwrap();
       if (res?.success) {
-        toast.success('Lecture created successfully!');
+        toast.success(isEditMode ? 'Lecture updated successfully!' : 'Lecture created successfully!');
         toggleModalLecture();
       } else {
-        toast.error(res?.message || 'Failed to create lecture');
+        toast.error(res?.message || (isEditMode ? 'Failed to update lecture' : 'Failed to create lecture'));
       }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -104,7 +125,7 @@ export default function LectureModal({ moduleId, toggleModalLecture }: VideoModa
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold text-white flex items-center gap-2">
               <FiVideo className="text-white/80" />
-              Create New Lecture
+              {isEditMode ? 'Update Lecture' : 'Create New Lecture'}
             </h2>
             <button
               onClick={toggleModalLecture}
@@ -130,6 +151,22 @@ export default function LectureModal({ moduleId, toggleModalLecture }: VideoModa
                 placeholder="e.g., Intro to React Hooks"
                 className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:bg-white focus:outline-none transition-all duration-200 shadow-sm"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-bold text-dark-800 mb-2 ml-1">Video URL</label>
+              <input
+                type="url"
+                value={videoUrl}
+                onChange={(e) => setVideoUrl(e.target.value)}
+                placeholder="Paste a video link or upload a new file"
+                className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:bg-white focus:outline-none transition-all duration-200 shadow-sm"
+              />
+              <p className="mt-2 text-xs text-gray-500 ml-1">
+                {isEditMode
+                  ? 'Keep the existing URL or replace it with a new upload.'
+                  : 'Optional if you want to upload the file instead.'}
+              </p>
             </div>
 
             {/* Video Upload Area */}
@@ -234,18 +271,18 @@ export default function LectureModal({ moduleId, toggleModalLecture }: VideoModa
             </button>
             <button
               onClick={handleSubmit}
-              disabled={isLoading || !videoFile || !title}
+              disabled={isLoading || !title.trim()}
               className="flex-[1.5] px-6 py-4 rounded-xl bg-primary-600 text-white font-bold hover:bg-primary-700 shadow-lg shadow-primary-200 transition-all active:scale-95 disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>
                   <FiLoader className="animate-spin text-xl" />
-                  Creating Lecture...
+                  {isEditMode ? 'Updating Lecture...' : 'Creating Lecture...'}
                 </>
               ) : (
                 <>
                   <FiPlus className="text-xl" />
-                  Create Lecture
+                  {isEditMode ? 'Update Lecture' : 'Create Lecture'}
                 </>
               )}
             </button>

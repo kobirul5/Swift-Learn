@@ -1,4 +1,4 @@
-import { Play, FileText, ChevronDown } from "lucide-react";
+import { Play, FileText, ChevronDown, Pencil } from "lucide-react";
 import { cn } from "@/utils/cd";
 import { useState } from "react";
 import { getEmbedUrl } from "@/utils/video";
@@ -7,46 +7,60 @@ interface Props {
   title: string;
   notesCount: number;
   videoUrl: string;
+  onEdit?: () => void;
 }
 
 export default function LectureItem({
   title,
   notesCount,
   videoUrl,
+  onEdit,
 }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="mx-2 mb-2 rounded-lg border border-primary-100 bg-white overflow-hidden">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-4 py-3 flex items-start gap-3 text-left transition-all hover:bg-primary-50"
-      >
-        {/* Icon */}
-        <div className="shrink-0 mt-0.5">
-          <Play className="w-5 h-5 text-primary-500" />
-        </div>
+      <div className="w-full px-4 py-3 flex items-start gap-3 text-left transition-all hover:bg-primary-50">
+        <button
+          type="button"
+          onClick={() => setIsOpen(!isOpen)}
+          className="flex flex-1 items-start gap-3 text-left"
+        >
+          <div className="shrink-0 mt-0.5">
+            <Play className="w-5 h-5 text-primary-500" />
+          </div>
 
-        {/* Content */}
-        <div className="flex-1 min-w-0">
-          <h4 className="text-sm font-medium mb-1 leading-snug text-dark-900">
-            {title}
-          </h4>
-          <div className="flex items-center gap-3 text-xs text-primary-400">
-            <div className="flex items-center gap-1">
-              <FileText className="w-3 h-3" />
-              <span>{notesCount} notes</span>
+          <div className="flex-1 min-w-0">
+            <h4 className="text-sm font-medium mb-1 leading-snug text-dark-900">
+              {title}
+            </h4>
+            <div className="flex items-center gap-3 text-xs text-primary-400">
+              <div className="flex items-center gap-1">
+                <FileText className="w-3 h-3" />
+                <span>{notesCount} notes</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <ChevronDown
-          className={cn(
-            "w-4 h-4 text-primary-400 mt-1 transition-transform",
-            isOpen ? "rotate-180" : "rotate-0"
-          )}
-        />
-      </button>
+          <ChevronDown
+            className={cn(
+              "w-4 h-4 text-primary-400 mt-1 transition-transform",
+              isOpen ? "rotate-180" : "rotate-0"
+            )}
+          />
+        </button>
+
+        {onEdit && (
+          <button
+            type="button"
+            onClick={onEdit}
+            className="shrink-0 rounded-lg border border-primary-200 px-3 py-2 text-xs font-semibold text-primary-700 hover:bg-primary-100 transition-colors flex items-center gap-1"
+          >
+            <Pencil className="w-3.5 h-3.5" />
+            Edit
+          </button>
+        )}
+      </div>
 
       {/* Details Panel */}
       {isOpen && (

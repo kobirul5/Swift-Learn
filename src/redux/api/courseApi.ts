@@ -104,6 +104,14 @@ export const courseAPI = createApi({
       }),
       invalidatesTags: ['course']
     }),
+    updateLecture: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/lecture/${id}`,
+        method: "PATCH",
+        data
+      }),
+      invalidatesTags: ['course']
+    }),
     deleteLecture: builder.mutation({
       query: (id) => ({
         url: `/lecture/${id}`,
@@ -134,6 +142,7 @@ export const {
   useGetModuleQuery,
   useCreateModuleMutation,
   useCreateLectureMutation,
+  useUpdateLectureMutation,
   useDeleteLectureMutation,
   useGetSingleLectureQuery,
   useUnlockLectureMutation,

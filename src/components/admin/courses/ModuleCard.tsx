@@ -5,6 +5,7 @@ import { cn } from "@/utils/cd";
 import { Plus } from "lucide-react";
 import LectureModal from "@/components/Modals/LectureModal";
 import LectureItem from "./LectureItem";
+import { ILecture } from "@/type/module";
 
 interface Module {
   _id: string;
@@ -28,6 +29,22 @@ interface Props {
 export default function ModuleCard({ module }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLectureModalOpen, setIsLectureModalOpen] = useState(false);
+  const [selectedLecture, setSelectedLecture] = useState<ILecture | null>(null);
+
+  const openCreateLectureModal = () => {
+    setSelectedLecture(null);
+    setIsLectureModalOpen(true);
+  };
+
+  const openEditLectureModal = (lecture: ILecture) => {
+    setSelectedLecture(lecture);
+    setIsLectureModalOpen(true);
+  };
+
+  const closeLectureModal = () => {
+    setIsLectureModalOpen(false);
+    setSelectedLecture(null);
+  };
 
   return (
     <div className="border-b border-primary-200 bg-primary-50">
@@ -72,7 +89,7 @@ export default function ModuleCard({ module }: Props) {
         <div className="pb-4 bg-white/50">
           <div className="px-4 pt-4 flex justify-end">
             <button
-              onClick={() => setIsLectureModalOpen(true)}
+              onClick={openCreateLectureModal}
               className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white text-xs font-bold rounded-lg hover:bg-primary-700 transition-all active:scale-95 shadow-md shadow-primary-200"
             >
               <Plus className="w-4 h-4" />
@@ -95,6 +112,7 @@ export default function ModuleCard({ module }: Props) {
                     title={lecture.title}
                     videoUrl={lecture.videoUrl}
                     notesCount={lecture.notes?.length || 0}
+                    onEdit={() => openEditLectureModal(lecture as ILecture)}
                   />
                 ))}
               </div>
@@ -110,7 +128,8 @@ export default function ModuleCard({ module }: Props) {
       {isLectureModalOpen && (
         <LectureModal
           moduleId={module._id}
-          toggleModalLecture={() => setIsLectureModalOpen(false)}
+          lecture={selectedLecture}
+          toggleModalLecture={closeLectureModal}
         />
       )}
     </div>
