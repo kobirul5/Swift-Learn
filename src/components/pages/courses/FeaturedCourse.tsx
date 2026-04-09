@@ -13,7 +13,7 @@ export default function FeaturedCourse() {
     const { data: featuredData, isLoading } = useGetFeaturedCoursesQuery(undefined);
 
     if (isLoading) {
-        return <div className="animate-pulse h-[450px] bg-gray-200 rounded-3xl mb-16"></div>;
+        return <div className="animate-pulse h-112.5 bg-gray-200 rounded-3xl mb-16"></div>;
     }
 
     const featuredCourses = featuredData?.data || [];
@@ -45,7 +45,7 @@ export default function FeaturedCourse() {
                 {featuredCourses.map((course: any) => (
                     <SwiperSlide key={course._id}>
                         <div className="bg-white group relative">
-                            <div className="md:flex min-h-[400px]">
+                            <div className="md:flex min-h-100">
                                 <div className="md:w-1/2 relative h-64 md:h-auto overflow-hidden">
                                     <Image
                                         alt={course.title}

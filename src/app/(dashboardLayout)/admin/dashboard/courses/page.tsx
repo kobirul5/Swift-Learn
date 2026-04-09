@@ -76,7 +76,7 @@ const Courses = () => {
 
       {/* Responsive Table */}
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[800px]">
+        <table className="w-full min-w-200">
           <thead className="bg-gray-50 border-b border-primary-100">
             <tr>
               <th className="text-left px-6 py-4 text-sm font-semibold text-gray-700">Course</th>
@@ -95,7 +95,7 @@ const Courses = () => {
                     <div className="w-16 h-16 bg-gray-200 rounded-xl overflow-hidden shrink-0 border border-gray-300">
                       {course.thumbnail ? (
                         <img
-                          src={course.thumbnail}
+                          src={course?.thumbnail}
                           alt={course.title}
                           className="w-full h-full object-cover"
                         />

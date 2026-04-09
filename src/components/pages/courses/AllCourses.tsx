@@ -32,7 +32,7 @@ export default function AllCourses({ filteredCourses, activeCategory }: AllCours
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {filteredCourses.map((course, idx) => (
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        <CourseCard key={idx} course={course as any} />
+                        <CourseCard key={course._id ?? idx} course={course as any} />
                     ))}
                 </div>
             )}

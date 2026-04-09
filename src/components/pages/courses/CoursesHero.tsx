@@ -2,7 +2,7 @@ import { FiAward, FiUsers, FiClock } from "react-icons/fi";
 
 export default function CoursesHero() {
   return (
-    <div className="relative bg-dark-900  overflow-hidden min-h-[500px] py-30 flex items-center">
+    <div className="relative bg-dark-900  overflow-hidden min-h-125 py-30 flex items-center">
       {/* Background Image with Overlay */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-30"
@@ -13,8 +13,8 @@ export default function CoursesHero() {
       <div className="absolute inset-0 bg-linear-to-br from-gray-900 via-gray-900/90 to-primary-900/40" />
 
       {/* Animated Glowing Orbs */}
-      <div className="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] bg-primary-500/20 rounded-full blur-[100px] animate-pulse" />
-      <div className="absolute bottom-[-20%] left-[-10%] w-[400px] h-[400px] bg-purple-500/20 rounded-full blur-[100px] animate-pulse delay-1000" />
+      <div className="absolute top-[-20%] right-[-10%] w-125 h-125 bg-primary-500/20 rounded-full blur-[100px] animate-pulse" />
+      <div className="absolute bottom-[-20%] left-[-10%] w-100 h-100 bg-purple-500/20 rounded-full blur-[100px] animate-pulse delay-1000" />
 
       {/* Content Container */}
       <div className="container mx-auto px-6 relative z-10">
