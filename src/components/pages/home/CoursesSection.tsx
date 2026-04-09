@@ -30,7 +30,7 @@ const CoursesSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {courses.slice(0, 4).map((course: ICourse, idx: number) => (
-            <CourseCard key={idx} course={course} />
+            <CourseCard key={course._id ?? idx} course={course} />
           ))}
         </div>
       </div>

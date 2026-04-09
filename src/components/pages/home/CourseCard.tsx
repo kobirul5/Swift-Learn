@@ -13,14 +13,16 @@ const CourseCard = ({ course }: CourseCardProps) => {
     return <h1>Loading.....</h1>
   }
 
+  const thumbnailSrc = course.thumbnail?.trim() || '/assets/courses-banner.jpg';
+
   return (
-    <div key={course._id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
       <div className="h-48 bg-dark-200 flex items-center justify-center">
         <Image
           width={600}
           height={400}
           alt={course.title}
-          src={course.thumbnail || '/assets/courses-banner.jpg'}
+          src={thumbnailSrc}
           className="object-cover w-full h-full"
           priority
         />
