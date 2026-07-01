@@ -9,7 +9,7 @@ export const authRoutes = ["/login", "/register", "/forgot-password", "/reset-pa
 
 export const commonProtectedRoutes: RouteConfig = {
     exact: ["/profile", "/settings"],
-    patterns: [/^\/courses\/details/],
+    patterns: [/^\/courses\/details/, /^\/profile\//],  // /profile/* sub-routes like /profile/support
 }
 
 export const adminProtectedRoutes: RouteConfig = {
