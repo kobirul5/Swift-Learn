@@ -52,6 +52,10 @@ export async function proxy(request: NextRequest) {
     }
 
     if (routerOwner === "COMMON") {
+        // Admin trying to access /profile/support → redirect to admin support chat
+        if (pathname === "/profile/support" && userRole === "admin") {
+            return NextResponse.redirect(new URL("/admin/dashboard/support-chat", request.url));
+        }
         return NextResponse.next();
     }
 
