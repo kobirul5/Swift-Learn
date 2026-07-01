@@ -7,10 +7,11 @@ import { MdOutlineKeyboardDoubleArrowLeft } from "react-icons/md";
 
 
 interface DashboardHeaderProps {
+  sidebarOpen: boolean;
   onToggleSidebar: () => void;
 }
 
-export default function DashboardHeader({ onToggleSidebar }: DashboardHeaderProps) {
+export default function DashboardHeader({ sidebarOpen, onToggleSidebar }: DashboardHeaderProps) {
   const { data } = useGetUserQuery(undefined);
 
   return (
@@ -22,7 +23,11 @@ export default function DashboardHeader({ onToggleSidebar }: DashboardHeaderProp
           className="text-dark-500 hover:text-dark-800 focus:outline-none transition-colors duration-200"
           aria-label="Toggle sidebar"
         >
-          <MdOutlineKeyboardDoubleArrowLeft  className="h-6 w-6 border rounded-[8px]" />
+          <MdOutlineKeyboardDoubleArrowLeft 
+            className={`h-6 w-6 border rounded-[8px] transition-transform duration-300 ${
+              !sidebarOpen ? "rotate-180" : ""
+            }`} 
+          />
         </button>
 
         {/* Search */}

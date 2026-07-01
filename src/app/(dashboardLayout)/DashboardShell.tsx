@@ -19,7 +19,10 @@ export default function DashboardShell({ children }: DashboardShellProps) {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden min-w-0">
         {/* Header */}
-        <DashboardHeader onToggleSidebar={() => setSidebarOpen((prev) => !prev)} />
+        <DashboardHeader 
+          sidebarOpen={sidebarOpen} 
+          onToggleSidebar={() => setSidebarOpen((prev) => !prev)} 
+        />
 
         {/* Main Content Area */}
         <main className="flex-1 overflow-y-auto p-6">
