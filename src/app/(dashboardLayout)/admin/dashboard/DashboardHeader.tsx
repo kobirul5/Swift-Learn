@@ -3,16 +3,26 @@ import { useGetUserQuery } from "@/redux/api/userApi";
 import Image from "next/image";
 import Link from "next/link";
 import { FiBell, FiSearch, FiMenu } from "react-icons/fi";
+import { MdOutlineKeyboardDoubleArrowLeft } from "react-icons/md";
 
-export default function DashboardHeader() {
+
+interface DashboardHeaderProps {
+  onToggleSidebar: () => void;
+}
+
+export default function DashboardHeader({ onToggleSidebar }: DashboardHeaderProps) {
   const { data } = useGetUserQuery(undefined);
 
   return (
     <div className="bg-white shadow-sm">
       <div className="px-4 py-4 sm:px-6 lg:px-8 flex justify-between items-center">
-        {/* Mobile menu button */}
-        <button className="md:hidden text-dark-500 focus:outline-none">
-          <FiMenu className="h-6 w-6" />
+        {/* Sidebar toggle button (visible on desktop) */}
+        <button
+          onClick={onToggleSidebar}
+          className="text-dark-500 hover:text-dark-800 focus:outline-none transition-colors duration-200"
+          aria-label="Toggle sidebar"
+        >
+          <MdOutlineKeyboardDoubleArrowLeft  className="h-6 w-6 border rounded-[8px]" />
         </button>
 
         {/* Search */}

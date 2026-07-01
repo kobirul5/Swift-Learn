@@ -1,9 +1,6 @@
-
 import { ReactNode } from 'react';
-import DashboardSidebar from './admin/dashboard/DashboardSidebar';
-import DashboardHeader from './admin/dashboard/DashboardHeader';
 import StoreProvider from '@/redux/SroteProvider';
-
+import DashboardShell from './DashboardShell';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -11,22 +8,10 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
-    <StoreProvider >
-      <div className="flex h-screen bg-dark-50">
-        {/* Sidebar */}
-        <DashboardSidebar />
-
-        {/* Main Content */}
-        <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Header */}
-          <DashboardHeader />
-
-          {/* Main Content Area */}
-          <main className="flex-1 overflow-y-auto p-6">
-            {children}
-          </main>
-        </div>
-      </div>
+    <StoreProvider>
+      <DashboardShell>
+        {children}
+      </DashboardShell>
     </StoreProvider>
   );
 }
