@@ -16,8 +16,8 @@ const CourseCard = ({ course }: CourseCardProps) => {
   const thumbnailSrc = course.thumbnail?.trim() || '/assets/courses-banner.jpg';
 
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="h-48 bg-dark-200 flex items-center justify-center">
+    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow flex flex-col h-full">
+      <div className="h-48 bg-dark-200 flex items-center justify-center shrink-0">
         <Image
           width={600}
           height={400}
@@ -28,8 +28,8 @@ const CourseCard = ({ course }: CourseCardProps) => {
         />
       </div>
 
-      <div className="p-6">
-        <div className="flex justify-between items-start mb-2">
+      <div className="p-6 flex flex-col flex-grow">
+        <div className="flex justify-between items-start mb-3">
           <span className="px-2 py-1 bg-primary-100 text-primary-800 rounded-full text-xs font-medium">
             {course?.category}
           </span>
@@ -37,8 +37,13 @@ const CourseCard = ({ course }: CourseCardProps) => {
             High
           </span>
         </div>
-        <h3 className="text-xl font-bold text-dark-800 mb-2">{course.title}</h3>
-        <p className="text-dark-600 text-sm mb-4">By Jhonkar Mahbub</p>
+        
+        <h3 className="text-lg font-bold text-dark-800 h-14 line-clamp-2 overflow-hidden mb-2" title={course.title}>
+          {course.title}
+        </h3>
+        
+        <p className="text-dark-600 text-sm mb-2">By Jhonkar Mahbub</p>
+        
         <div className="flex items-center mb-4">
           <div className="flex text-yellow-400 mr-2">
             {[...Array(5)].map((_, i) => (
@@ -50,8 +55,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
           </span>
         </div>
 
-
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
           <span className="text-lg font-bold text-dark-800">${course.price}</span>
           <Link href={`/courses/details/${course._id}`} className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium transition-colors">
             View Course
