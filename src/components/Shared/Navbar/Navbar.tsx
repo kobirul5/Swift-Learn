@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useGetUserQuery } from "@/redux/api/userApi";
@@ -12,13 +13,11 @@ import {
   FiHome,
   FiBook,
   FiUser,
-  FiLogIn,
   FiSettings,
   FiMenu,
   FiX,
   FiMessageSquare,
   FiChevronDown,
-  FiLogOut,
   FiLayout,
 } from "react-icons/fi";
 
@@ -30,7 +29,7 @@ const Navbar = () => {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const { data, isLoading, error } = useGetUserQuery(undefined, {
+  const { data, error } = useGetUserQuery(undefined, {
     refetchOnMountOrArgChange: true, // Ensures fresh auth state on session changes
   });
   const [resendOtp] = useResendOtpMutation();
@@ -40,6 +39,7 @@ const Navbar = () => {
   const isLoggedIn = !!user;
   const role = user?.role;
   const isAdmin = role === "admin";
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isStudent = role === "student";
 
   useEffect(() => {
@@ -106,7 +106,7 @@ const Navbar = () => {
         }`}
     >
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex justify-between items-center bg-white/40 backdrop-blur-sm rounded-2xl px-6 py-2 border border-white/20 shadow-sm">
+        <div className="flex justify-between items-center bg-white backdrop-blur-sm rounded-2xl px-6 py-2 border border-white/20 shadow-sm">
           {/* Logo */}
           <Link
             href="/"
@@ -132,7 +132,7 @@ const Navbar = () => {
                   className={`relative flex items-center space-x-2 text-sm font-semibold transition-all duration-300 py-2 px-1
                     ${pathname === href
                       ? "text-primary after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-primary"
-                      : "text-gray-600 hover:text-primary hover:translate-y-[-1px]"
+                      : "text-gray-600 hover:text-primary hover:-translate-y-px"
                     }`}
                 >
                   <span className="text-lg">{icon}</span>

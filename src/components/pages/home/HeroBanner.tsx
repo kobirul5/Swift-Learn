@@ -1,6 +1,5 @@
 
-import { FiPlay, FiSearch, FiAward, FiUsers } from 'react-icons/fi';
-import Button from '@/components/Button';
+import { FiPlay, FiAward, FiUsers } from 'react-icons/fi';
 import HeroVideo from '@/components/pages/home/HeroVideo';
 
 interface StatItem {
@@ -19,12 +18,12 @@ const
     ];
 
     return (
-      <section className="relative bg-linear-to-r from-primary-100/30 to-primary-100 py-16 md:py-24">
+      <section className="relative bg-linear-to-r from-primary-100/30 to-primary-100 py-16 md:py-24 lg:py-32">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             {/* Content Section */}
             <div className="lg:w-1/2 space-y-6">
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-gray-900 leading-tight">
                 Learn New Skills With <span className="text-primary">Expert Tutors</span>
               </h1>
 
@@ -66,7 +65,7 @@ const
             </div>
               {/* Image Section */}
               <div className="lg:w-1/2 flex justify-center overflow-hidden">
-                <div className="relative w-full max-w-[650px]">
+                <div className="relative w-full max-w-162.5">
                   <div className="relative aspect-video bg-primary-100 rounded-xl overflow-hidden shadow-lg">
                     <HeroVideo />
 

@@ -5,23 +5,23 @@ export default function CoursesHero() {
     <div className="relative bg-dark-900  overflow-hidden min-h-125 py-30 flex items-center">
       {/* Background Image with Overlay */}
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-30"
+        className="absolute inset-0 bg-cover bg-center opacity-100"
         style={{ backgroundImage: "url('/assets/courses-banner.jpg')" }}
       />
 
       {/* Rich Gradient Overlay */}
-      <div className="absolute inset-0 bg-linear-to-br from-gray-900 via-gray-900/90 to-primary-900/40" />
+      <div className="absolute inset-0 bg-linear-to-br from-gray-900 via-gray-900/70 to-primary-900/40" />
 
       {/* Animated Glowing Orbs */}
-      <div className="absolute top-[-20%] right-[-10%] w-125 h-125 bg-primary-500/20 rounded-full blur-[100px] animate-pulse" />
-      <div className="absolute bottom-[-20%] left-[-10%] w-100 h-100 bg-purple-500/20 rounded-full blur-[100px] animate-pulse delay-1000" />
+      <div className="absolute top-[-20%] right-[-10%] w-125 h-125 bg-primary-500/40 rounded-full blur-[100px] animate-pulse" />
+      <div className="absolute bottom-[-20%] left-[-10%] w-100 h-100 bg-purple-500/40 rounded-full blur-[100px] animate-pulse delay-1000" />
 
       {/* Content Container */}
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
 
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-8 animate-fade-in-up">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/ border border-white/10 backdrop-blur-sm mb-8 animate-fade-in-up">
             <span className="flex h-2 w-2 rounded-full bg-green-400 animate-pulse"></span>
             <span className="text-gray-300 text-sm font-medium tracking-wide uppercase">Upgrade Your Skillset</span>
           </div>
