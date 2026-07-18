@@ -7,7 +7,7 @@ import Instructor from '@/components/pages/home/Instructors';
 export default function AboutPage() {
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto px-4 py-20">
       {/* Hero Section */}
       <section className="text-center mb-16 pt-10">
         <Heading
